@@ -10,11 +10,25 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.StatusLine;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+
 /**
  * Created by parksanguk on 1/16/18.
  */
 
 public class StatusActivity extends AppCompatActivity {
+    //TODO: isExpanded must exist as same number as cardviews
     Boolean isExpanded = false;
 
     @Override
@@ -27,15 +41,22 @@ public class StatusActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 //TransitionManager.beginDelayedTransition(cardView);
-                cardExpandCollapse();
+                cardExpandCollapse(R.id.tv_desc);
+            }
+        });
+        final CardView cardView2=(CardView) findViewById(R.id.card_2);
+        cardView2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                cardExpandCollapse(R.id.tv_desc_2);
             }
         });
 
         //cardView.setVisibility(View.GONE);
     }
 
-    private void cardExpandCollapse() {
-        TextView tv_support=(TextView) findViewById(R.id.tv_desc);
+    private void cardExpandCollapse(int id) {
+        final TextView tv_support=(TextView) findViewById(id);
         if (isExpanded) {
             //ibt_show_more.animate().rotation(0).start();
             Toast.makeText(getApplicationContext(),"Collapsing",Toast.LENGTH_SHORT).show();
@@ -46,6 +67,44 @@ public class StatusActivity extends AppCompatActivity {
             //ibt_show_more.animate().rotation(180).start();
             Toast.makeText(getApplicationContext(),"Expanding",Toast.LENGTH_SHORT).show();
             isExpanded = true;
+
+            //Http Req
+            Thread thread = new Thread(new Runnable(){
+                @Override
+                public void run(){
+                    //code to do the HTTP request
+                    try {
+                        HttpClient httpclient = new DefaultHttpClient();
+                        HttpResponse response = httpclient.execute(new HttpGet("http://192.168.2.52/test.php?id=1"));
+                        StatusLine statusLine = response.getStatusLine();
+                        if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                            ByteArrayOutputStream out = new ByteArrayOutputStream();
+                            response.getEntity().writeTo(out);
+                            String responseString = out.toString();
+                            out.close();
+                            //..more logic
+                            tv_support.setText(responseString);
+
+                        } else {
+                            //Closes the connection.
+                            response.getEntity().getContent().close();
+                            throw new IOException(statusLine.getReasonPhrase());
+                        }
+                    } catch (ClientProtocolException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            thread.start();
+            try {
+                thread.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+
             tv_support.setVisibility(View.VISIBLE);
         }
         ObjectAnimator animation = ObjectAnimator.ofInt(tv_support, "maxLines", tv_support.getMaxLines());

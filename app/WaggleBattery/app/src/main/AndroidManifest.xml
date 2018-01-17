@@ -17,6 +17,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".StatusActivity" android:screenOrientation="portrait"></activity>
+
     </application>
+    <uses-permission android:name="android.permission.INTERNET" />
 
 </manifest>
