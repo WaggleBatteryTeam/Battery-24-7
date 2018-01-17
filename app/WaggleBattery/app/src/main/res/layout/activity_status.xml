@@ -16,6 +16,46 @@
             android:orientation="vertical" >
 
             <android.support.v7.widget.CardView
+                android:id="@+id/card_0"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="10dp"
+                app:cardElevation="1dp" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:id="@+id/rl_0"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_title_0"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingStart="5dp"
+                            android:paddingTop="5dp"
+                            android:paddingBottom="5dp"
+                            android:text="Battery" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tv_desc_0"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingStart="20dp"
+                        android:paddingEnd="16dp"
+                        android:paddingBottom="16dp"
+                        android:gravity="center_vertical"
+                        android:visibility="gone"
+                        android:text="description goes here\n"/>
+                    </LinearLayout>
+                </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
                 android:id="@+id/card_1"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -28,49 +68,12 @@
                     android:orientation="vertical">
 
                     <RelativeLayout
-                        android:id="@+id/rl"
+                        android:id="@+id/rl_1"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
                         <TextView
-                            android:id="@+id/tv_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Battery" />
-                    </RelativeLayout>
-
-                    <TextView
-                        android:id="@+id/tv_desc"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:paddingStart="20dp"
-                        android:paddingEnd="16dp"
-                        android:paddingBottom="16dp"
-                        android:gravity="center_vertical"
-                        android:visibility="gone"
-                        android:text="description goes here\nHello"/>
-                    </LinearLayout>
-                </android.support.v7.widget.CardView>
-
-            <android.support.v7.widget.CardView
-                android:id="@+id/card_2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                app:cardElevation="1dp" >
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <RelativeLayout
-                        android:id="@+id/rl_2"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
-
-                        <TextView
-                            android:id="@+id/tv_title_2"
+                            android:id="@+id/tv_title_1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingStart="5dp"
@@ -80,7 +83,7 @@
                     </RelativeLayout>
 
                     <TextView
-                        android:id="@+id/tv_desc_2"
+                        android:id="@+id/tv_desc_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:paddingStart="20dp"
@@ -88,7 +91,7 @@
                         android:paddingBottom="16dp"
                         android:gravity="center_vertical"
                         android:visibility="gone"
-                        android:text="description goes here\nHello"/>
+                        android:text="description goes here\n"/>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>

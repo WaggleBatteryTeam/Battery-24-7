@@ -4,9 +4,8 @@ import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
-import android.transition.TransitionManager;
+import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,11 +16,17 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Created by parksanguk on 1/16/18.
@@ -29,107 +34,108 @@ import static android.provider.ContactsContract.CommonDataKinds.Website.URL;
 
 public class StatusActivity extends AppCompatActivity {
     //TODO: isExpanded must exist as same number as cardviews
-    Boolean isExpanded = false;
+    int numCard = 2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_status);
-        final CardView cardView = (CardView) findViewById(R.id.card_1);
-        cardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TransitionManager.beginDelayedTransition(cardView);
-                cardExpandCollapse(R.id.tv_desc);
-            }
-        });
-        final CardView cardView2=(CardView) findViewById(R.id.card_2);
-        cardView2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                cardExpandCollapse(R.id.tv_desc_2);
-            }
-        });
 
-        //cardView.setVisibility(View.GONE);
-    }
+        for(int i=0;i<numCard;i++){
 
-    private void cardExpandCollapse(int id) {
-        final TextView tv_support=(TextView) findViewById(id);
-        if (isExpanded) {
-            //ibt_show_more.animate().rotation(0).start();
-            Toast.makeText(getApplicationContext(),"Collapsing",Toast.LENGTH_SHORT).show();
-            isExpanded = false;
-            tv_support.setVisibility(View.GONE);
-        }
-        else {
-            //ibt_show_more.animate().rotation(180).start();
-            Toast.makeText(getApplicationContext(),"Expanding",Toast.LENGTH_SHORT).show();
-            isExpanded = true;
-
-            //Http Req
-            Thread thread = new Thread(new Runnable(){
-                @Override
-                public void run(){
-                    //code to do the HTTP request
-                    try {
-                        HttpClient httpclient = new DefaultHttpClient();
-                        HttpResponse response = httpclient.execute(new HttpGet("http://192.168.2.52/test.php?id=1"));
-                        StatusLine statusLine = response.getStatusLine();
-                        if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                            ByteArrayOutputStream out = new ByteArrayOutputStream();
-                            response.getEntity().writeTo(out);
-                            String responseString = out.toString();
-                            out.close();
-                            //..more logic
-                            tv_support.setText(responseString);
-
-                        } else {
-                            //Closes the connection.
-                            response.getEntity().getContent().close();
-                            throw new IOException(statusLine.getReasonPhrase());
-                        }
-                    } catch (ClientProtocolException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-            thread.start();
             try {
-                thread.join();
-            } catch (InterruptedException e) {
+                final int cardViewId=R.id.class.getField("card_"+i).getInt(0);
+                final int tvDescId=R.id.class.getField("tv_desc_"+i).getInt(0);
+                final CardView cardView = (CardView) findViewById(cardViewId);
+                cardView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        cardExpandCollapse(tvDescId,"temp_in");
+                    }
+                });
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             }
 
+        }
+    }
 
+    private void cardExpandCollapse(int id,String colname) {
+        final TextView tv_support=(TextView) findViewById(id);
+        if (tv_support.getVisibility()==View.VISIBLE) {
+            //ibt_show_more.animate().rotation(0).start();
+            Toast.makeText(getApplicationContext(),"Collapsing",Toast.LENGTH_SHORT).show();
+            tv_support.setVisibility(View.GONE);
+        }
+        else {
+            String res = "Load failed";
+            //ibt_show_more.animate().rotation(180).start();
+            Toast.makeText(getApplicationContext(),"Expanding",Toast.LENGTH_SHORT).show();
+
+            try {
+                res = httpReq(1,colname);
+
+                //TODO: JSON PARSING!!! NOT WORKING BELOW NOW
+                JSONObject jsonObject = new JSONObject(res);
+                Log.d("JSON",res);
+                JSONArray jsonArray = jsonObject.getJSONArray("");
+                for(int i=0;i<jsonArray.length();i++){
+                    Log.d("JSON","HERE");
+                    JSONObject test = jsonArray.getJSONObject(i);
+                    int temp=test.getInt("temp_in");
+                    Log.d("JSON", Integer.toString(temp));
+                }
+
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            //Parsing JSON Object
+
+            tv_support.setText(res);
             tv_support.setVisibility(View.VISIBLE);
         }
         ObjectAnimator animation = ObjectAnimator.ofInt(tv_support, "maxLines", tv_support.getMaxLines());
         animation.setDuration(200).start();
     }
+
+    private String httpReq(final int id, final String colname) throws ExecutionException, InterruptedException {
+        //Http Req
+        final String target_url="http://192.168.2.52/test.php?id=" + Integer.toString(id) + "&col=" + colname;
+
+
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        Callable<String> callable = new Callable<String>() {
+            @Override
+            public String call() throws IOException {
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpResponse response = httpclient.execute(new HttpGet(target_url));
+                StatusLine statusLine = response.getStatusLine();
+                if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
+                    ByteArrayOutputStream out = new ByteArrayOutputStream();
+                    response.getEntity().writeTo(out);
+                    String responseString = out.toString();
+                    out.close();
+                    //..more logic
+                    return responseString;
+
+                } else {
+                    //Closes the connection.
+                    response.getEntity().getContent().close();
+                    throw new IOException(statusLine.getReasonPhrase());
+                }
+            }
+        };
+
+        Future<String> future = executor.submit(callable);
+        String res = future.get();
+        return res;
+    }
 }
 
-/*
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_status, container, false);
-        final CardView cardView = (CardView) view.findViewById(R.id.card_1);
-        //final TextView list = (TextView) view.findViewById(R.id.item_description);
-        //list.setVisibility(View.GONE);
-
-        //cardView.setVisibility(View.GONE);
-        cardView.setOnClickListener(new View.OnClickListener(){
-            public void onClick(View v){
-                Toast.makeText(getContext(),"Hello",Toast.LENGTH_LONG).show();
-                //TransitionManager.beginDelayedTransition(cardView);
-                //list.setVisibility(View.VISIBLE);
-                //ObjectAnimator animation = ObjectAnimator.ofInt(mItemDescription, "maxLines", mItemDescription.getMaxLines());
-                //animation.setDuration(200).start();
-            }
-        });
-
-        return view;
-    }
-}*/
