@@ -3,6 +3,7 @@ package waggle.wagglebattery;
 import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -67,6 +68,8 @@ public class WaggleListLayout  extends Fragment{
 
                 //  클릭했을때 이벤트 정의
                 // TODO : use item data.
+                Intent intentMain = new Intent(v.getContext(), StatusActivity.class);
+                startActivity(intentMain);
             }
         });
 
