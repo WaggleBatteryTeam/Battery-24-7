@@ -20,4 +20,7 @@
         </activity>
     </application>
 
+    <!--add network permission-->
+    <uses-permission android:name="android.permission.INTERNET"/>
+
 </manifest>

@@ -2,9 +2,6 @@ package waggle.wagglebattery;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -88,7 +85,9 @@ public class MainActivity extends AppCompatActivity
             manager.beginTransaction().replace(R.id.content_main, new WaggleListLayout()).commit();
         } else if (id == R.id.nav_wagglemap_layout) {
             manager.beginTransaction().replace(R.id.content_main, new WaggleMapLayout()).commit();
-        } /*else if (id == R.id.nav_slideshow) {
+        }
+        // TODO : 네이비게이션 바에 메뉴를 더 추가하고 싶을 경우 여기에 추가
+        /*else if (id == R.id.nav_slideshow) {
 
         } else if (id == R.id.nav_manage) {
 
