@@ -61,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(String result) {
             //super.onPostExecute(result);
             try{
+                Log.i("kss", "result : "+result);
                 JSONObject jsonObject = new JSONObject(result);
                 JSONArray jsonArray = jsonObject.getJSONArray("response");
 
@@ -71,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("aaa", "while sentence");
                     JSONObject object = jsonArray.getJSONObject(count);
                     waggleName = object.getString("name");
-                    waggleTime = object.getString("tine");
+                    waggleTime = object.getString("time");
                     waggleBattety = object.getDouble("battery");
                     waggleEnv_w = object.getDouble("env_w");
                     waggleEnv_s = object.getDouble("env_s");

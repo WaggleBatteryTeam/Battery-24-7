@@ -25,12 +25,10 @@ public class RequestHttpURLConnection {
         HttpURLConnection httpURLConnection = null;
         // URL 뒤에 붙여서 보낼 파라미터.
         StringBuffer sbParams = new StringBuffer();
-/*
 
-        */
 /**
-         * 1. StringBuffer에 파라미터 연결
-         * *//*
+ * 1. StringBuffer에 파라미터 연결
+ * */
 
         // 보낼 데이터가 없으면 파라미터를 비운다.
         if (_params == null)
@@ -59,7 +57,6 @@ public class RequestHttpURLConnection {
                         isAnd = true;
             }
         }
-*/
 
         /**
          * 2. HttpURLConnection을 통해 web의 데이터를 가져온다.
@@ -72,7 +69,6 @@ public class RequestHttpURLConnection {
             httpURLConnection.setRequestMethod("POST"); // URL 요청에 대한 메소드 설정 : POST.
             httpURLConnection.setRequestProperty("Accept-Charset", "UTF-8"); // Accept-Charset 설정.
             httpURLConnection.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;cahrset=UTF-8");
-            Log.i("kss", "111");
 
             // [2-2]. parameter 전달 및 데이터 읽어오기.
             String strParams = sbParams.toString(); //sbParams에 정리한 파라미터들을 스트링으로 저장. 예)id=id1&pw=123;
@@ -85,25 +81,23 @@ public class RequestHttpURLConnection {
             // 실패 시 null을 리턴하고 메서드를 종료.
             if (httpURLConnection.getResponseCode() != HttpURLConnection.HTTP_OK)
                 return null;
-            Log.i("kss", "222");
             // [2-4]. 읽어온 결과물 리턴.
             // 요청한 URL의 출력물을 BufferedReader로 받는다.
-            BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream(),"UTF-8"));
-            Log.i("kss", "333");
+            InputStream inputStream = httpURLConnection.getInputStream();
+            BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));
             // 출력물의 라인에 대한 변수.
             String line;
-            String page = "";
-            Log.i("kss", "444");
+            StringBuilder stringBuilder = new StringBuilder();
+            //String page = "";
             // 라인을 받아와 합친다.
             while ((line = bufferedreader.readLine()) != null){
-                page += line;
+                stringBuilder.append(line);
             }
-            Log.i("kss", "555");
             // 버퍼 읽기 종료 후 해제
             bufferedreader.close();
             inputStream.close();
 
-            return page;
+            return stringBuilder.toString().trim();
 
         } catch (MalformedURLException e) { // for URL.
             Log.i("kss", "url error");
