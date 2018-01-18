@@ -12,7 +12,6 @@ import android.widget.Toast;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.StatusLine;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -34,7 +33,8 @@ import java.util.concurrent.Future;
 
 public class StatusActivity extends AppCompatActivity {
     //TODO: isExpanded must exist as same number as cardviews
-    int numCard = 2;
+    private int numCard = 5;
+    private String[] colName = {"battery","temp_in","hum_in","env_w","env_s"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +47,12 @@ public class StatusActivity extends AppCompatActivity {
             try {
                 final int cardViewId=R.id.class.getField("card_"+i).getInt(0);
                 final int tvDescId=R.id.class.getField("tv_desc_"+i).getInt(0);
+                final String colFind=colName[i];
                 final CardView cardView = (CardView) findViewById(cardViewId);
                 cardView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        cardExpandCollapse(tvDescId,"temp_in");
+                        cardExpandCollapse(tvDescId,colFind);
                     }
                 });
             } catch (IllegalAccessException e) {
@@ -64,45 +65,24 @@ public class StatusActivity extends AppCompatActivity {
     }
 
     private void cardExpandCollapse(int id,String colname) {
-        final TextView tv_support=(TextView) findViewById(id);
-        if (tv_support.getVisibility()==View.VISIBLE) {
+        final TextView tv_desc=(TextView) findViewById(id);
+        if (tv_desc.getVisibility()==View.VISIBLE) {
             //ibt_show_more.animate().rotation(0).start();
             Toast.makeText(getApplicationContext(),"Collapsing",Toast.LENGTH_SHORT).show();
-            tv_support.setVisibility(View.GONE);
+            tv_desc.setVisibility(View.GONE);
         }
         else {
-            String res = "Load failed";
             //ibt_show_more.animate().rotation(180).start();
             Toast.makeText(getApplicationContext(),"Expanding",Toast.LENGTH_SHORT).show();
 
-            try {
-                res = httpReq(1,colname);
+            //Get Data
+            final String str_desc=jsonParseColname(colname);
 
-                //TODO: JSON PARSING!!! NOT WORKING BELOW NOW
-                JSONObject jsonObject = new JSONObject(res);
-                Log.d("JSON",res);
-                JSONArray jsonArray = jsonObject.getJSONArray("");
-                for(int i=0;i<jsonArray.length();i++){
-                    Log.d("JSON","HERE");
-                    JSONObject test = jsonArray.getJSONObject(i);
-                    int temp=test.getInt("temp_in");
-                    Log.d("JSON", Integer.toString(temp));
-                }
-
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            //Parsing JSON Object
-
-            tv_support.setText(res);
-            tv_support.setVisibility(View.VISIBLE);
+            tv_desc.setText(str_desc);
+            tv_desc.setVisibility(View.VISIBLE);
         }
-        ObjectAnimator animation = ObjectAnimator.ofInt(tv_support, "maxLines", tv_support.getMaxLines());
-        animation.setDuration(200).start();
+        //ObjectAnimator animation = ObjectAnimator.ofInt(tv_desc, "maxLines", tv_desc.getMaxLines());
+        //animation.setDuration(200).start();
     }
 
     private String httpReq(final int id, final String colname) throws ExecutionException, InterruptedException {
@@ -135,6 +115,41 @@ public class StatusActivity extends AppCompatActivity {
 
         Future<String> future = executor.submit(callable);
         String res = future.get();
+        return res;
+    }
+
+    private String jsonParseColname(final String colname){
+        String res = "Load failed";
+
+        try {
+            res = httpReq(1,colname);
+
+            //JSON parsing
+            JSONObject jsonObject = new JSONObject(res);
+            Log.d("JSON",res);
+            JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+            String[] resArr = new String[jsonArray.length()];
+            for(int i=0;i<jsonArray.length();i++){
+                Log.d("JSON","HERE");
+                JSONObject test = jsonArray.getJSONObject(i);
+                resArr[i]=test.getString(colname);
+                //int temp=test.getInt("temp_in");
+                Log.d("JSON", resArr[i]);
+            }
+
+            //TODO: which data you want?
+            res=resArr[0];
+
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return res;
     }
 }
