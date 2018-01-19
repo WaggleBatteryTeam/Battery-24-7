@@ -38,7 +38,7 @@ public class WaggleListLayout  extends Fragment {
         waggleInfoList = new ArrayList<WaggleInfo>();
 
         // URL 설정.
-        url = "http://192.168.2.52:80/wagglelist.php";
+        url = "http://192.168.2.52/test.php";
 
         // 리스트뷰 참조
         ListView listview;
