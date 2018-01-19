@@ -1,6 +1,7 @@
 package waggle.wagglebattery;
 
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
@@ -39,8 +40,17 @@ public class StatusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_status);
+
+        // ############################ 승수 수정 ###########################################
+         /*TODO : waggleName값에 해당하는 열(튜플?)을 DB에서 불러와서 화면에 뿌려주는 작업
+         * WaggleListLayout.java에서 waggleList의 한 항목을 클릭했을때 해당 waggle에 해당하는 waggleName값이 매개변수로 넘어옴
+         * 따라서, 이에 해당하는 열을 DB에서 찾아와야함
+         */
+        Intent intent = getIntent();
+        String waggleName = intent.getExtras().getString("waggleName");
+        Log.i("kss", "Varialbe from former screen : "+waggleName);
+        // ##################################################################################
 
         for(int i=0;i<numCard;i++){
 
