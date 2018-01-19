@@ -32,6 +32,8 @@ public class WaggleListLayout  extends Fragment{
     private WaggleListTask waggleListTask;
     private WaggleListViewAdapter adapter;
     private String url;
+    private RequestData reqData = new RequestData();
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

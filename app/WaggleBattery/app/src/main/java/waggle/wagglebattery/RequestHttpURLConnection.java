@@ -97,6 +97,10 @@ public class RequestHttpURLConnection {
             bufferedreader.close();
             inputStream.close();
 
+            if (httpURLConnection != null)
+                Log.d("test","Connection close");
+            httpURLConnection.disconnect();
+
             return stringBuilder.toString().trim();
 
         } catch (MalformedURLException e) { // for URL.
@@ -108,9 +112,6 @@ public class RequestHttpURLConnection {
         } catch (Exception e) {
             Log.i("kss", "request error");
             e.printStackTrace();
-        } finally {
-            if (httpURLConnection != null)
-                httpURLConnection.disconnect();
         }
         return null;
 

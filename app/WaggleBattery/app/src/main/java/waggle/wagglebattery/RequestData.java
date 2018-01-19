@@ -3,18 +3,11 @@ package waggle.wagglebattery;
 import android.content.ContentValues;
 import android.util.Log;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -36,8 +29,15 @@ import java.util.concurrent.Future;
 
 public class RequestData {
 
-    private String httpReq(final String _url, final ContentValues _params /*final int id, final String colname*/) throws ExecutionException, InterruptedException {
-        //Http Req
+    /*
+        Name: httpReq
+        Params
+            String _url:    Target url to access, it is using by http request.
+            ContentValues:  Content that is using POST request.
+        Returns: The results of HTTP Request or NULL if there is ERROR.
+     */
+    private String httpReq(final String _url, final ContentValues _params)
+            throws ExecutionException, InterruptedException {
 
         ExecutorService executor = Executors.newSingleThreadExecutor();
         Callable<String> callable = new Callable<String>() {
@@ -85,7 +85,7 @@ public class RequestData {
                 try{
                     URL url = new URL(_url);
                     httpURLConnection = (HttpURLConnection) url.openConnection();
-                    Log.i("kss", "connection complete");
+                    Log.i("HTTPCONNECTION", "connection complete");
                     // [2-1]. httpURLConnection 설정.
                     httpURLConnection.setRequestMethod("POST"); // URL 요청에 대한 메소드 설정 : POST.
                     httpURLConnection.setRequestProperty("Accept-Charset", "UTF-8"); // Accept-Charset 설정.
@@ -94,7 +94,6 @@ public class RequestData {
                     // [2-2]. parameter 전달 및 데이터 읽어오기.
                     String strParams = sbParams.toString(); //sbParams에 정리한 파라미터들을 스트링으로 저장. 예)id=id1&pw=123;
                     OutputStream os = httpURLConnection.getOutputStream();
-                    Log.d("test",strParams);
                     os.write(strParams.getBytes("UTF-8")); // 출력 스트림에 출력.
                     os.flush(); // 출력 스트림을 플러시(비운다)하고 버퍼링 된 모든 출력 바이트를 강제 실행.
                     os.close(); // 출력 스트림을 닫고 모든 시스템 자원을 해제.
@@ -122,13 +121,13 @@ public class RequestData {
                     return stringBuilder.toString().trim();
 
                 } catch (MalformedURLException e) { // for URL.
-                    Log.i("kss", "url error");
+                    Log.i("HTTPCONNECTION", "url error");
                     e.printStackTrace();
                 } catch (IOException e) { // for openConnection().
-                    Log.i("kss", "io error");
+                    Log.i("HTTPCONNECTION", "io error");
                     e.printStackTrace();
                 } catch (Exception e) {
-                    Log.i("kss", "request error");
+                    Log.i("HTTPCONNECTION", "request error");
                     e.printStackTrace();
                 } finally {
                     if (httpURLConnection != null)
@@ -145,11 +144,22 @@ public class RequestData {
         return res;
     }
 
-    public String jsonAsString(final String _url, final ContentValues _params){
+    /*
+           Name: jsonAsStringForLatestData
+           Params
+               String _url:    Target url to access, it is using by http request.
+               ContentValues:  Content that is using POST request.
+           Returns: The Latest Data from Server or NULL if there is ERROR.
+    */
+    public String jsonAsStringForLatestData(final String _url, final ContentValues _params){
         String res = "Load failed";
 
         try {
-            res = httpReq(_url, _params);
+            if((res = httpReq(_url, _params)) == null){
+                //http Error
+                Log.d("http","error");
+                return res;
+            }
 
             //JSON parsing
             JSONObject jsonObject = new JSONObject(res);
@@ -177,6 +187,11 @@ public class RequestData {
             e.printStackTrace();
         }
 
+        return res;
+    }
+
+    public ContentValues jsonAsContentValues(final String _url, final ContentValues _params){
+        ContentValues res = new ContentValues();
         return res;
     }
 }

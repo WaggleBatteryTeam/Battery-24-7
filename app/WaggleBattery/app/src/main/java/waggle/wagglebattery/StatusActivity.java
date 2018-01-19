@@ -96,7 +96,7 @@ public class StatusActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(),"Expanding",Toast.LENGTH_SHORT).show();
 
             //Get Data
-            final String str_desc=reqData.jsonAsString(_target_url,contentValues);
+            final String str_desc=reqData.jsonAsStringForLatestData(_target_url,contentValues);
 
             tv_desc.setText(str_desc);
             tv_desc.setVisibility(View.VISIBLE);
