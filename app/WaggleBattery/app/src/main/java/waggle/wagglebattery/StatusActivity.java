@@ -1,6 +1,7 @@
 package waggle.wagglebattery;
 
 import android.animation.ObjectAnimator;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -36,11 +37,16 @@ public class StatusActivity extends AppCompatActivity {
     //TODO: isExpanded must exist as same number as cardviews
     private int numCard = 5;
     private String[] colName = {"battery","temp_in","hum_in","env_w","env_s"};
+    private RequestData reqData = new RequestData();
+
+    final String _target_url="http://192.168.2.52/test.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
+
+
 
         // ############################ 승수 수정 ###########################################
          /*TODO : waggleName값에 해당하는 열(튜플?)을 DB에서 불러와서 화면에 뿌려주는 작업
@@ -82,85 +88,21 @@ public class StatusActivity extends AppCompatActivity {
             tv_desc.setVisibility(View.GONE);
         }
         else {
+            ContentValues contentValues=new ContentValues();
+            contentValues.put("id","1");
+            contentValues.put("col",colname);
+
             //ibt_show_more.animate().rotation(180).start();
             Toast.makeText(getApplicationContext(),"Expanding",Toast.LENGTH_SHORT).show();
 
             //Get Data
-            final String str_desc=jsonParseColname(colname);
+            final String str_desc=reqData.jsonAsString(_target_url,contentValues);
 
             tv_desc.setText(str_desc);
             tv_desc.setVisibility(View.VISIBLE);
         }
         //ObjectAnimator animation = ObjectAnimator.ofInt(tv_desc, "maxLines", tv_desc.getMaxLines());
         //animation.setDuration(200).start();
-    }
-
-    private String httpReq(final int id, final String colname) throws ExecutionException, InterruptedException {
-        //Http Req
-        final String target_url="http://192.168.2.52/test.php?id=" + Integer.toString(id) + "&col=" + colname;
-
-
-        ExecutorService executor = Executors.newSingleThreadExecutor();
-        Callable<String> callable = new Callable<String>() {
-            @Override
-            public String call() throws IOException {
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpResponse response = httpclient.execute(new HttpGet(target_url));
-                StatusLine statusLine = response.getStatusLine();
-                if (statusLine.getStatusCode() == HttpStatus.SC_OK) {
-                    ByteArrayOutputStream out = new ByteArrayOutputStream();
-                    response.getEntity().writeTo(out);
-                    String responseString = out.toString();
-                    out.close();
-                    //..more logic
-                    return responseString;
-
-                } else {
-                    //Closes the connection.
-                    response.getEntity().getContent().close();
-                    throw new IOException(statusLine.getReasonPhrase());
-                }
-            }
-        };
-
-        Future<String> future = executor.submit(callable);
-        String res = future.get();
-        return res;
-    }
-
-    private String jsonParseColname(final String colname){
-        String res = "Load failed";
-
-        try {
-            res = httpReq(1,colname);
-
-            //JSON parsing
-            JSONObject jsonObject = new JSONObject(res);
-            Log.d("JSON",res);
-            JSONArray jsonArray = jsonObject.getJSONArray("response");
-
-            String[] resArr = new String[jsonArray.length()];
-            for(int i=0;i<jsonArray.length();i++){
-                Log.d("JSON","HERE");
-                JSONObject test = jsonArray.getJSONObject(i);
-                resArr[i]=test.getString(colname);
-                //int temp=test.getInt("temp_in");
-                Log.d("JSON", resArr[i]);
-            }
-
-            //TODO: which data you want?
-            res=resArr[0];
-
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-        return res;
     }
 }
 
