@@ -41,7 +41,7 @@ public class WaggleListLayout  extends Fragment{
         waggleInfoList = new ArrayList<WaggleInfo>();
 
         // URL 설정.
-        url = "http://192.168.2.52:80/wagglelist.php";
+        url = "http://192.168.2.52:80/test.php";
 
         // AsyncTask를 통해 HttpURLConnection 수행.
         waggleListTask = new WaggleListTask(url, null);
