@@ -25,7 +25,7 @@ public class WaggleListLayout  extends Fragment {
     View v;
     private ArrayList<WaggleInfo> waggleInfoList;
     private WaggleListViewAdapter adapter;
-    private String url;
+    private String _target_url;
     private RequestData reqData = new RequestData();
 
     @Nullable
@@ -38,7 +38,7 @@ public class WaggleListLayout  extends Fragment {
         waggleInfoList = new ArrayList<WaggleInfo>();
 
         // URL 설정.
-        url = "http://192.168.2.52/test.php";
+        _target_url=getString(R.string.target_addr);
 
         // 리스트뷰 참조
         ListView listview;
@@ -92,7 +92,7 @@ public class WaggleListLayout  extends Fragment {
     private void addNewWaggleInfo() {
         ContentValues[] resHttpReq;
 
-        resHttpReq = reqData.jsonAsContentValues(url, null);
+        resHttpReq = reqData.jsonAsContentValues(_target_url, null);
 
         String waggleName, waggleTime;
         double waggleBattety, waggleEnv_w, waggleEnv_s, waggleTemp_in, waggleHum_in;

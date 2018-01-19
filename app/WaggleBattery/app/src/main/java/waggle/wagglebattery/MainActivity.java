@@ -11,9 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
     private BackPressCloseHandler backPressCloseHandler;
-    private final String _server_url="http://192.168.2.52/test.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

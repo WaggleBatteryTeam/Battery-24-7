@@ -1,6 +1,5 @@
 package waggle.wagglebattery;
 
-import android.animation.ObjectAnimator;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,24 +9,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.StatusLine;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.json.JSONArray;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 
 /**
  * Created by parksanguk on 1/16/18.
@@ -39,14 +20,16 @@ public class StatusActivity extends AppCompatActivity {
     private String[] colName = {"battery","temp_in","hum_in","env_w","env_s"};
     private RequestData reqData = new RequestData();
 
-    final String _target_url="http://192.168.2.52/test.php";
+    private int waggle_id = 0 ;
+
+    private String _target_url;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
 
-
+        _target_url = getString(R.string.target_addr);
 
         // ############################ 승수 수정 ###########################################
          /*TODO : waggleName값에 해당하는 열(튜플?)을 DB에서 불러와서 화면에 뿌려주는 작업
@@ -54,8 +37,8 @@ public class StatusActivity extends AppCompatActivity {
          * 따라서, 이에 해당하는 열을 DB에서 찾아와야함
          */
         Intent intent = getIntent();
-        String waggleName = intent.getExtras().getString("waggleName");
-        Log.i("kss", "Varialbe from former screen : "+waggleName);
+        waggle_id = intent.getExtras().getInt("waggleName");
+        Log.i("kss", "Varialbe from former screen : "+Integer.toString(waggle_id));
         // ##################################################################################
 
         for(int i=0;i<numCard;i++){
@@ -80,7 +63,17 @@ public class StatusActivity extends AppCompatActivity {
         }
     }
 
-    private void cardExpandCollapse(int id,String colname) {
+    /*
+     *  Name: cardExpandCollapse
+     *  Params
+     *      int id:    Target url to access, it is using by http request.
+     *      String colname:  Content that is using POST request.
+     *  Returns: Void
+     *  Make the card to enable expanding and collapsing.
+     */
+    private void cardExpandCollapse(int id,String colName) {
+
+        // TextView that is possible to Expand and Collapse by clicking
         final TextView tv_desc=(TextView) findViewById(id);
         if (tv_desc.getVisibility()==View.VISIBLE) {
             //ibt_show_more.animate().rotation(0).start();
@@ -90,7 +83,7 @@ public class StatusActivity extends AppCompatActivity {
         else {
             ContentValues contentValues=new ContentValues();
             contentValues.put("id","1");
-            contentValues.put("col",colname);
+            contentValues.put("col",colName);
 
             //ibt_show_more.animate().rotation(180).start();
             Toast.makeText(getApplicationContext(),"Expanding",Toast.LENGTH_SHORT).show();

@@ -30,11 +30,11 @@ import java.util.concurrent.Future;
 public class RequestData {
 
     /*
-        Name: httpReq
-        Params
-            String _url:    Target url to access, it is using by http request.
-            ContentValues:  Content that is using POST request.
-        Returns: The results of HTTP Request or NULL if there is ERROR.
+     *  Name: httpReq
+     *  Params
+     *      String _url:    Target url to access, it is using by http request.
+     *      ContentValues:  Content that is using POST request.
+     *  Returns: The results of HTTP Request or NULL if there is ERROR.
      */
     private String httpReq(final String _url, final ContentValues _params)
             throws ExecutionException, InterruptedException {
@@ -90,7 +90,7 @@ public class RequestData {
                     httpURLConnection.setRequestMethod("POST"); // URL 요청에 대한 메소드 설정 : POST.
                     httpURLConnection.setRequestProperty("Accept-Charset", "UTF-8"); // Accept-Charset 설정.
                     httpURLConnection.setRequestProperty("Context_Type",
-                            "application/x-www-form-urlencoded;cahrset=UTF-8");
+                            "application/x-www-form-urlencoded;charset=UTF-8");
 
                     // [2-2]. parameter 전달 및 데이터 읽어오기.
                     String strParams = sbParams.toString(); //sbParams에 정리한 파라미터들을 스트링으로 저장. 예)id=id1&pw=123;
