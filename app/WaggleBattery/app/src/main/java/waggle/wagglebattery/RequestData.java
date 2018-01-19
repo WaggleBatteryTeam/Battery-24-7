@@ -89,7 +89,8 @@ public class RequestData {
                     // [2-1]. httpURLConnection 설정.
                     httpURLConnection.setRequestMethod("POST"); // URL 요청에 대한 메소드 설정 : POST.
                     httpURLConnection.setRequestProperty("Accept-Charset", "UTF-8"); // Accept-Charset 설정.
-                    httpURLConnection.setRequestProperty("Context_Type", "application/x-www-form-urlencoded;cahrset=UTF-8");
+                    httpURLConnection.setRequestProperty("Context_Type",
+                            "application/x-www-form-urlencoded;cahrset=UTF-8");
 
                     // [2-2]. parameter 전달 및 데이터 읽어오기.
                     String strParams = sbParams.toString(); //sbParams에 정리한 파라미터들을 스트링으로 저장. 예)id=id1&pw=123;
@@ -105,7 +106,8 @@ public class RequestData {
                     // [2-4]. 읽어온 결과물 리턴.
                     // 요청한 URL의 출력물을 BufferedReader로 받는다.
                     InputStream inputStream = httpURLConnection.getInputStream();
-                    BufferedReader bufferedreader = new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));
+                    BufferedReader bufferedreader = new BufferedReader(
+                            new InputStreamReader(inputStream,"UTF-8"));
                     // 출력물의 라인에 대한 변수.
                     String line;
                     StringBuilder stringBuilder = new StringBuilder();
@@ -155,22 +157,23 @@ public class RequestData {
         String res = "Load failed";
 
         try {
-            if((res = httpReq(_url, _params)) == null){
+            String httpResult;
+            if((httpResult = httpReq(_url, _params)) == null){
                 //http Error
                 Log.d("http","error");
                 return res;
             }
 
             //JSON parsing
-            JSONObject jsonObject = new JSONObject(res);
-            Log.d("JSON",res);
+            JSONObject jsonObject = new JSONObject(httpResult);
+            Log.d("JSON",httpResult);
             JSONArray jsonArray = jsonObject.getJSONArray("response");
 
             String[] resArr = new String[jsonArray.length()];
             for(int i=0;i<jsonArray.length();i++){
                 Log.d("JSON","HERE");
-                JSONObject test = jsonArray.getJSONObject(i);
-                resArr[i]=test.getString(_params.getAsString("col"));
+                JSONObject obj = jsonArray.getJSONObject(i);
+                resArr[i]=obj.getString(_params.getAsString("col"));
                 //int temp=test.getInt("temp_in");
                 Log.d("JSON", resArr[i]);
             }
@@ -190,8 +193,47 @@ public class RequestData {
         return res;
     }
 
-    public ContentValues jsonAsContentValues(final String _url, final ContentValues _params){
-        ContentValues res = new ContentValues();
+    public ContentValues[] jsonAsContentValues(final String _url, final ContentValues _params){
+        ContentValues[] res = null;
+
+        try {
+            String httpResult;
+            if((httpResult = httpReq(_url, _params)) == null){
+                //http Error
+                Log.d("http","error");
+                return res;
+            }
+
+            //JSON parsing
+            JSONObject jsonObject = new JSONObject(httpResult);
+            Log.d("JSON",httpResult);
+            JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+            res = new ContentValues[jsonArray.length()];
+            for(int i=0;i<jsonArray.length();i++) {
+                ContentValues objContent = new ContentValues();
+                JSONObject obj = jsonArray.getJSONObject(i);
+                objContent.put("name", obj.getString("name"));
+                objContent.put("time", obj.getString("time"));
+                objContent.put("battery", obj.getDouble("battery"));
+                objContent.put("env_w", obj.getDouble("env_w"));
+                objContent.put("env_s", obj.getDouble("env_s"));
+                objContent.put("temp_in", obj.getDouble("temp_in"));
+                objContent.put("hum_in", obj.getDouble("hum_in"));
+
+                res[i]=objContent;
+            }
+
+            return res;
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return res;
     }
 }
