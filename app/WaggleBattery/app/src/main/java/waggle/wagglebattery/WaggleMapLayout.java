@@ -3,16 +3,10 @@ package waggle.wagglebattery;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.ContentValues;
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -93,23 +87,24 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback{
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_map_marker));
             googleMap.addMarker(markerOptions);
         }
-//        LatLng SEOUL = new LatLng(37.56, 126.97);
-//
-//        MarkerOptions markerOptions = new MarkerOptions();
-//        markerOptions.position(SEOUL);
-//        markerOptions.title("서울");
-//        markerOptions.snippet("한국의 수도");
-//        //markerOptions.icon(bitmapDescriptorFromVector(getActivity(), R.drawable.selector_marker));
-//        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_map_marker));
-//        googleMap.addMarker(markerOptions);
 
-//        googleMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
-        googleMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+        // 초기 화면 포커스 맞출 대상
+        if(waggleLocationInfoList.isEmpty())
+            Toast.makeText (getContext(), "There isn't any waggle", Toast.LENGTH_LONG).show();
+        else{
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(waggleLocationInfoList.get(0).getWaggleLat(), waggleLocationInfoList.get(0).getWaggleLon())));
+            googleMap.animateCamera(CameraUpdateFactory.zoomTo(10));
+        }
+
 
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                Log.i("kss", "clicked");
+                // marker.getId()를 했을때 MarkerOptions에 추가된 순서대로 ID가 매겨져 있음(인덱스 0부터)
+                String chosenWaggleId = marker.getId().replace("m", "");
+                Intent intentMain = new Intent(v.getContext(), StatusActivity.class);
+                intentMain.putExtra("waggleName", chosenWaggleId);  // 여기서 Waggle name이 primary key라고 간주했음
+                startActivity(intentMain);
                 return false;
             }
         });
@@ -166,7 +161,7 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback{
 //                fragmentTransaction.attach(fragment);
 //                fragmentTransaction.commit();
 
-                Toast.makeText (getContext(), "refresh", Toast.LENGTH_LONG).show();
+                Toast.makeText (getContext(), "Loaded", Toast.LENGTH_LONG).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }
