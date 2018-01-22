@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,8 +92,9 @@ public class WaggleListLayout  extends Fragment {
 
     private void addNewWaggleInfo() {
         ContentValues[] resHttpReq;
+        String[] _req={"WaggleInfo","name","time","battery","env_w","env_s","temp_in","hum_in"};
 
-        resHttpReq = reqData.jsonAsContentValues(_target_url, null);
+        resHttpReq = reqData.jsonAsContentValues(_target_url, _req);
 
         String waggleName, waggleTime;
         double waggleBattety, waggleEnv_w, waggleEnv_s, waggleTemp_in, waggleHum_in;

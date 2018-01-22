@@ -132,6 +132,7 @@ public class RequestData {
                     Log.i("HTTPCONNECTION", "request error");
                     e.printStackTrace();
                 } finally {
+                    Log.i("HTTPCONNECTION", "success");
                     if (httpURLConnection != null)
                         httpURLConnection.disconnect();
                 }
@@ -193,8 +194,11 @@ public class RequestData {
         return res;
     }
 
-    public ContentValues[] jsonAsContentValues(final String _url, final ContentValues _params){
+    public ContentValues[] jsonAsContentValues(final String _url, final String[] _column){
         ContentValues[] res = null;
+        ContentValues _params = new ContentValues();
+        _params.put("req",_column[0]);
+
 
         try {
             String httpResult;
@@ -213,13 +217,18 @@ public class RequestData {
             for(int i=0;i<jsonArray.length();i++) {
                 ContentValues objContent = new ContentValues();
                 JSONObject obj = jsonArray.getJSONObject(i);
-                objContent.put("name", obj.getString("name"));
-                objContent.put("time", obj.getString("time"));
-                objContent.put("battery", obj.getDouble("battery"));
-                objContent.put("env_w", obj.getDouble("env_w"));
-                objContent.put("env_s", obj.getDouble("env_s"));
-                objContent.put("temp_in", obj.getDouble("temp_in"));
-                objContent.put("hum_in", obj.getDouble("hum_in"));
+                for(int j=1;j<_column.length;j++) {
+                    objContent.put(_column[j], obj.getString(_column[j]));
+
+                    /*objContent.put("name", obj.getString("name"));
+                    objContent.put("time", obj.getString("time"));
+                    objContent.put("battery", obj.getDouble("battery"));
+                    objContent.put("env_w", obj.getDouble("env_w"));
+                    objContent.put("env_s", obj.getDouble("env_s"));
+                    objContent.put("temp_in", obj.getDouble("temp_in"));
+                    objContent.put("hum_in", obj.getDouble("hum_in"));
+                    */
+                }
 
                 res[i]=objContent;
             }

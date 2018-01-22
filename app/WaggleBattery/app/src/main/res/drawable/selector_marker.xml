@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <item android:drawable="@drawable/blue_map_marker"></item>
+    </item>
+    <item android:state_pressed="false">
+        <item android:drawable="@drawable/red_map_marker"></item>
+    </item>
+</selector>
