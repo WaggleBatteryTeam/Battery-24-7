@@ -17,7 +17,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/waggleName"
+            android:id="@+id/waggleId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -27,7 +27,7 @@
             android:textSize="24dp" />
 
         <TextView
-            android:id="@+id/waggleTime"
+            android:id="@+id/waggleLat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -36,7 +36,7 @@
             android:textSize="16dp" />
 
         <TextView
-            android:id="@+id/wagglebattery"
+            android:id="@+id/waggleLon"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"

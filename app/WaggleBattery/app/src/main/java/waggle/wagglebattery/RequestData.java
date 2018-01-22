@@ -50,8 +50,6 @@ public class RequestData {
                 StringBuffer sbParams = new StringBuffer();
 
 
-                /* Make the parameter and save it to sbParams */
-
                 // If there is no data to send, keep sbParams be empty.
                 if(_params == null)
                     sbParams.append("");
@@ -193,12 +191,11 @@ public class RequestData {
 
         return res;
     }
-
+    // 받아온 JsonObject를 파싱하는 함수
     public ContentValues[] jsonAsContentValues(final String _url, final String[] _column){
         ContentValues[] res = null;
         ContentValues _params = new ContentValues();
-        _params.put("req",_column[0]);
-
+        _params.put("req",_column[0]);  // 어느 DB 테이블에서 데이터를 찾을지 php 코드상에서 사용될 변수
 
         try {
             String httpResult;
@@ -229,7 +226,7 @@ public class RequestData {
                     objContent.put("hum_in", obj.getDouble("hum_in"));
                     */
                 }
-
+                // TODO : objContent가 지역변수라 가비지 컬렉션에 의해 사라질 위험이 있지 않나?
                 res[i]=objContent;
             }
 

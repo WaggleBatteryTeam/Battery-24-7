@@ -52,7 +52,6 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
 
         // URL 설정.
         _target_url=getString(R.string.target_addr);
-        //_target_url = "http://192.168.2.52:80/wagglelocation.php";
 
         addNewWaggleLocation();
 
@@ -107,7 +106,7 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
                 // marker.getId()를 했을때 MarkerOptions에 추가된 순서대로 ID가 매겨져 있음(인덱스 0부터)
                 String chosenWaggleId = marker.getId().replace("m", "");
                 Intent intentMain = new Intent(v.getContext(), StatusActivity.class);
-                intentMain.putExtra("waggleName", chosenWaggleId);  // 여기서 Waggle name이 primary key라고 간주했음
+                intentMain.putExtra("waggleId", chosenWaggleId);  // 여기서 Waggle name이 primary key라고 간주했음
                 startActivity(intentMain);
                 return false;
             }

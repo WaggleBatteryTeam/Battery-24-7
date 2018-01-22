@@ -37,7 +37,7 @@ public class StatusActivity extends AppCompatActivity {
          * 따라서, 이에 해당하는 열을 DB에서 찾아와야함
          */
         Intent intent = getIntent();
-        waggle_id = intent.getExtras().getInt("waggleName");
+        waggle_id = intent.getExtras().getInt("waggleId");
         Log.i("kss", "Varialbe from former screen : "+Integer.toString(waggle_id));
         // ##################################################################################
 
