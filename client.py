@@ -18,7 +18,7 @@ GPIO.setup(3,GPIO.OUT)
 #conn = httplib.HTTPConnection("192.168.2.148")
 #response = conn.getresponse()
 #status = response.status
-#print status
+##print status
 #conn.request("HEAD","/")
 
 a=0.00
