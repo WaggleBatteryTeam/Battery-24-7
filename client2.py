@@ -25,10 +25,10 @@ GPIO.setup(3,GPIO.OUT) #DHT22
 #conn.request("HEAD","/")
 
 #All switch off before running
-#GPIO.output(18,False)
-GPIO.output(24,False)
-GPIO.output(25,False)
-#GPIO.output(27,False)
+#GPIO.output(18,True)
+GPIO.output(24,True)
+GPIO.output(25,True)
+#GPIO.output(27,True)
 
 SHUNT_OHMS=0.1
 MAX_EXPECTED_AMPS=0.2
@@ -57,23 +57,26 @@ def run():
             continue
 
         control_temperature(temperature)
-#       turn_on_fan(temperature)
+#        turn_on_fan(temperature)
         cur_temperature=temperature
+        time.sleep(2)
 
 def control_temperature(temp):
     print(temp)
     ##Fan_Control##
-    if temp > 24.5 :
-        GPIO.output(25,True)
-    elif temp <= 15.0 :
+    if temp > 30.0 :
         GPIO.output(25,False)
-        
+    elif temp <= 30.0 :
+        GPIO.output(25,True)
+        h,t = Adafruit_DHT.read_retry(sensor,20)
+
     ##Heater_Control##
-    if temp < 10.0 :
-        GPIO.output(24,True)
-    elif temp >= 15.5 :
+    if temp < 29.0 :
         GPIO.output(24,False)
-        
+    elif temp >= 29.5 :
+        GPIO.output(24,True)
+        h,t = Adafruit_DHT.read_retry(sensor,20)
+
 #def turn_on_fan(temp):
 #    print(temp)
 #    if temp > 30.0 :
