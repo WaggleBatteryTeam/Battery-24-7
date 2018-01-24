@@ -9,12 +9,12 @@ import android.graphics.drawable.Drawable;
 public class WaggleInfo {
     private String waggleName;
     private String waggleTime;
-    private double waggleBattety, waggleEnv_w, waggleEnv_s, waggleTemp_in, waggleHum_in;
+    private double waggleBattery, waggleEnv_w, waggleEnv_s, waggleTemp_in, waggleHum_in;
 
-    public WaggleInfo(String waggleName, String waggleTime, double waggleBattety, double waggleEnv_w, double waggleEnv_s, double waggleTemp_in, double waggleHum_in) {
+    public WaggleInfo(String waggleName, String waggleTime, double waggleBattery, double waggleEnv_w, double waggleEnv_s, double waggleTemp_in, double waggleHum_in) {
         this.waggleName = waggleName;
         this.waggleTime = waggleTime;
-        this.waggleBattety = waggleBattety;
+        this.waggleBattery = waggleBattery;
         this.waggleEnv_w = waggleEnv_w;
         this.waggleEnv_s = waggleEnv_s;
         this.waggleTemp_in = waggleTemp_in;
@@ -37,12 +37,12 @@ public class WaggleInfo {
         this.waggleTime = waggleTime;
     }
 
-    public double getWaggleBattety() {
-        return waggleBattety;
+    public double getWaggleBattery() {
+        return waggleBattery;
     }
 
-    public void setWaggleBattety(double waggleBattety) {
-        this.waggleBattety = waggleBattety;
+    public void setWaggleBattery(double waggleBattery) {
+        this.waggleBattery = waggleBattery;
     }
 
     public double getWaggleEnv_w() {

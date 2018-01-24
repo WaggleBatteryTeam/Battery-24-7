@@ -5,10 +5,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import waggle.waggle.wagglebattery.adapter.WaggleStatusAdapter;
 
 /**
  * Created by parksanguk on 1/16/18.
@@ -18,6 +24,7 @@ public class StatusActivity extends AppCompatActivity {
     //TODO: isExpanded must exist as same number as cardviews
     private int numCard = 5;
     private String[] colName = {"battery","temp_in","hum_in","env_w","env_s"};
+    String[] _req={"WaggleIdLatest",null,"battery","env_w","env_s","temp_in","hum_in"};
     private RequestData reqData = new RequestData();
 
     private int waggle_id = 0 ;
@@ -27,7 +34,7 @@ public class StatusActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_status);
+        setContentView(R.layout.activity_status_re);
 
         _target_url = getString(R.string.target_addr);
 
@@ -38,9 +45,28 @@ public class StatusActivity extends AppCompatActivity {
          */
         Intent intent = getIntent();
         waggle_id = intent.getExtras().getInt("waggleId");
-        Log.i("kss", "Varialbe from former screen : "+Integer.toString(waggle_id));
+        Log.i("kss", "Variable from former screen : "+Integer.toString(waggle_id));
+
+        //TODO: Change Value
+        _req[1] = Integer.toString(waggle_id);
+
+        ContentValues res = reqData.jsonAsContentValueForLatestData(_target_url,_req);
         // ##################################################################################
 
+
+        RecyclerView recyclerView= (RecyclerView) findViewById(R.id.rcview);
+        recyclerView.setHasFixedSize(true);
+
+        LinearLayoutManager lim = new LinearLayoutManager(this);
+        lim.setOrientation(LinearLayoutManager.VERTICAL);
+        recyclerView.setLayoutManager(lim);
+
+        RecyclerView.Adapter adapter = new WaggleStatusAdapter(res);
+        recyclerView.setAdapter(adapter);
+
+
+
+        /*
         for(int i=0;i<numCard;i++){
 
             try {
@@ -60,7 +86,7 @@ public class StatusActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-        }
+        }*/
     }
 
     /*
@@ -71,10 +97,10 @@ public class StatusActivity extends AppCompatActivity {
      *  Returns: Void
      *  Make the card to enable expanding and collapsing.
      */
-    private void cardExpandCollapse(int id,String colName) {
+    private void cardExpandCollapse(int tv_id,String colName) {
 
         // TextView that is possible to Expand and Collapse by clicking
-        final TextView tv_desc=(TextView) findViewById(id);
+        final TextView tv_desc=(TextView) findViewById(tv_id);
         if (tv_desc.getVisibility()==View.VISIBLE) {
             //ibt_show_more.animate().rotation(0).start();
             Toast.makeText(getApplicationContext(),"Collapsing",Toast.LENGTH_SHORT).show();
@@ -82,16 +108,16 @@ public class StatusActivity extends AppCompatActivity {
         }
         else {
             ContentValues contentValues=new ContentValues();
-            contentValues.put("id","1");
+            contentValues.put("id",waggle_id);
             contentValues.put("col",colName);
 
             //ibt_show_more.animate().rotation(180).start();
             Toast.makeText(getApplicationContext(),"Expanding",Toast.LENGTH_SHORT).show();
 
             //Get Data
-            final String str_desc=reqData.jsonAsStringForLatestData(_target_url,contentValues);
+            //final String str_desc=reqData.jsonAsStringForLatestData(_target_url,contentValues);
 
-            tv_desc.setText(str_desc);
+            //tv_desc.setText(str_desc);
             tv_desc.setVisibility(View.VISIBLE);
         }
         //ObjectAnimator animation = ObjectAnimator.ofInt(tv_desc, "maxLines", tv_desc.getMaxLines());

@@ -152,38 +152,38 @@ public class RequestData {
                ContentValues:  Content that is using POST request.
            Returns: The Latest Data from Server or NULL if there is ERROR.
     */
-    public String jsonAsStringForLatestData(final String _url, final ContentValues _params){
-        String res = "Load failed";
+    public ContentValues jsonAsContentValueForLatestData(final String _url, final String[] _column) {
+        ContentValues res = null;
+        ContentValues _params = new ContentValues();
+        _params.put("req",_column[0]);
+        _params.put("id",_column[1]);
 
         try {
             String httpResult;
-            if((httpResult = httpReq(_url, _params)) == null){
+            if ((httpResult = httpReq(_url, _params)) == null) {
                 //http Error
-                Log.d("http","error");
+                Log.d("http", "error");
                 return res;
             }
 
             //JSON parsing
-            JSONObject jsonObject = new JSONObject(httpResult);
-            Log.d("JSON",httpResult);
-            JSONArray jsonArray = jsonObject.getJSONArray("response");
 
-            String[] resArr = new String[jsonArray.length()];
-            for(int i=0;i<jsonArray.length();i++){
-                Log.d("JSON","HERE");
-                JSONObject obj = jsonArray.getJSONObject(i);
-                resArr[i]=obj.getString(_params.getAsString("col"));
-                //int temp=test.getInt("temp_in");
-                Log.d("JSON", resArr[i]);
+            Log.d("JSON", httpResult);
+
+            JSONObject jsonObject = new JSONObject(httpResult);
+            JSONArray jsonArr = jsonObject.getJSONArray("response");
+            JSONObject obj = jsonArr.getJSONObject(0);
+
+            res=new ContentValues();
+            for(int i=2; i<_column.length;i++){
+                res.put(_column[i], obj.getString(_column[i]));
             }
 
-            //TODO: which data you want?
-            res=resArr[0];
+            return res;
 
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
