@@ -88,40 +88,5 @@ public class StatusActivity extends AppCompatActivity {
 
         }*/
     }
-
-    /*
-     *  Name: cardExpandCollapse
-     *  Params
-     *      int id:    Target url to access, it is using by http request.
-     *      String colname:  Content that is using POST request.
-     *  Returns: Void
-     *  Make the card to enable expanding and collapsing.
-     */
-    private void cardExpandCollapse(int tv_id,String colName) {
-
-        // TextView that is possible to Expand and Collapse by clicking
-        final TextView tv_desc=(TextView) findViewById(tv_id);
-        if (tv_desc.getVisibility()==View.VISIBLE) {
-            //ibt_show_more.animate().rotation(0).start();
-            Toast.makeText(getApplicationContext(),"Collapsing",Toast.LENGTH_SHORT).show();
-            tv_desc.setVisibility(View.GONE);
-        }
-        else {
-            ContentValues contentValues=new ContentValues();
-            contentValues.put("id",waggle_id);
-            contentValues.put("col",colName);
-
-            //ibt_show_more.animate().rotation(180).start();
-            Toast.makeText(getApplicationContext(),"Expanding",Toast.LENGTH_SHORT).show();
-
-            //Get Data
-            //final String str_desc=reqData.jsonAsStringForLatestData(_target_url,contentValues);
-
-            //tv_desc.setText(str_desc);
-            tv_desc.setVisibility(View.VISIBLE);
-        }
-        //ObjectAnimator animation = ObjectAnimator.ofInt(tv_desc, "maxLines", tv_desc.getMaxLines());
-        //animation.setDuration(200).start();
-    }
 }
 
