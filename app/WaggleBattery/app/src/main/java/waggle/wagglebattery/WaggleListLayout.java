@@ -24,7 +24,7 @@ import waggle.waggle.wagglebattery.adapter.WaggleListViewAdapter;
 
 public class WaggleListLayout  extends Fragment {
     View v;
-    private ArrayList<WaggleInfo> waggleInfoList;
+    private ArrayList<WaggleLocationInfo> waggleLocationInfoList;
     private WaggleListViewAdapter adapter;
     private String _target_url;
     private RequestData reqData = new RequestData();
@@ -36,9 +36,9 @@ public class WaggleListLayout  extends Fragment {
         v = inflater.inflate(R.layout.wagglelist_layout, container, false);
 
         // 서버에 데이터 요청을 보내야 하는 부분
-        waggleInfoList = new ArrayList<WaggleInfo>();
+        waggleLocationInfoList = new ArrayList<WaggleLocationInfo>();
 
-        // URL 설정.
+        // URL 설정
         _target_url=getString(R.string.target_addr);
 
         // 리스트뷰 참조
@@ -46,7 +46,7 @@ public class WaggleListLayout  extends Fragment {
         listview = (ListView) v.findViewById(R.id.listview1);
 
         // Adapter 생성
-        adapter = new WaggleListViewAdapter(getContext().getApplicationContext(), waggleInfoList);
+        adapter = new WaggleListViewAdapter(getContext().getApplicationContext(), waggleLocationInfoList);
 
         // 리스트와 어댑터 연결
         listview.setAdapter(adapter);
@@ -56,13 +56,13 @@ public class WaggleListLayout  extends Fragment {
         listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
-                // get item
-                WaggleInfo item = (WaggleInfo) parent.getItemAtPosition(position);
+//                // get item
+//                WaggleInfo item = (WaggleInfo) parent.getItemAtPosition(position);
                 //  클릭했을때 이벤트 정의
                 // TODO : use item data.
                 Intent intentMain = new Intent(v.getContext(), StatusActivity.class);
-                intentMain.putExtra("waggleName",
-                        waggleInfoList.get(position).getWaggleName());  // 여기서 Waggle name이 primary key라고 간주했음
+                intentMain.putExtra("waggleId",
+                        waggleLocationInfoList.get(position).getWaggleId());  // 여기서 Waggle name이 primary key라고 간주했음
                 startActivity(intentMain);
             }
         });
@@ -74,7 +74,7 @@ public class WaggleListLayout  extends Fragment {
             public void onRefresh() {
                 mSwipeRefreshLayout.setRefreshing(false);
 
-                waggleInfoList.clear();
+                waggleLocationInfoList.clear();
 
                 addNewWaggleInfo();
             }
@@ -92,24 +92,23 @@ public class WaggleListLayout  extends Fragment {
 
     private void addNewWaggleInfo() {
         ContentValues[] resHttpReq;
-        String[] _req={"WaggleInfo","name","time","battery","env_w","env_s","temp_in","hum_in"};
+
+        //_req[0] for POST Query and the others are column names.
+        //Refer to WaggleEnv
+        String[] _req={"WaggleLoc","waggle_id","longtitude","latitude","date_created"};
 
         resHttpReq = reqData.jsonAsContentValues(_target_url, _req);
 
-        String waggleName, waggleTime;
-        double waggleBattety, waggleEnv_w, waggleEnv_s, waggleTemp_in, waggleHum_in;
+        int waggleId;
+        double waggleLat, waggleLon;
+        String waggleDate;
         for (int i = 0; i < resHttpReq.length; i++) {
-
-            waggleName = resHttpReq[i].getAsString("name");
-            waggleTime = resHttpReq[i].getAsString("time");
-            waggleBattety = resHttpReq[i].getAsDouble("battery");
-            waggleEnv_w = resHttpReq[i].getAsDouble("env_w");
-            waggleEnv_s = resHttpReq[i].getAsDouble("env_s");
-            waggleTemp_in = resHttpReq[i].getAsDouble("temp_in");
-            waggleHum_in = resHttpReq[i].getAsDouble("hum_in");
-            WaggleInfo waggleinfo = new WaggleInfo(waggleName, waggleTime, waggleBattety,
-                    waggleEnv_w, waggleEnv_s, waggleTemp_in, waggleHum_in);
-            waggleInfoList.add(waggleinfo);
+            waggleId = resHttpReq[i].getAsInteger("waggle_id");
+            waggleLon = resHttpReq[i].getAsDouble("longtitude");
+            waggleLat = resHttpReq[i].getAsDouble("latitude");
+            waggleDate = resHttpReq[i].getAsString("date_created");
+            WaggleLocationInfo waggleLocationInfo = new WaggleLocationInfo(waggleId, waggleLat, waggleLon, waggleDate);
+            waggleLocationInfoList.add(waggleLocationInfo);
         }
         adapter.notifyDataSetChanged();
         Toast.makeText(getContext(), "refresh", Toast.LENGTH_LONG).show();

@@ -50,8 +50,6 @@ public class RequestData {
                 StringBuffer sbParams = new StringBuffer();
 
 
-                /* Make the parameter and save it to sbParams */
-
                 // If there is no data to send, keep sbParams be empty.
                 if(_params == null)
                     sbParams.append("");
@@ -148,44 +146,44 @@ public class RequestData {
     }
 
     /*
-           Name: jsonAsStringForLatestData
-           Params
-               String _url:    Target url to access, it is using by http request.
-               ContentValues:  Content that is using POST request.
-           Returns: The Latest Data from Server or NULL if there is ERROR.
-    */
-    public String jsonAsStringForLatestData(final String _url, final ContentValues _params){
-        String res = "Load failed";
+     *       Name: jsonAsStringForLatestData
+     *       Params
+     *           String _url:    Target url to access, it is using by http request.
+     *           ContentValues:  Content that is using POST request.
+     *       Returns: The Latest Data from Server or NULL if there is ERROR.
+     */
+    public ContentValues jsonAsContentValueForLatestData(final String _url, final String[] _column) {
+        ContentValues res = null;
+        ContentValues _params = new ContentValues();
+        _params.put("req",_column[0]);
+        _params.put("id",_column[1]);
 
         try {
             String httpResult;
-            if((httpResult = httpReq(_url, _params)) == null){
+            if ((httpResult = httpReq(_url, _params)) == null) {
                 //http Error
-                Log.d("http","error");
+                Log.d("http", "error");
                 return res;
             }
 
             //JSON parsing
-            JSONObject jsonObject = new JSONObject(httpResult);
-            Log.d("JSON",httpResult);
-            JSONArray jsonArray = jsonObject.getJSONArray("response");
 
-            String[] resArr = new String[jsonArray.length()];
-            for(int i=0;i<jsonArray.length();i++){
-                Log.d("JSON","HERE");
-                JSONObject obj = jsonArray.getJSONObject(i);
-                resArr[i]=obj.getString(_params.getAsString("col"));
-                //int temp=test.getInt("temp_in");
-                Log.d("JSON", resArr[i]);
+            Log.d("JSON", httpResult);
+
+            JSONObject jsonObject = new JSONObject(httpResult);
+            JSONArray jsonArr = jsonObject.getJSONArray("response");
+            JSONObject obj = jsonArr.getJSONObject(0);
+
+            res=new ContentValues();
+            for(int i=2; i<_column.length;i++){
+                res.put(_column[i], obj.getString(_column[i]));
             }
 
-            //TODO: which data you want?
-            res=resArr[0];
+            return res;
 
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -193,12 +191,11 @@ public class RequestData {
 
         return res;
     }
-
+    // 받아온 JsonObject를 파싱하는 함수
     public ContentValues[] jsonAsContentValues(final String _url, final String[] _column){
         ContentValues[] res = null;
         ContentValues _params = new ContentValues();
-        _params.put("req",_column[0]);
-
+        _params.put("req",_column[0]);  // 어느 DB 테이블에서 데이터를 찾을지 php 코드상에서 사용될 변수
 
         try {
             String httpResult;
@@ -220,16 +217,8 @@ public class RequestData {
                 for(int j=1;j<_column.length;j++) {
                     objContent.put(_column[j], obj.getString(_column[j]));
 
-                    /*objContent.put("name", obj.getString("name"));
-                    objContent.put("time", obj.getString("time"));
-                    objContent.put("battery", obj.getDouble("battery"));
-                    objContent.put("env_w", obj.getDouble("env_w"));
-                    objContent.put("env_s", obj.getDouble("env_s"));
-                    objContent.put("temp_in", obj.getDouble("temp_in"));
-                    objContent.put("hum_in", obj.getDouble("hum_in"));
-                    */
                 }
-
+                // TODO : objContent가 지역변수라 가비지 컬렉션에 의해 사라질 위험이 있지 않나?
                 res[i]=objContent;
             }
 
