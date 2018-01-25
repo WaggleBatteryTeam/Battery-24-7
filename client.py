@@ -30,7 +30,7 @@ def run():
     is_heater_on = False
     while(1):
         now = time.localtime();
-        wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, $
+        wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
         print(wtime)
         h,t = Adafruit_DHT.read_retry(sensor,20)
         data = 'Temperature = {0:0.1f} Humidity = {1:0.1f}'.format(t,h)
@@ -42,7 +42,7 @@ def run():
         battery = 10.5
         wind = 10.5
         solar = 10.5
-        PARAMS = {'waggle_name':waggle_name,'date':wtime, 'battery':battery,'wind':wind, 'solar':solar$
+        PARAMS = {'waggle_name':waggle_name,'date':wtime, 'battery':battery,'wind':wind, 'solar':solar, 'temperature' : temperature, 'humidity' : h}
 
         r= requests.post(url=URL,data=PARAMS)
         #measure_vol()
