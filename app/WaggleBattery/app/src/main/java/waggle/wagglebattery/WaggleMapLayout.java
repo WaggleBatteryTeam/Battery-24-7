@@ -115,20 +115,21 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
 
     private void addNewWaggleLocation() {
         ContentValues[] resHttpReq;
-        String[] _req={"WaggleLoc","waggle_id","latitude","longtitude","date"};
+
+        //_req[0] for POST Query and the others are column names.
+        //Refer to WaggleEnv
+        String[] _req={"WaggleLoc","waggle_id","longtitude","latitude","date_created"};
 
         resHttpReq = reqData.jsonAsContentValues(_target_url, _req);
 
         int waggleId;
         double waggleLat, waggleLon;
         String waggleDate;
-
         for (int i = 0; i < resHttpReq.length; i++) {
-
             waggleId = resHttpReq[i].getAsInteger("waggle_id");
-            waggleLat = resHttpReq[i].getAsDouble("latitude");
             waggleLon = resHttpReq[i].getAsDouble("longtitude");
-            waggleDate = resHttpReq[i].getAsString("date");
+            waggleLat = resHttpReq[i].getAsDouble("latitude");
+            waggleDate = resHttpReq[i].getAsString("date_created");
             WaggleLocationInfo waggleLocationInfo = new WaggleLocationInfo(waggleId, waggleLat, waggleLon, waggleDate);
             waggleLocationInfoList.add(waggleLocationInfo);
         }

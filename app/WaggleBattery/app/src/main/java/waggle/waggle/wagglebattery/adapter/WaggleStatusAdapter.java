@@ -20,8 +20,8 @@ import waggle.wagglebattery.R;
 
 public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapter.ViewHolder>{
     private ArrayList<KeyValueSet> dataSet;
-    final private String[] colName = {"battery","temp_in","hum_in","env_w","env_s"};
-    final private String[] title = {"Battery","Temperature","Humidity","Energy From Wind","Energy From Sun"};
+    final private String[] colName = {"battery","charging","heater","fan","update_time"};
+    final private String[] title = {"Battery","Charging","Heater","Fan","Update"};
 
     private static class KeyValueSet{
         String key;

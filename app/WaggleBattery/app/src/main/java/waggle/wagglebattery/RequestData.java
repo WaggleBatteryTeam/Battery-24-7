@@ -146,12 +146,12 @@ public class RequestData {
     }
 
     /*
-           Name: jsonAsStringForLatestData
-           Params
-               String _url:    Target url to access, it is using by http request.
-               ContentValues:  Content that is using POST request.
-           Returns: The Latest Data from Server or NULL if there is ERROR.
-    */
+     *       Name: jsonAsStringForLatestData
+     *       Params
+     *           String _url:    Target url to access, it is using by http request.
+     *           ContentValues:  Content that is using POST request.
+     *       Returns: The Latest Data from Server or NULL if there is ERROR.
+     */
     public ContentValues jsonAsContentValueForLatestData(final String _url, final String[] _column) {
         ContentValues res = null;
         ContentValues _params = new ContentValues();
@@ -217,14 +217,6 @@ public class RequestData {
                 for(int j=1;j<_column.length;j++) {
                     objContent.put(_column[j], obj.getString(_column[j]));
 
-                    /*objContent.put("name", obj.getString("name"));
-                    objContent.put("time", obj.getString("time"));
-                    objContent.put("battery", obj.getDouble("battery"));
-                    objContent.put("env_w", obj.getDouble("env_w"));
-                    objContent.put("env_s", obj.getDouble("env_s"));
-                    objContent.put("temp_in", obj.getDouble("temp_in"));
-                    objContent.put("hum_in", obj.getDouble("hum_in"));
-                    */
                 }
                 // TODO : objContent가 지역변수라 가비지 컬렉션에 의해 사라질 위험이 있지 않나?
                 res[i]=objContent;
