@@ -50,7 +50,7 @@ public class StatusActivity extends AppCompatActivity {
         lim.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lim);
 
-        RecyclerView.Adapter adapter = new WaggleStatusAdapter(res);
+        RecyclerView.Adapter adapter = new WaggleStatusAdapter(getApplicationContext(),waggle_id,res);
         recyclerView.setAdapter(adapter);
 
     }

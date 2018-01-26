@@ -3,6 +3,8 @@ package waggle.wagglebattery;
 import android.content.ContentValues;
 import android.util.Log;
 
+import com.github.mikephil.charting.data.Entry;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +17,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -156,7 +165,7 @@ public class RequestData {
         ContentValues res = null;
         ContentValues _params = new ContentValues();
         _params.put("req",_column[0]);
-        _params.put("id",_column[1]);
+        _params.put("id",_column[1]); // waggle_id
 
         try {
             String httpResult;
@@ -233,5 +242,56 @@ public class RequestData {
         }
 
         return res;
+    }
+
+    public List<Entry> jsonAsEntryList(final String _url, final String[]_column){
+        List<Entry> entries = new ArrayList<Entry>();
+
+        ContentValues _params = new ContentValues();
+        _params.put("req",_column[0]);
+        _params.put("id",_column[1]);
+
+        try {
+            String httpResult;
+            if((httpResult = httpReq(_url, _params)) == null){
+                //http Error
+                Log.d("http","error");
+                return null;
+            }
+
+            //JSON parsing
+            JSONObject jsonObject = new JSONObject(httpResult);
+            Log.d("JSON",httpResult);
+            JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+            Date now = Calendar.getInstance().getTime();
+
+
+            for(int i=0;i<jsonArray.length();i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+
+                //Date Calculation
+                Date past = dateFormat.parse(obj.getString("created_time"));
+                long diff = now.getTime() - past.getTime();
+
+                //Minute Calculation
+                Entry element = new Entry((float)(diff/(60*1000)),(float)(obj.getDouble(_column[2])));
+                entries.add(element);
+            }
+            return entries;
+
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

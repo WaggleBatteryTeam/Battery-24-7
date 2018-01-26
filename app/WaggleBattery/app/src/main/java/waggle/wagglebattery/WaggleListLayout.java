@@ -46,7 +46,7 @@ public class WaggleListLayout  extends Fragment {
         listview = (ListView) v.findViewById(R.id.listview1);
 
         // Adapter 생성
-        adapter = new WaggleListViewAdapter(getContext().getApplicationContext(), waggleLocationInfoList);
+        adapter = new WaggleListViewAdapter(getContext(), waggleLocationInfoList);
 
         // 리스트와 어댑터 연결
         listview.setAdapter(adapter);

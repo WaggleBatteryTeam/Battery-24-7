@@ -1,8 +1,10 @@
 package waggle.waggle.wagglebattery.adapter;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,18 +12,31 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+
 import java.util.ArrayList;
+import java.util.List;
 
 import waggle.wagglebattery.R;
+import waggle.wagglebattery.RequestData;
 
 /**
  * Created by parksanguk on 1/24/18.
  */
 
 public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapter.ViewHolder>{
+    private Context context;
+
     private ArrayList<KeyValueSet> dataSet;
-    final private String[] colName = {"battery","charging","heater","fan","update_time"};
-    final private String[] title = {"Battery","Charging","Heater","Fan","Update"};
+    private int waggleId;
+    final private String[] colName = {"battery","charging","heater","fan"};
+    final private String[] title = {"Battery","Charging","Heater","Fan"};      //Name for cardview that is shown in Android application View.
+    final private String[] col_waggleenv = {"waggle_id","created_time","temperature","humidity","voltage","current"};
+
+    private RequestData reqData = new RequestData();
 
     private static class KeyValueSet{
         String key;
@@ -39,6 +54,7 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
         protected TextView tvTitle;
         protected TextView tvValue;
         protected TextView tvDesc;
+        protected LineChart dataHistoryChart;
 
         public ViewHolder(View v){
             super(v);
@@ -47,12 +63,17 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
             tvTitle = v.findViewById(R.id.tv_title);
             tvValue = v.findViewById(R.id.tv_value);
 
+            //The Below Views are initially "GONE"
             tvDesc = v.findViewById(R.id.tv_desc);
+            dataHistoryChart = v.findViewById(R.id.chart);
         }
     }
 
-    public WaggleStatusAdapter(ContentValues status){
+    public WaggleStatusAdapter(Context context, int waggleId, ContentValues status){
         dataSet = new ArrayList<KeyValueSet>();
+
+        this.context = context;
+        this.waggleId = waggleId;
 
         for(int i=0;i<colName.length;i++) {
             String key = title[i];
@@ -103,6 +124,17 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
         holder.tvTitle.setText(dataSet.get(position).getKey());
         holder.tvValue.setText(dataSet.get(position).getValue());
 
+
+        String[] _req={"WaggleIdHistory",Integer.toString(waggleId),col_waggleenv[position+2]};
+        //Result must be returned with only interested column data.
+        List<Entry> result = reqData.jsonAsEntryList(context.getString(R.string.target_addr),_req);
+        //Set the Chart
+        Log.d("ADAPTER","HERE");
+        LineDataSet lineDataSet = new LineDataSet(result,_req[2]);
+
+        LineData lineData = new LineData(lineDataSet);
+        holder.dataHistoryChart.setData(lineData);
+        holder.dataHistoryChart.invalidate();
     }
 
     // Return the size of your dataset (invoked by the layout manager)
