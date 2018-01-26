@@ -1,0 +1,20 @@
+
+
+# Select the newest data from WaggleEnv table
+select waggle_id, max(created_time), temperature, humidity, voltage, current
+ from WaggleEnv group by waggle_id;
+
+ select WaggleEnv.waggle_id, max(WaggleEnv.created_time) 
+ from WaggleEnv group by WaggleEnv.waggle_id;
+
+
+# Insert neweest data from WaggleEnv into Monitor(When the same waggle_id is not in the table)
+  INSERT INTO Monitor(waggle_id, battery, charging, heater, fan, update_time, notice) 
+  SELECT WaggleEnv.waggle_id, 92.2, 'ON', 'ON', 'ON', MAX(WaggleEnv.created_time), 'INSERT' 
+  FROM WaggleEnv group by WaggleEnv.waggle_id;
+
+# Update Monitor
+UPDATE Monitor a
+SET a.update_time = (select max(b.created_time) 
+from WaggleEnv b where a.waggle_id=b.waggle_id)
+a.notice='UPDATE';
