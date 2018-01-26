@@ -15,10 +15,10 @@ GPIO.setup(25,GPIO.OUT) #channel 3
 GPIO.setup(3,GPIO.OUT) #DHT22
 
 ##All switch off before running
-#GPIO.output(18,False)
-GPIO.output(24,False)
-GPIO.output(25,False)
-#GPIO.output(27,False)
+#GPIO.output(18,True)
+GPIO.output(24,True)
+GPIO.output(25,True)
+#GPIO.output(27,True)
 
 cur_temperature=0.00
 bvolt=0.00
@@ -32,7 +32,7 @@ def run():
         now = time.localtime();
         wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
         print(wtime)
-        h,t = Adafruit_DHT.read_retry(sensor,20)
+        h,t = Adafruit_DHT.read_retry(sensor,17)
         data = 'Temperature = {0:0.1f} Humidity = {1:0.1f}'.format(t,h)
 
         temperature = t
@@ -57,25 +57,25 @@ def run():
 def control_temperature(temp, f, h):
     print(temp)
     if f :
-        if temp < 24.0 :
+        if temp < 25.0 :
             print "turn off the Fan"
-            GPIO.output(25, False)
+            GPIO.output(25, True)
             f = False
     else :
         if temp > 28.0 :
             print "turn on the Fan"
-            GPIO.output(25, True)
+            GPIO.output(25, False)
             f = True
 
     if h :
         if temp > 24.0 :
             print "turn off the Heatern"
-            GPIO.output(24, False)
+            GPIO.output(24, True)
             h = False
     else :
         if temp < 20.0 :
             print "turn on the Heater"
-            GPIO.output(24, True)
+            GPIO.output(24, False)
             h = True
 
     return f, h
