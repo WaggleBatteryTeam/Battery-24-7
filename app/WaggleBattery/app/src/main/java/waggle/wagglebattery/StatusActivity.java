@@ -39,6 +39,9 @@ public class StatusActivity extends AppCompatActivity {
 
         ContentValues res = reqData.jsonAsContentValueForLatestData(_target_url,_req);
 
+        //WaggleInfo LinearLayout Setting
+
+
         //RecyclerView Setting
         RecyclerView recyclerView= (RecyclerView) findViewById(R.id.rcview);
         recyclerView.setHasFixedSize(true);
