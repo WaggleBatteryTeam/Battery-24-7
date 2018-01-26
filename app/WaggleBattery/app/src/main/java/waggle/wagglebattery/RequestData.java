@@ -3,6 +3,8 @@ package waggle.wagglebattery;
 import android.content.ContentValues;
 import android.util.Log;
 
+import com.github.mikephil.charting.data.Entry;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +17,13 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -49,8 +58,6 @@ public class RequestData {
                 // URL 뒤에 붙여서 보낼 파라미터.
                 StringBuffer sbParams = new StringBuffer();
 
-
-                /* Make the parameter and save it to sbParams */
 
                 // If there is no data to send, keep sbParams be empty.
                 if(_params == null)
@@ -148,44 +155,44 @@ public class RequestData {
     }
 
     /*
-           Name: jsonAsStringForLatestData
-           Params
-               String _url:    Target url to access, it is using by http request.
-               ContentValues:  Content that is using POST request.
-           Returns: The Latest Data from Server or NULL if there is ERROR.
-    */
-    public String jsonAsStringForLatestData(final String _url, final ContentValues _params){
-        String res = "Load failed";
+     *       Name: jsonAsStringForLatestData
+     *       Params
+     *           String _url:    Target url to access, it is using by http request.
+     *           ContentValues:  Content that is using POST request.
+     *       Returns: The Latest Data from Server or NULL if there is ERROR.
+     */
+    public ContentValues jsonAsContentValueForLatestData(final String _url, final String[] _column) {
+        ContentValues res = null;
+        ContentValues _params = new ContentValues();
+        _params.put("req",_column[0]);
+        _params.put("id",_column[1]); // waggle_id
 
         try {
             String httpResult;
-            if((httpResult = httpReq(_url, _params)) == null){
+            if ((httpResult = httpReq(_url, _params)) == null) {
                 //http Error
-                Log.d("http","error");
+                Log.d("http", "error");
                 return res;
             }
 
             //JSON parsing
-            JSONObject jsonObject = new JSONObject(httpResult);
-            Log.d("JSON",httpResult);
-            JSONArray jsonArray = jsonObject.getJSONArray("response");
 
-            String[] resArr = new String[jsonArray.length()];
-            for(int i=0;i<jsonArray.length();i++){
-                Log.d("JSON","HERE");
-                JSONObject obj = jsonArray.getJSONObject(i);
-                resArr[i]=obj.getString(_params.getAsString("col"));
-                //int temp=test.getInt("temp_in");
-                Log.d("JSON", resArr[i]);
+            Log.d("JSON", httpResult);
+
+            JSONObject jsonObject = new JSONObject(httpResult);
+            JSONArray jsonArr = jsonObject.getJSONArray("response");
+            JSONObject obj = jsonArr.getJSONObject(0);
+
+            res=new ContentValues();
+            for(int i=2; i<_column.length;i++){
+                res.put(_column[i], obj.getString(_column[i]));
             }
 
-            //TODO: which data you want?
-            res=resArr[0];
+            return res;
 
-
-        } catch (ExecutionException e) {
-            e.printStackTrace();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
@@ -193,12 +200,11 @@ public class RequestData {
 
         return res;
     }
-
+    // 받아온 JsonObject를 파싱하는 함수
     public ContentValues[] jsonAsContentValues(final String _url, final String[] _column){
         ContentValues[] res = null;
         ContentValues _params = new ContentValues();
-        _params.put("req",_column[0]);
-
+        _params.put("req",_column[0]);  // 어느 DB 테이블에서 데이터를 찾을지 php 코드상에서 사용될 변수
 
         try {
             String httpResult;
@@ -220,16 +226,8 @@ public class RequestData {
                 for(int j=1;j<_column.length;j++) {
                     objContent.put(_column[j], obj.getString(_column[j]));
 
-                    /*objContent.put("name", obj.getString("name"));
-                    objContent.put("time", obj.getString("time"));
-                    objContent.put("battery", obj.getDouble("battery"));
-                    objContent.put("env_w", obj.getDouble("env_w"));
-                    objContent.put("env_s", obj.getDouble("env_s"));
-                    objContent.put("temp_in", obj.getDouble("temp_in"));
-                    objContent.put("hum_in", obj.getDouble("hum_in"));
-                    */
                 }
-
+                // TODO : objContent가 지역변수라 가비지 컬렉션에 의해 사라질 위험이 있지 않나?
                 res[i]=objContent;
             }
 
@@ -244,5 +242,56 @@ public class RequestData {
         }
 
         return res;
+    }
+
+    public List<Entry> jsonAsEntryList(final String _url, final String[]_column){
+        List<Entry> entries = new ArrayList<Entry>();
+
+        ContentValues _params = new ContentValues();
+        _params.put("req",_column[0]);
+        _params.put("id",_column[1]);
+
+        try {
+            String httpResult;
+            if((httpResult = httpReq(_url, _params)) == null){
+                //http Error
+                Log.d("http","error");
+                return null;
+            }
+
+            //JSON parsing
+            JSONObject jsonObject = new JSONObject(httpResult);
+            Log.d("JSON",httpResult);
+            JSONArray jsonArray = jsonObject.getJSONArray("response");
+
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
+            Date now = Calendar.getInstance().getTime();
+
+
+            for(int i=0;i<jsonArray.length();i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+
+                //Date Calculation
+                Date past = dateFormat.parse(obj.getString("created_time"));
+                long diff = now.getTime() - past.getTime();
+
+                //Minute Calculation
+                Entry element = new Entry((float)(diff/(60*1000)),(float)(obj.getDouble(_column[2])));
+                entries.add(element);
+            }
+            return entries;
+
+
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

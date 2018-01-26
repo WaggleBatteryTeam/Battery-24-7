@@ -52,7 +52,6 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
 
         // URL 설정.
         _target_url=getString(R.string.target_addr);
-        //_target_url = "http://192.168.2.52:80/wagglelocation.php";
 
         addNewWaggleLocation();
 
@@ -107,7 +106,7 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
                 // marker.getId()를 했을때 MarkerOptions에 추가된 순서대로 ID가 매겨져 있음(인덱스 0부터)
                 String chosenWaggleId = marker.getId().replace("m", "");
                 Intent intentMain = new Intent(v.getContext(), StatusActivity.class);
-                intentMain.putExtra("waggleName", chosenWaggleId);  // 여기서 Waggle name이 primary key라고 간주했음
+                intentMain.putExtra("waggleId", chosenWaggleId);  // 여기서 Waggle name이 primary key라고 간주했음
                 startActivity(intentMain);
                 return false;
             }
@@ -116,20 +115,21 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
 
     private void addNewWaggleLocation() {
         ContentValues[] resHttpReq;
-        String[] _req={"WaggleLoc","waggle_id","latitude","longtitude","date"};
+
+        //_req[0] for POST Query and the others are column names.
+        //Refer to WaggleEnv
+        String[] _req={"WaggleLoc","waggle_id","longtitude","latitude","date_created"};
 
         resHttpReq = reqData.jsonAsContentValues(_target_url, _req);
 
         int waggleId;
         double waggleLat, waggleLon;
         String waggleDate;
-
         for (int i = 0; i < resHttpReq.length; i++) {
-
             waggleId = resHttpReq[i].getAsInteger("waggle_id");
-            waggleLat = resHttpReq[i].getAsDouble("latitude");
             waggleLon = resHttpReq[i].getAsDouble("longtitude");
-            waggleDate = resHttpReq[i].getAsString("date");
+            waggleLat = resHttpReq[i].getAsDouble("latitude");
+            waggleDate = resHttpReq[i].getAsString("date_created");
             WaggleLocationInfo waggleLocationInfo = new WaggleLocationInfo(waggleId, waggleLat, waggleLon, waggleDate);
             waggleLocationInfoList.add(waggleLocationInfo);
         }
