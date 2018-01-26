@@ -68,12 +68,12 @@ def control_temperature(temp, f, h):
             f = True
 
     if h :
-        if temp > 24.0 :
+        if temp > 20.0 :
             print "turn off the Heatern"
             GPIO.output(24, True)
             h = False
     else :
-        if temp < 20.0 :
+        if temp < 15.0 :
             print "turn on the Heater"
             GPIO.output(24, False)
             h = True
