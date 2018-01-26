@@ -101,12 +101,14 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
                     //ibt_show_more.animate().rotation(0).start();
                     Toast.makeText(view.getContext(), "Collapsing", Toast.LENGTH_SHORT).show();
                     vh.tvDesc.setVisibility(View.GONE);
+                    vh.dataHistoryChart.setVisibility(View.GONE);
                 } else {
 
                     //ibt_show_more.animate().rotation(180).start();
                     Toast.makeText(view.getContext(), "Expanding", Toast.LENGTH_SHORT).show();
 
                     vh.tvDesc.setVisibility(View.VISIBLE);
+                    vh.dataHistoryChart.setVisibility(View.VISIBLE);
                 }
                 //ObjectAnimator animation = ObjectAnimator.ofInt(tv_desc, "maxLines", tv_desc.getMaxLines());
                 //animation.setDuration(200).start();
@@ -129,7 +131,6 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
         //Result must be returned with only interested column data.
         List<Entry> result = reqData.jsonAsEntryList(context.getString(R.string.target_addr),_req);
         //Set the Chart
-        Log.d("ADAPTER","HERE");
         LineDataSet lineDataSet = new LineDataSet(result,_req[2]);
 
         LineData lineData = new LineData(lineDataSet);

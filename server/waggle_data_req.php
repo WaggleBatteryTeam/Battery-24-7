@@ -18,9 +18,16 @@
 
 	if($count_param == 2){
 		//Status Query
+		$req = $_POST['req'];
 		$waggle_id = $_POST['id'];
+		
+		if($req === "WaggleIdLatest"){	
+			$query = "SELECT * FROM Monitor WHERE waggle_id = " . $waggle_id;
+		}
+		elseif($req === "WaggleIdHistory"){
+			$query = "SELECT * FROM WaggleEnv WHERE waggle_id = " . $waggle_id;
+		}
 
-		$query = "SELECT * FROM Monitor WHERE waggle_id = " . $waggle_id;
 	}
 	elseif($count_param == 1){
 		$req = $_POST['req'];
