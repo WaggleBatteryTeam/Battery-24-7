@@ -24,13 +24,17 @@ URL = "http://192.168.2.52/test/waggle_receive.php"
 cur_temperature=0.00
 bvolt=0.00
 ccurr=0.00
+cnt=0
 
 def run():
-    global URL, cur_temperature, bvolt, ccurr
+    global URL, cur_temperature, bvolt, ccurr, cnt
     is_fan_on = False
     is_heater_on = False
+
     while(1):
-        now = time.localtime();
+        cnt += 1
+        #print(cnt) for debugging
+        now = time.localtime()
         wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
         print(wtime)
         h,t = Adafruit_DHT.read_retry(sensor,17)
@@ -44,14 +48,15 @@ def run():
         solar = 10.5
         PARAMS = {'waggle_name':waggle_name,'date':wtime, 'battery':battery,'wind':wind, 'solar':solar, 'temperature' : temperature, 'humidity' : h}
 
-        r= requests.post(url=URL,data=PARAMS)
+        if cnt%80 == 0 :
+            r = requests.post(url=URL,data=PARAMS)
+            cnt = 0
         #measure_vol()
         print(wtime,data)
         if cur_temperature==temperature :
             continue
 
         is_fan_on, is_heater_on = control_temperature(temperature, is_fan_on, is_heater_on)
-
         cur_temperature=temperature
 
 def control_temperature(temp, f, h):
