@@ -20,12 +20,13 @@ GPIO.output(24,True)
 GPIO.output(25,True)
 #GPIO.output(27,True)
 
+URL = "http://192.168.2.52/test/waggle_receive.php"
 cur_temperature=0.00
 bvolt=0.00
 ccurr=0.00
 
 def run():
-    global cur_temperature, bvolt, ccurr
+    global URL, cur_temperature, bvolt, ccurr
     is_fan_on = False
     is_heater_on = False
     while(1):
@@ -36,7 +37,6 @@ def run():
         data = 'Temperature = {0:0.1f} Humidity = {1:0.1f}'.format(t,h)
 
         temperature = t
-        URL = "http://192.168.2.52/test/waggle_receive.php"
 
         waggle_name = "Waggle1"
         battery = 10.5
