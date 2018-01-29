@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.widget.TextView;
 
 import waggle.waggle.wagglebattery.adapter.WaggleStatusAdapter;
 
@@ -16,7 +17,7 @@ import waggle.waggle.wagglebattery.adapter.WaggleStatusAdapter;
 
 public class StatusActivity extends AppCompatActivity {
 
-    String[] _req={"WaggleIdLatest",null,"battery","charging","heater","fan","update_time"};
+    String[] _req={"WaggleIdLatest",null,"battery","charging","heater","fan","update_time","temperature","humidity"}; //colname of Monitor
     private RequestData reqData = new RequestData();
 
     private int waggle_id = 0 ;
@@ -41,6 +42,16 @@ public class StatusActivity extends AppCompatActivity {
 
         //WaggleInfo LinearLayout Setting
 
+        // TextView for update information.
+        TextView tvWaggleInfo = (TextView) findViewById(R.id.tv_waggle);
+        TextView tvUpdateInfo = (TextView) findViewById(R.id.tv_update_info);
+        String waggleInfo = "";
+        waggleInfo = waggleInfo + ("Id\t : "        + _req[1] +"\t\n");
+        waggleInfo = waggleInfo + ("Charging\t : "  + res.getAsString("charging")   +"\t\n");
+        waggleInfo = waggleInfo + ("Heater\t : "    + res.getAsString("heater")     +"\t\n");
+        waggleInfo = waggleInfo + ("Fan\t : "       + res.getAsString("fan")        +"\t\n");
+        tvWaggleInfo.setText(waggleInfo);
+        tvUpdateInfo.setText("Updated : " + res.getAsString("update_time"));
 
         //RecyclerView Setting
         RecyclerView recyclerView= (RecyclerView) findViewById(R.id.rcview);

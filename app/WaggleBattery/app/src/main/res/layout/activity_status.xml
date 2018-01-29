@@ -11,6 +11,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <ImageView
@@ -20,9 +21,19 @@
                 android:src="@drawable/testimage"/>
             <TextView
                 android:id="@+id/tv_waggle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingLeft="200dp"
+                android:textStyle="normal"
+                android:text="Information"/>
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_update_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="textEnd"
+            android:textStyle="italic"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rcview"

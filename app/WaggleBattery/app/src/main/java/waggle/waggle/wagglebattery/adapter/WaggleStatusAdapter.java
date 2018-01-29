@@ -32,8 +32,8 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
 
     private ArrayList<KeyValueSet> dataSet;
     private int waggleId;
-    final private String[] colName = {"battery","charging","heater","fan"};
-    final private String[] title = {"Battery","Charging","Heater","Fan"};      //Name for cardview that is shown in Android application View.
+    final private String[] colName = {"battery","temperature","humidity"};      //Colname of Monitor.
+    final private String[] title = {"Battery","Temperature","Humidity"};      //Name for cardview that is shown in Android application View.
     final private String[] col_waggleenv = {"waggle_id","created_time","temperature","humidity","voltage","current"};
 
     private RequestData reqData = new RequestData();
@@ -78,6 +78,10 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
         for(int i=0;i<colName.length;i++) {
             String key = title[i];
             String value = status.getAsString(colName[i]);
+
+            // Round the value
+            //double val = Double.parseDouble(value);
+            //value = String.format("%.2f",value);
 
             KeyValueSet keyValueData = new KeyValueSet(key,value);
             dataSet.add(keyValueData);
