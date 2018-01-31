@@ -25,6 +25,8 @@ create table WaggleEnv(
 	humidity FLOAT NOT NULL,
 	voltage FLOAT NOT NULL,
 	current FLOAT NOT NULL,
+	fan VARCHAR(4) NOT NULL,
+	heater VARCHAR(4) NOT NULL,
 	FOREIGN KEY (waggle_id) REFERENCES WaggleStack(waggle_id),
 	PRIMARY KEY (waggle_id, created_time)
 );
