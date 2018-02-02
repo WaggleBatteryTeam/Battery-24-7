@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "849195550915",
+    "firebase_url": "https://fcm-push-example-bbc79.firebaseio.com",
+    "project_id": "fcm-push-example-bbc79",
+    "storage_bucket": "fcm-push-example-bbc79.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:849195550915:android:6ebf30a8036ad6d1",
+        "android_client_info": {
+          "package_name": "com.example.seungsoo.fcmpushexample"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "849195550915-ee7so2rt2ibe7pm17vjnfm3ug0jmgt31.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCe8IGXzu_fgHqgotjKRlXJSGD1zLVOIZY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -272,7 +272,7 @@ public class RequestData {
                 JSONObject obj = jsonArray.getJSONObject(i);
 
                 //Date Calculation
-                Date past = dateFormat.parse(obj.getString("created_time"));
+                Date past = dateFormat.parse(obj.getString("updated_time"));
                 long diff = now.getTime() - past.getTime();
 
                 //Minute Calculation
