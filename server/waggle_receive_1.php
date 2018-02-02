@@ -71,7 +71,6 @@
     			//데이터베이스에 접속해서 토큰들을 가져와서 FCM에 발신요청
 				$fcm_conn = db_connection('fcm');
     			
-
     			$sql_alarm = "Select Token From users";
 
     			$result = mysqli_query($fcm_conn ,$sql_alarm);
@@ -94,7 +93,7 @@
     			$message_status = send_notification($tokens, $waggle_id, $remain_battery);
     			echo $message_status;
 
-				// put "YES" value to BatteryStatus notice colum
+				// put "YES" value to BatteryStatus notice column
 			}
 
 			// insert into DB table BatteryStatus_log
