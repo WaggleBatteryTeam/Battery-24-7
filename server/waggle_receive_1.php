@@ -4,11 +4,19 @@
 	</head>
 	<body>
 		<?php
-			$dbhost = 'localhost';
-			$dbuser = 'root';
-			$dbpass = 'waggle';
-			$dbname = 'waggle';
-			$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
+			function db_connection($wanted_db)
+			{
+			    include_once 'dbconnect_'+$wanted_db+'.php';
+        		$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+        		
+        		if(!$conn) {
+					die("could not connect:" . mysql_error($conn));
+				}
+			}
+
+			
+			include_once 'dbconnect_waggle.php';
+        	$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
 			$waggle_id = $_POST['waggle_id'];
 			$remain_battery = $_POST['remain_battery'];
@@ -23,9 +31,7 @@
 
 			echo $waggle_id .", " . $temperature. ", " . $humidity . ", " . $updated_time;
 
-			if(!$conn) {
-				die("could not connect:" . mysql_error($conn));
-			}
+			
 
 			// Check how many $remain_battery is to alarm waring to manager
 			// under remain_battery 20%
@@ -63,7 +69,7 @@
 			if($remain_battery < 20.0) {
 				// alarm
         			//데이터베이스에 접속해서 토큰들을 가져와서 FCM에 발신요청
-        			include_once 'config.php';
+        			include_once 'dbconnect_fcm.php';
         			$conn_alarm = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
         			$sql_alarm = "Select Token From users";
