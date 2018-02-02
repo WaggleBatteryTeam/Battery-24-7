@@ -69,14 +69,12 @@
 			if($remain_battery < 20.0) {
 				// alarm
     			//데이터베이스에 접속해서 토큰들을 가져와서 FCM에 발신요청
-				$set_conn = db_connection('waggle');
-
-    			include_once 'dbconnect_fcm.php';
-    			$conn_alarm = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+				$fcm_conn = db_connection('fcm');
+    			
 
     			$sql_alarm = "Select Token From users";
 
-    			$result = mysqli_query($conn_alarm ,$sql_alarm);
+    			$result = mysqli_query($fcm_conn ,$sql_alarm);
     			$tokens = array();
 
     			if(mysqli_num_rows($result) > 0 ){
@@ -85,7 +83,7 @@
            		 		}
     			}	
 
-    			mysqli_close($conn_alarm);
+    			mysqli_close($fcm_conn);
 
         		$myMessage = $_POST['message']; //폼에서 입력한 메세지를 받음
     			if ($myMessage == ""){
@@ -101,11 +99,11 @@
 
 			// insert into DB table BatteryStatus_log
 			$sql = "INSERT INTO BatteryStatus_log (waggle_id, remain_battery, voltage, charging, temperature, humidity, heater ,fan, updated_time, notice) VALUES ('".$waggle_id."','".$remain_battery."','".$voltage."','".$charging."','".$temperature."','".$humidity."','".$heater."','".$fan."','".$updated_time."','".$notice."')";
-			$retval = mysqli_query($conn, $sql);
+			$retval = mysqli_query($waggle_conn, $sql);
 
 			if (!$retval) {
 				print "Fail : Insert into DB table BatteryStatus_log";
-				die ('die!: ') . ($conn);
+				die ('die!: ') . ($waggle_conn);
 			} else {
 				print "!";
 			}
@@ -113,7 +111,7 @@
 			// Check if there is a tuple with particular waggle_id
 			$sel_sql = "SELECT * FROM BatteryStatus WHERE waggle_id='".$waggle_id."'";
 			//$sql = "SELECT * FROM BatteryStatus";
-			$result = mysqli_query($conn, $sel_sql);
+			$result = mysqli_query($waggle_conn, $sel_sql);
 			$row_cnt = mysqli_num_rows($result);
 		
 			if($row_cnt>0)
@@ -161,11 +159,11 @@
 				.
 				"'";
 					
-				$retval1 = mysqli_query($conn, $sql1);
+				$retval1 = mysqli_query($waggle_conn, $sql1);
 
 				if (!$retval1) {
 					print "Fail : Update into DB table BatteryStatus";
-					die ('die!: ') . ($conn);
+					die ('die!: ') . ($waggle_conn);
 				} else {
 					print "!";
 				}
@@ -173,17 +171,17 @@
 			else {
 				// insert sentence should be run
 				$sql = "INSERT INTO BatteryStatus (waggle_id, remain_battery, voltage, charging, temperature, humidity, heater ,fan, updated_time, notice) VALUES ('".$waggle_id."','".$remain_battery."','".$voltage."','".$charging."','".$temperature."','".$humidity."','".$heater."','".$fan."','".$updated_time."','".$notice."')";
-				$retval = mysqli_query($conn, $sql);
+				$retval = mysqli_query($waggle_conn, $sql);
 
 				if (!$retval) {
 					print "Fail : Insert into DB table BatteryStatus";
-					die ('die!: ') . ($conn);
+					die ('die!: ') . ($waggle_conn);
 				} else {
 					print "!";
 				}
 			}
 
-			mysqli_close($conn);
+			mysqli_close($waggle_conn);
 		?>
 	</body>
 </html>
