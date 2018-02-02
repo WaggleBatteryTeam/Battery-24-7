@@ -15,7 +15,9 @@ import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.MarkerView;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -31,37 +33,43 @@ import waggle.wagglebattery.RequestData;
  * Created by parksanguk on 1/24/18.
  */
 
-public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapter.ViewHolder>{
+public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapter.ViewHolder> {
     private Context context;
 
     private ArrayList<KeyValueSet> dataSet;
     private int waggleId;
-    final private String[] colName = {"remain_battery","temperature","humidity"};      //Colname of Monitor.
-    final private String[] title = {"Battery","Temperature","Humidity"};      //Name for cardview that is shown in Android application View.
-    final private String[] col_waggleenv = {"waggle_id","updated_time","remain_battery", "temperature","humidity","voltage"};
+    final private String[] colName = {"remain_battery", "temperature", "humidity"};      //Colname of Monitor.
+    final private String[] title = {"Battery", "Temperature", "Humidity"};      //Name for cardview that is shown in Android application View.
+    final private String[] col_waggleenv = {"waggle_id", "updated_time", "remain_battery", "temperature", "humidity"};
 
     private RequestData reqData = new RequestData();
 
-    private static class KeyValueSet{
+    private static class KeyValueSet {
         String key;
         String value;
 
-        public KeyValueSet(String key, String value){
-            this.key=key;
-            this.value=value;
+        public KeyValueSet(String key, String value) {
+            this.key = key;
+            this.value = value;
         }
-        public String getKey(){ return key; }
-        public String getValue(){ return value; }
+
+        public String getKey() {
+            return key;
+        }
+
+        public String getValue() {
+            return value;
+        }
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder {
         protected CardView cardView;
         protected TextView tvTitle;
         protected TextView tvValue;
         protected TextView tvDesc;
         protected LineChart dataHistoryChart;
 
-        public ViewHolder(View v){
+        public ViewHolder(View v) {
             super(v);
 
             cardView = v.findViewById(R.id.card);
@@ -74,13 +82,13 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
         }
     }
 
-    public WaggleStatusAdapter(Context context, int waggleId, ContentValues status){
+    public WaggleStatusAdapter(Context context, int waggleId, ContentValues status) {
         dataSet = new ArrayList<KeyValueSet>();
 
         this.context = context;
         this.waggleId = waggleId;
 
-        for(int i=0;i<colName.length;i++) {
+        for (int i = 0; i < colName.length; i++) {
             String key = title[i];
             String value = status.getAsString(colName[i]);
 
@@ -88,7 +96,7 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
             //double val = Double.parseDouble(value);
             //value = String.format("%.2f",value);
 
-            KeyValueSet keyValueData = new KeyValueSet(key,value);
+            KeyValueSet keyValueData = new KeyValueSet(key, value);
             dataSet.add(keyValueData);
         }
     }
@@ -115,7 +123,6 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
 
                     //ibt_show_more.animate().rotation(180).start();
                     Toast.makeText(view.getContext(), "Expanding", Toast.LENGTH_SHORT).show();
-
                     vh.tvDesc.setVisibility(View.VISIBLE);
                     vh.dataHistoryChart.setVisibility(View.VISIBLE);
                 }
@@ -136,14 +143,17 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
         holder.tvValue.setText(dataSet.get(position).getValue());
 
         // take chart data
-        String[] _req={"WaggleIdHistory",Integer.toString(waggleId),col_waggleenv[position+2]};
+        String[] _req = {"WaggleIdHistory", Integer.toString(waggleId), col_waggleenv[position + 2]};
+
         //Result must be returned with only interested column data.
-        List<Entry> result = reqData.jsonAsEntryList(context.getString(R.string.target_addr),_req);
+        List<Entry> result = reqData.jsonAsEntryList(context.getString(R.string.target_addr), _req);
+        Log.d("kss", "size : "+result.size()+"");
+
         //Set the Chart
-        LineDataSet lineDataSet = new LineDataSet(result,_req[2]);
+        LineDataSet lineDataSet = new LineDataSet(result, _req[2]);
         //Design the Chart View
         lineDataSet.setLineWidth(2);
-        lineDataSet.setCircleRadius(6);
+        lineDataSet.setCircleRadius(4);
         lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
         lineDataSet.setCircleColorHole(Color.BLUE);
         lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
@@ -156,9 +166,12 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
         LineData lineData = new LineData(lineDataSet);
         holder.dataHistoryChart.setData(lineData);
 
-        holder.dataHistoryChart.setDoubleTapToZoomEnabled(false);
+        holder.dataHistoryChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM); // bottom X Axis
+        holder.dataHistoryChart.getAxisRight().setEnabled(false);   // no Right axis
+        //holder.dataHistoryChart.setDoubleTapToZoomEnabled(false);
         holder.dataHistoryChart.setDrawGridBackground(false);
         holder.dataHistoryChart.animateY(2000, Easing.EasingOption.EaseInCubic);
+
 
         ChartMarkerView chartMarkerView = new ChartMarkerView(context, R.layout.markerview);
         holder.dataHistoryChart.setMarker(chartMarkerView);

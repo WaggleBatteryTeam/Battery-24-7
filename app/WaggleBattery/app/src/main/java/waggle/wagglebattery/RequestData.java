@@ -267,8 +267,8 @@ public class RequestData {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd HH:mm:ss");
             Date now = Calendar.getInstance().getTime();
 
-
-            for(int i=0;i<jsonArray.length();i++) {
+            float cnt = 0;
+            for(int i=jsonArray.length()-20; i<jsonArray.length();i++) {
                 JSONObject obj = jsonArray.getJSONObject(i);
 
                 //Date Calculation
@@ -276,8 +276,10 @@ public class RequestData {
                 long diff = now.getTime() - past.getTime();
 
                 //Minute Calculation
-                Entry element = new Entry((float)(diff/(60*1000)),(float)(obj.getDouble(_column[2])));
+                //Entry element = new Entry((float)(diff/(60*1000)),(float)(obj.getDouble(_column[2])));
+                Entry element = new Entry((float)cnt,(float)(obj.getDouble(_column[2])));
                 entries.add(element);
+                cnt++;
             }
             return entries;
 
