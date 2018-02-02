@@ -70,5 +70,5 @@ create table BatteryStatus_log(
 	updated_time DATETIME NOT NULL,
 	notice VARCHAR(20) NOT NULL,
 	FOREIGN KEY (waggle_id) REFERENCES WaggleStack(waggle_id),
-	//PRIMARY KEY (waggle_id)
+	#PRIMARY KEY (waggle_id)
 );
