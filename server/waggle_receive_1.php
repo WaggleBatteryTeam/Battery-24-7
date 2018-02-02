@@ -12,12 +12,12 @@
         		if(!$conn) {
 					die("could not connect:" . mysql_error($conn));
 				}
+
+				return $conn
 			}
 
+			$waggle_conn = db_connection('waggle');
 			
-			include_once 'dbconnect_waggle.php';
-        	$conn = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
-
 			$waggle_id = $_POST['waggle_id'];
 			$remain_battery = $_POST['remain_battery'];
 			$voltage = $_POST['voltage'];
@@ -37,62 +37,64 @@
 			// under remain_battery 20%
 			
 			function send_notification ($tokens, $waggle_id, $remain_battery)
-		        {
-                		$url = 'https://fcm.googleapis.com/fcm/send';
-                		$fields = array(
-                			'registration_ids' => $tokens,
-                			'notification' => array('title' => 'Alert!', 'body' => $waggle_id.' has only '.$remain_battery.'%!!')
-                			//'data' => array('message' => $message)
-                		);
+	        {
+        		$url = 'https://fcm.googleapis.com/fcm/send';
+        		$fields = array(
+        			'registration_ids' => $tokens,
+        			'notification' => array('title' => 'Alert!', 'body' => $waggle_id.' has only '.$remain_battery.'%!!')
+        			//'data' => array('message' => $message)
+        		);
 
-                		$headers = array(
-                        		'Authorization:key =' . GOOGLE_API_KEY,
-                        		'Content-Type: application/json'
-                        	);
+        		$headers = array(
+                		'Authorization:key =' . GOOGLE_API_KEY,
+                		'Content-Type: application/json'
+                	);
 
-                		$ch = curl_init();
-                		curl_setopt($ch, CURLOPT_URL, $url);
-                		curl_setopt($ch, CURLOPT_POST, true);
-                		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-                		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-                		curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
-                		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-                		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
-                		$result = curl_exec($ch);
-                		if ($result === FALSE) {
-                 		       	die('Curl failed: ' . curl_error($ch));
-                		}
-                		curl_close($ch);
-                		return $result;
+        		$ch = curl_init();
+        		curl_setopt($ch, CURLOPT_URL, $url);
+        		curl_setopt($ch, CURLOPT_POST, true);
+        		curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+        		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        		curl_setopt ($ch, CURLOPT_SSL_VERIFYHOST, 0);
+        		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+        		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
+        		$result = curl_exec($ch);
+        		if ($result === FALSE) {
+         		       	die('Curl failed: ' . curl_error($ch));
         		}
+        		curl_close($ch);
+        		return $result;
+    		}
 
 			if($remain_battery < 20.0) {
 				// alarm
-        			//데이터베이스에 접속해서 토큰들을 가져와서 FCM에 발신요청
-        			include_once 'dbconnect_fcm.php';
-        			$conn_alarm = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
+    			//데이터베이스에 접속해서 토큰들을 가져와서 FCM에 발신요청
+				$set_conn = db_connection('waggle');
 
-        			$sql_alarm = "Select Token From users";
+    			include_once 'dbconnect_fcm.php';
+    			$conn_alarm = mysqli_connect(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-        			$result = mysqli_query($conn_alarm ,$sql_alarm);
-        			$tokens = array();
+    			$sql_alarm = "Select Token From users";
 
-        			if(mysqli_num_rows($result) > 0 ){
-                			while ($row = mysqli_fetch_assoc($result)) {
-                        			$tokens[] = $row["Token"];
-               		 		}
-        			}	
+    			$result = mysqli_query($conn_alarm ,$sql_alarm);
+    			$tokens = array();
 
-        			mysqli_close($conn_alarm);
+    			if(mysqli_num_rows($result) > 0 ){
+            			while ($row = mysqli_fetch_assoc($result)) {
+                    			$tokens[] = $row["Token"];
+           		 		}
+    			}	
 
-	        		$myMessage = $_POST['message']; //폼에서 입력한 메세지를 받음
-        			if ($myMessage == ""){
-                			$myMessage = "새글이 등록되었습니다.";
-        			}
+    			mysqli_close($conn_alarm);
 
-       				// $message = array("message" => $myMessage);
-        			$message_status = send_notification($tokens, $waggle_id, $remain_battery);
-        			echo $message_status;
+        		$myMessage = $_POST['message']; //폼에서 입력한 메세지를 받음
+    			if ($myMessage == ""){
+            			$myMessage = "새글이 등록되었습니다.";
+    			}
+
+   				// $message = array("message" => $myMessage);
+    			$message_status = send_notification($tokens, $waggle_id, $remain_battery);
+    			echo $message_status;
 
 				// put "YES" value to BatteryStatus notice colum
 			}
