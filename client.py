@@ -40,7 +40,7 @@ def run():
         cnt += 1
 
         now = time.localtime()
-        wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_m$
+        wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
         h,t = Adafruit_DHT.read_retry(sensor,22) # check temp & humid
         bvolt=port.readline() #check voltage
 
