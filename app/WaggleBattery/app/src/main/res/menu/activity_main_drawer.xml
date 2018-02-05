@@ -6,11 +6,11 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_wagglelist_layout"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/list"
             android:title="Waggle List" />
         <item
             android:id="@+id/nav_wagglemap_layout"
-            android:icon="@drawable/ic_menu_gallery"
+            android:icon="@drawable/map"
             android:title="Waggle Map" />
     </group>
 
