@@ -5,6 +5,8 @@
 	<body>
 		<?php
 			include_once 'db_connection.php';
+			include_once 'error_message.php';
+			
 
 			$waggle_conn = fn_db_connection('waggle');
 			
@@ -20,8 +22,6 @@
 			$notice = 'updated';
 
 			echo $waggle_id .", " . $temperature. ", " . $humidity . ", " . $updated_time;
-
-			
 
 			// Check how many $remain_battery is to alarm waring to manager
 			// under remain_battery 20%
@@ -49,9 +49,9 @@
         		curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
         		curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($fields));
         		$result = curl_exec($ch);
-        		if ($result === FALSE) {
-         		       	die('Curl failed: ' . curl_error($ch));
-        		}
+
+        		exception_handling($result, $ch);
+        		
         		curl_close($ch);
         		return $result;
     		}
@@ -90,14 +90,11 @@
 			$sql = "INSERT INTO BatteryStatus_log (waggle_id, remain_battery, voltage, charging, temperature, humidity, heater ,fan, updated_time, notice) VALUES ('".$waggle_id."','".$remain_battery."','".$voltage."','".$charging."','".$temperature."','".$humidity."','".$heater."','".$fan."','".$updated_time."','".$notice."')";
 			$retval = mysqli_query($waggle_conn, $sql);
 
-			if (!$retval) {
-				print "Fail : Insert into DB table BatteryStatus_log";
-				die ('die!: ') . ($waggle_conn);
-			} else {
-				print "!";
-			}
+
+			error_dbinsert($retval, $waggle_conn, 'BatteryStatus_log');
 
 			// Check if there is a tuple with particular waggle_id
+			// TODO 쿼리 수정 요망
 			$sel_sql = "SELECT * FROM BatteryStatus WHERE waggle_id='".$waggle_id."'";
 			//$sql = "SELECT * FROM BatteryStatus";
 			$result = mysqli_query($waggle_conn, $sel_sql);
@@ -149,6 +146,8 @@
 				"'";
 					
 				$retval1 = mysqli_query($waggle_conn, $sql1);
+
+				error_dbinsert($retval1, $waggle_conn, 'BatteryStatus');
 
 				if (!$retval1) {
 					print "Fail : Update into DB table BatteryStatus";
