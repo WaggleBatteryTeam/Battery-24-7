@@ -1,4 +1,4 @@
-package waggle.wagglebattery;
+package waggle.utility;
 
 import android.app.Activity;
 import android.widget.Toast;
@@ -17,7 +17,7 @@ public class BackPressCloseHandler {
     }
 
     public void onBackPressed(){
-        if(System.currentTimeMillis() > backKeyPressedTime + 2000){ // 2√ ∞° ¿˚¥Á«œ¥Ÿ¥œ±Ó
+        if(System.currentTimeMillis() > backKeyPressedTime + 2000){
             backKeyPressedTime = System.currentTimeMillis();
             Toast.makeText(activity, "Press twice to exit", Toast.LENGTH_SHORT).show();
             return ;

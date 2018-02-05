@@ -1,4 +1,4 @@
-package waggle.wagglebattery;
+package waggle.utility;
 
 import android.content.ContentValues;
 import android.util.Log;
@@ -19,7 +19,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;

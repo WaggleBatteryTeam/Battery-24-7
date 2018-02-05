@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import waggle.utility.RequestData;
 import waggle.waggle.wagglebattery.adapter.WaggleStatusAdapter;
 
 /**

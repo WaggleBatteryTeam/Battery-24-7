@@ -9,14 +9,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.LimitLine;
-import com.github.mikephil.charting.components.MarkerView;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
@@ -27,7 +24,7 @@ import java.util.List;
 
 import waggle.wagglebattery.ChartMarkerView;
 import waggle.wagglebattery.R;
-import waggle.wagglebattery.RequestData;
+import waggle.utility.RequestData;
 
 /**
  * Created by parksanguk on 1/24/18.
