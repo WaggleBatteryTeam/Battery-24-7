@@ -19,7 +19,6 @@
 			$heater = $_POST['heater'];
 			$fan = $_POST['fan'];
 			$updated_time = $_POST['updated_time'];
-			$notice = 'updated';
 
 			echo $waggle_id .", " . $temperature. ", " . $humidity . ", " . $updated_time;
 
@@ -149,24 +148,13 @@
 
 				error_dbinsert($retval1, $waggle_conn, 'BatteryStatus');
 
-				if (!$retval1) {
-					print "Fail : Update into DB table BatteryStatus";
-					die ('die!: ') . ($waggle_conn);
-				} else {
-					print "!";
-				}
 			}
 			else {
 				// insert sentence should be run
 				$sql = "INSERT INTO BatteryStatus (waggle_id, remain_battery, voltage, charging, temperature, humidity, heater ,fan, updated_time, notice) VALUES ('".$waggle_id."','".$remain_battery."','".$voltage."','".$charging."','".$temperature."','".$humidity."','".$heater."','".$fan."','".$updated_time."','".$notice."')";
 				$retval = mysqli_query($waggle_conn, $sql);
 
-				if (!$retval) {
-					print "Fail : Insert into DB table BatteryStatus";
-					die ('die!: ') . ($waggle_conn);
-				} else {
-					print "!";
-				}
+				error_dbinsert($retval, $waggle_conn, 'BatteryStatus');
 			}
 
 			mysqli_close($waggle_conn);
