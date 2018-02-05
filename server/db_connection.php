@@ -4,13 +4,13 @@
 
 	function fn_db_connection($wanted_db)
 	{
-		if (strcmp($wanted_db, 'waggle')){
+		if ($wanted_db === 'waggle'){
 			$dbhost = 'localhost';
 			$dbuser = 'root';
 			$dbpass = 'waggle';
 			$dbname = 'waggle';
 			
-		} elseif (strcmp($wanted_db, 'fcm')) {
+		} elseif ($wanted_db === 'fcm') {
 			$dbhost = 'localhost';
 			$dbuser = 'root';
 			$dbpass = 'waggle';
