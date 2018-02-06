@@ -10,6 +10,7 @@
 			$dbname = 'waggle';
 			$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
+
 			$waggle_id = $_POST['waggle_id'];
 			$remain_battery = $_POST['remain_battery'];
 			$voltage = $_POST['voltage'];
@@ -103,10 +104,12 @@
 			*/
 			$ret_day = date('w'); // 0 is sunday, 1 is monday... 
 			$is_csv_out = 0; // 0 is 'not yet', 1 is 'of course'!
+
 			if($is_csv_out === 0 and $ret_day === 0){ // if today is sunday and no cvs file
 				$today = date("Ymd");
 
-				$sql_outfile_csv = "SELECT *
+				// 'updated_time' ~ between this sunday and last sunday
+				$sql_csv_thisweek = "SELECT *
 							 FROM BatteryStatus_log
 							 WHERE updated_time > date_add(now(), interval -1 week) 
 							 INTO OUTFILE concat('/var/lib/mysql-files/', "
@@ -118,13 +121,30 @@
 							 TERMINATED BY ';'
 							 ESCAPED BY '"'
 							 LINES TERMINATED BY '\r\n'";	
-				$sql_outfile_csv_today = mysqli_query($conn, $sql_outfile_csv);
-				if (!$sql_outfile_csv_today) {
+				$sql_csv_thisweek_outfile = mysqli_query($conn, $sql_csv_thisweek); // filename = today's date
+
+				
+				if (!$sql_csv_thisweek_outfile) {
 					print "Fail : Making CSV file";
 					die ('die!: ') . ($conn);
 				} else {
 					print "!";
 				}
+
+				$sql_delete_thisweek = "DELETE FROM BatteryStatus_log 
+										WHERE updated_time > date_add(now(), interval -1 week)";
+				$sql_delete_thisweek_out = mysqli_query($conn, $sql_delete_thisweek); 
+
+				if (!$sql_delete_thisweek_out) {
+					print "Fail : Delete this week data ";
+					die ('die!: ') . ($conn);
+				} else {
+					print "!";
+				}
+
+				$is_csv_out = 1; // success out csv file
+			} elseif ($today != 0 && $is_csv_out === 1) {
+				$is_csv_out = 0; //reset flag
 			}
 			
 
