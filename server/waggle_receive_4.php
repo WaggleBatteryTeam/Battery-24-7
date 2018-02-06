@@ -10,7 +10,6 @@
 			$dbname = 'waggle';
 			$conn = mysqli_connect($dbhost, $dbuser, $dbpass, $dbname);
 
-
 			$waggle_id = $_POST['waggle_id'];
 			$remain_battery = $_POST['remain_battery'];
 			$voltage = $_POST['voltage'];
@@ -102,8 +101,17 @@
 				지운다
 			}
 			*/
+		
 			$ret_day = date('w'); // 0 is sunday, 1 is monday... 
-			$is_csv_out = 0; // 0 is 'not yet', 1 is 'of course'!
+			$sql_is_csv_out = "select is_csv_out from CSV_OUT"; 
+			$is_csv_out = mysqli_query($conn, $sql_is_csv_out); // 0 is 'not yet', 1 is 'of course'!
+
+			if (!$is_csv_out) {
+				print "Fail : No CSV_OUT CONST";
+				die ('die!: ') . ($conn);
+			} else {
+				print "!";
+			}
 
 			if($is_csv_out === 0 and $ret_day === 0){ // if today is sunday and no cvs file
 				$today = date("Ymd");
@@ -142,7 +150,16 @@
 					print "!";
 				}
 
-				$is_csv_out = 1; // success out csv file
+				$sql_csv_out_rewrite = "INSERT INTO CSV_OUT VALUES (1)";
+				$csv_out_rewrite = mysqli_query($conn, $sql_csv_out_rewrite); // success out csv file
+				
+				if (!$csv_out_rewrite) {
+					print "Fail : Insert CSV_OUT CONST into DB ";
+					die ('die!: ') . ($conn);
+				} else {
+					print "!";
+				}
+
 			} elseif ($today != 0 && $is_csv_out === 1) {
 				$is_csv_out = 0; //reset flag
 			}
