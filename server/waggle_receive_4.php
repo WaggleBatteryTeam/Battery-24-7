@@ -102,12 +102,13 @@
 			}
 			*/
 			$ret_day = date('w'); // 0 is sunday, 1 is monday... 
-			if($ret_day === 0){
+			$is_csv_out = 0; // 0 is 'not yet', 1 is 'of course'!
+			if($is_csv_out === 0 and $ret_day === 0){ // if today is sunday and no cvs file
 				$today = date("Ymd");
 
 				$sql_outfile_csv = "SELECT *
 							 FROM BatteryStatus_log
-							 WHERE updated_time > date_add(now(), interval -1 week)
+							 WHERE updated_time > date_add(now(), interval -1 week) 
 							 INTO OUTFILE concat('/var/lib/mysql-files/', "
 							 .
 							 $today
