@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 public class BackPressCloseHandler {
 
-    private float backKeyPressedTime = 0;
+    private float backKeyPressedTime = 0; //first back key pressed time
     private Activity activity;
 
     public BackPressCloseHandler(Activity context){
@@ -17,13 +17,14 @@ public class BackPressCloseHandler {
     }
 
     public void onBackPressed(){
-        if(System.currentTimeMillis() > backKeyPressedTime + 2000){
+        if(System.currentTimeMillis() > backKeyPressedTime + 2000){ 
+        	// press back key twice but when gap of that time is over 2 seconds
             backKeyPressedTime = System.currentTimeMillis();
             Toast.makeText(activity, "Press twice to exit", Toast.LENGTH_SHORT).show();
             return ;
         }
         else if(System.currentTimeMillis() <= backKeyPressedTime + 2000){
-            activity.finish();
+            activity.finish(); // application bye bye 
         }
     }
 }
