@@ -150,18 +150,20 @@
 					print "!";
 				}
 
-				$sql_csv_out_rewrite = "INSERT INTO CSV_OUT VALUES (1)";
-				$csv_out_rewrite = mysqli_query($conn, $sql_csv_out_rewrite); // success out csv file
-				
-				if (!$csv_out_rewrite) {
-					print "Fail : Insert CSV_OUT CONST into DB ";
-					die ('die!: ') . ($conn);
-				} else {
-					print "!";
-				}
+				$is_csv_out = 1; //reset flag
 
 			} elseif ($today != 0 && $is_csv_out === 1) {
 				$is_csv_out = 0; //reset flag
+			}
+
+			$sql_csv_out_rewrite = "INSERT INTO CSV_OUT VALUES (" . $is_csv_out . ")";
+			$csv_out_rewrite = mysqli_query($conn, $sql_csv_out_rewrite); // success out csv file
+			
+			if (!$csv_out_rewrite) {
+				print "Fail : Insert CSV_OUT CONST into DB ";
+				die ('die!: ') . ($conn);
+			} else {
+				print "!";
 			}
 			
 
