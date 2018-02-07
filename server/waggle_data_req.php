@@ -22,10 +22,14 @@
 		$waggle_id = $_POST['id'];
 		
 		if($req === "WaggleIdLatest"){	
-			$query = "SELECT * FROM Monitor WHERE waggle_id = " . $waggle_id;
+			$query = "SELECT * FROM BatteryStatus WHERE waggle_id = " . $waggle_id;
 		}
 		elseif($req === "WaggleIdHistory"){
-			$query = "SELECT * FROM WaggleEnv WHERE waggle_id = " . $waggle_id;
+			$query = "SELECT * FROM BatteryStatus_log WHERE waggle_id = " . $waggle_id;
+		}
+		elseif($req === "ColumnName"){
+			$table_name = $_POST['id'];
+			$query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'waggle' AND TABLE_NAME = '" . $table_name . "'";
 		}
 
 	}
