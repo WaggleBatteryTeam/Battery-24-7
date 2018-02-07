@@ -1,8 +1,10 @@
 package waggle.waggle.wagglebattery.adapter;
 
 import android.content.Context;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.FitWindowsFrameLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,15 +27,17 @@ public class WaggleListViewAdapter extends BaseAdapter {
 
     private Context context;
     private ArrayList<WaggleLocationInfo> waggleLocationInfoList;
+    private Integer[] imgid;
 
     // ListViewAdapter의 생성자
     public WaggleListViewAdapter() {
 
     }
 
-    public WaggleListViewAdapter(Context context, ArrayList<WaggleLocationInfo> waggleLocationInfoList) {
+    public WaggleListViewAdapter(Context context, ArrayList<WaggleLocationInfo> waggleLocationInfoList, Integer[] imgid) {
         this.context = context;
         this.waggleLocationInfoList = waggleLocationInfoList;
+        this.imgid=imgid;
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
@@ -68,7 +72,9 @@ public class WaggleListViewAdapter extends BaseAdapter {
         WaggleLocationInfo waggleLocationInfo = waggleLocationInfoList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        wImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.testimage));
+        //wImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.testimage));
+
+        wImageView.setImageResource(imgid[position]);
         wIdTextView.setText(waggleLocationInfo.getWaggleId()+"");
         wLatTextView.setText(waggleLocationInfo.getWaggleLat()+"");
         wLonTextView.setText(waggleLocationInfo.getWaggleLon()+"");

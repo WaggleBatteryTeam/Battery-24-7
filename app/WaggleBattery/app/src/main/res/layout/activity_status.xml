@@ -11,44 +11,45 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:weightSum="4"
-            android:layout_marginTop="10dp"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
-            android:orientation="horizontal">
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal"
+            android:weightSum="4">
 
             <ImageView
                 android:id="@+id/iv_waggle"
-                android:layout_width="0dp"
+                android:layout_width="89dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
                 android:layout_marginLeft="4dp"
-                android:layout_marginRight="4dp"
-                android:src="@drawable/testimage"/>
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:paddingRight="0dp"
+                 />
 
             <!-- Text layout for Basic Information -->
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="169dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 android:orientation="vertical">
 
                 <!-- waggle id -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:weightSum="2"
                     android:background="@drawable/border"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <!-- Title -->
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textStyle="bold"
+                        android:text="ID"
                         android:textSize="18dp"
-                        android:text="ID"/>
+                        android:textStyle="bold" />
 
                     <!-- Value -->
                     <TextView
@@ -56,9 +57,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textStyle="normal"
+                        android:text="ID"
                         android:textSize="18dp"
-                        android:text="ID"/>
+                        android:textStyle="normal" />
 
                 </LinearLayout>
 
@@ -67,17 +68,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"
-                    android:weightSum="2"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <!-- Title -->
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textStyle="bold"
+                        android:text="Charging"
                         android:textSize="18dp"
-                        android:text="Charging"/>
+                        android:textStyle="bold" />
 
                     <!-- Value -->
                     <TextView
@@ -85,9 +86,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:textStyle="normal"
+                        android:text="ON/OFF"
                         android:textSize="18dp"
-                        android:text="ON/OFF"/>
+                        android:textStyle="normal" />
 
                 </LinearLayout>
 
@@ -95,18 +96,19 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@drawable/border"
-                    android:weightSum="2"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <!-- Title -->
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="Heater"
                         android:textSize="18dp"
-                        android:textStyle="bold"
-                        android:text="Heater"/>
+                        android:textStyle="bold" />
 
                     <!-- Value -->
                     <TextView
@@ -114,9 +116,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="ON/OFF"
                         android:textSize="18dp"
-                        android:textStyle="normal"
-                        android:text="ON/OFF"/>
+                        android:textStyle="normal" />
 
                 </LinearLayout>
 
@@ -125,17 +127,17 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/border"
-                    android:weightSum="2"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:weightSum="2">
 
                     <!-- Title -->
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="Fan"
                         android:textSize="18dp"
-                        android:textStyle="bold"
-                        android:text="Fan"/>
+                        android:textStyle="bold" />
 
                     <!-- Value -->
                     <TextView
@@ -143,9 +145,9 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
+                        android:text="ON/OFF"
                         android:textSize="18dp"
-                        android:textStyle="normal"
-                        android:text="ON/OFF"/>
+                        android:textStyle="normal" />
 
                 </LinearLayout>
             </LinearLayout>
