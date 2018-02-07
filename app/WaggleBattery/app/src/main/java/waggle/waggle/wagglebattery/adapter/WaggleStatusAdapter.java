@@ -22,9 +22,10 @@ import com.github.mikephil.charting.data.LineDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import waggle.wagglebattery.BuildConfig;
 import waggle.wagglebattery.ChartMarkerView;
 import waggle.wagglebattery.R;
-import waggle.utility.RequestData;
+import waggle.utility.DownloadDataTask;
 
 /**
  * Created by parksanguk on 1/24/18.
@@ -38,8 +39,7 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
     final private String[] colName = {"remain_battery", "temperature", "humidity"};      //Colname of Monitor.
     final private String[] title = {"Battery", "Temperature", "Humidity"};      //Name for cardview that is shown in Android application View.
     final private String[] col_waggleenv = {"waggle_id", "updated_time", "remain_battery", "temperature", "humidity"};
-
-    private RequestData reqData = new RequestData();
+    private List<Entry> mRes = null;
 
     private static class KeyValueSet {
         String key;
@@ -133,46 +133,60 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         holder.tvTitle.setText(dataSet.get(position).getKey());
         holder.tvValue.setText(dataSet.get(position).getValue());
 
-        // take chart data
-        String[] _req = {"WaggleIdHistory", Integer.toString(waggleId), col_waggleenv[position + 2]};
-
         //Result must be returned with only interested column data.
-        List<Entry> result = reqData.jsonAsEntryList(context.getString(R.string.target_addr), _req);
-        Log.d("kss", "size : "+result.size()+"");
+        ContentValues option = new ContentValues();
+        ContentValues req = new ContentValues();
+        ContentValues columns = new ContentValues();
 
-        //Set the Chart
-        LineDataSet lineDataSet = new LineDataSet(result, _req[2]);
-        //Design the Chart View
-        lineDataSet.setLineWidth(2);
-        lineDataSet.setCircleRadius(4);
-        lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
-        lineDataSet.setCircleColorHole(Color.BLUE);
-        lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
-        lineDataSet.setDrawCircleHole(true);
-        lineDataSet.setDrawCircles(true);
-        lineDataSet.setDrawHorizontalHighlightIndicator(false);
-        lineDataSet.setDrawHighlightIndicators(false);
-        lineDataSet.setDrawValues(false);
+        option.put("url",context.getString(R.string.target_addr));
+        option.put("ReturnType",2);
 
-        LineData lineData = new LineData(lineDataSet);
-        holder.dataHistoryChart.setData(lineData);
+        req.put("req","WaggleIdHistory");
+        req.put("id",Integer.toString(waggleId));
 
-        holder.dataHistoryChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM); // bottom X Axis
-        holder.dataHistoryChart.getAxisRight().setEnabled(false);   // no Right axis
-        //holder.dataHistoryChart.setDoubleTapToZoomEnabled(false);
-        holder.dataHistoryChart.setDrawGridBackground(false);
-        holder.dataHistoryChart.animateY(2000, Easing.EasingOption.EaseInCubic);
+        columns.put("0",col_waggleenv[position+2]);
+
+        new DownloadDataTask(new DownloadDataTask.AsyncResponse() {
+            @Override
+            public void processFinish(Object output) {
+                mRes = (List<Entry>) output;
+                //Set the Chart
+                LineDataSet lineDataSet = new LineDataSet(mRes, col_waggleenv[position + 2]);
+                //Design the Chart View
+                lineDataSet.setLineWidth(2);
+                lineDataSet.setCircleRadius(4);
+                lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"));
+                lineDataSet.setCircleColorHole(Color.BLUE);
+                lineDataSet.setColor(Color.parseColor("#FFA1B4DC"));
+                lineDataSet.setDrawCircleHole(true);
+                lineDataSet.setDrawCircles(true);
+                lineDataSet.setDrawHorizontalHighlightIndicator(false);
+                lineDataSet.setDrawHighlightIndicators(false);
+                lineDataSet.setDrawValues(false);
+
+                LineData lineData = new LineData(lineDataSet);
+                holder.dataHistoryChart.setData(lineData);
+
+                holder.dataHistoryChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM); // bottom X Axis
+                holder.dataHistoryChart.getAxisRight().setEnabled(false);   // no Right axis
+                //holder.dataHistoryChart.setDoubleTapToZoomEnabled(false);
+                holder.dataHistoryChart.setDrawGridBackground(false);
+                holder.dataHistoryChart.animateY(2000, Easing.EasingOption.EaseInCubic);
 
 
-        ChartMarkerView chartMarkerView = new ChartMarkerView(context, R.layout.markerview);
-        holder.dataHistoryChart.setMarker(chartMarkerView);
-        holder.dataHistoryChart.invalidate();
+                ChartMarkerView chartMarkerView = new ChartMarkerView(context, R.layout.markerview);
+                holder.dataHistoryChart.setMarker(chartMarkerView);
+                holder.dataHistoryChart.invalidate();
+
+            }
+        }).execute(option,req,columns);
+        //if ( BuildConfig.DEBUG) Log.d("kss", "size : "+ mRes.size()+"");
     }
 
     // Return the size of your dataset (invoked by the layout manager)

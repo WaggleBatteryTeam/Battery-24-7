@@ -2,7 +2,6 @@ package waggle.wagglebattery;
 
 import android.content.ContentValues;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,8 +11,8 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import waggle.utility.RequestData;
 import waggle.waggle.wagglebattery.adapter.WaggleStatusAdapter;
+import waggle.utility.DownloadDataTask;
 
 /**
  * Created by parksanguk on 1/16/18.
@@ -21,16 +20,14 @@ import waggle.waggle.wagglebattery.adapter.WaggleStatusAdapter;
 
 public class StatusActivity extends AppCompatActivity {
 
-    String[] _req={"WaggleIdLatest",null,"remain_battery","voltage","charging","temperature","humidity","heater","fan", "updated_time", "notice"}; //colname of Monitor
-    private RequestData reqData = new RequestData();
-    private int waggle_id = 0 ;
+    private int mWaggleId = 0 ;
     private String _target_url;
     private TextView tvWaggleId;
     private TextView tvCharging;
     private TextView tvHeater;
     private TextView tvFan;
     private TextView tvUpdateInfo;
-    private ContentValues res = null;
+    private ContentValues mColumns = null, mRequest = null, mOption = null, mRes = new ContentValues();
     private RecyclerView.Adapter adapter = null;
 
     @Override
@@ -42,14 +39,8 @@ public class StatusActivity extends AppCompatActivity {
 
         //Get Waggle_id Value from parent Activity.
         Intent intent = getIntent();
-        waggle_id = intent.getExtras().getInt("waggleId");
-        Log.i("kss", "Variable from former screen : "+Integer.toString(waggle_id));
-
-        _req[1] = Integer.toString(waggle_id);
-
-        res = reqData.jsonAsContentValueForLatestData(_target_url,_req);
-
-        //WaggleInfo LinearLayout Setting
+        mWaggleId = intent.getExtras().getInt("waggleId");
+        if (BuildConfig.DEBUG) Log.d("kss", "Variable from former screen : "+Integer.toString(mWaggleId));
 
         // TextView for update information.
         tvWaggleId = (TextView) findViewById(R.id.tv_waggle_id);
@@ -58,12 +49,42 @@ public class StatusActivity extends AppCompatActivity {
         tvFan = (TextView) findViewById(R.id.tv_fan);
         tvUpdateInfo = (TextView) findViewById(R.id.tv_update_info);
 
-        // waggle 기본 정보 띄우기
-        tvWaggleId.setText(_req[1]);
-        tvCharging.setText(res.getAsString("charging"));
-        tvHeater.setText(res.getAsString("heater"));
-        tvFan.setText(res.getAsString("fan"));
-        tvUpdateInfo.setText("Updated : " + res.getAsString("updated_time"));    // 최종 update한 시간
+        mOption = new ContentValues();
+        mOption.put("url", _target_url);
+        mOption.put("ReturnType",0);
+        //Request Data to Server.
+
+        mRequest = new ContentValues();
+        mRequest.put("req","WaggleIdLatest");
+        mRequest.put("id",Integer.toString(mWaggleId));
+
+        mColumns = new ContentValues();
+        mColumns.put("0","charging");
+        mColumns.put("1","heater");
+        mColumns.put("2","fan");
+        mColumns.put("3","updated_time");
+
+        new DownloadDataTask(new DownloadDataTask.AsyncResponse() {
+
+            @Override
+            public void processFinish(Object output) {                //get One Value
+                ContentValues res = (ContentValues) output;
+
+                // waggle 기본 정보 띄우기
+                tvWaggleId.setText(String.valueOf(mWaggleId));
+                tvCharging.setText(res.getAsString("charging"));
+                tvHeater.setText(res.getAsString("heater"));
+                tvFan.setText(res.getAsString("fan"));
+                // 최종 update한 시간
+                tvUpdateInfo.setText("Updated : " + mRes.getAsString("updated_time"));
+
+                mRes.put("remain_battery",res.getAsString("remain_battery"));
+                mRes.put("temperature",res.getAsString("temperature"));
+                mRes.put("humidity",res.getAsString("humidity"));
+            }
+        }).execute(mOption,mRequest,mColumns);
+        //WaggleInfo LinearLayout Setting
+
 
         //RecyclerView Setting
         RecyclerView recyclerView= (RecyclerView) findViewById(R.id.rcview);
@@ -73,19 +94,33 @@ public class StatusActivity extends AppCompatActivity {
         lim.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(lim);
 
-        adapter = new WaggleStatusAdapter(getApplicationContext(),waggle_id,res);
+        adapter = new WaggleStatusAdapter(getApplicationContext(),mWaggleId,mRes);
         recyclerView.setAdapter(adapter);
+
 
         ImageView bt_refresh = findViewById(R.id.bt_refresh);
         bt_refresh.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RefreshBatteryInfoTask refreshBatteryInfoTask = new RefreshBatteryInfoTask();
-                refreshBatteryInfoTask.execute();
+                new DownloadDataTask(new DownloadDataTask.AsyncResponse() {
+                    @Override
+                    public void processFinish(Object output) {
+                        mRes = (ContentValues) output;
+
+                        // waggle 기본 정보 띄우기
+                        tvWaggleId.setText(String.valueOf(mWaggleId));
+                        tvCharging.setText(mRes.getAsString("charging"));
+                        tvHeater.setText(mRes.getAsString("heater"));
+                        tvFan.setText(mRes.getAsString("fan"));
+                        // 최종 update한 시간
+                        tvUpdateInfo.setText("Updated : " + mRes.getAsString("updated_time"));
+                    }
+                }).execute(mOption,mRequest,mColumns);
             }
         });
     }
 
+    /*
     // Refresh Battery Infomation
     private class RefreshBatteryInfoTask extends AsyncTask<Void, Void, Void> {
 
@@ -109,6 +144,6 @@ public class StatusActivity extends AppCompatActivity {
             // Inform the changed values of res to adapter
             adapter.notifyDataSetChanged();
         }
-    }
+    }*/
 }
 

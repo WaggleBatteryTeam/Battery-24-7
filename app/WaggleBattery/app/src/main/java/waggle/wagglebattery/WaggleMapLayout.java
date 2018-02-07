@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
-import waggle.utility.RequestData;
+import waggle.utility.DownloadDataTask;
 
 /**
  * Created by nable on 2018-01-16.
@@ -34,11 +34,31 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
     private ArrayList<WaggleLocationInfo> waggleLocationInfoList = null;
     //private WaggleListLocationTask waggleListLocationTask;
-    private String _target_url;
     private Fragment fragment = null;
     private FragmentTransaction fragmentTransaction;
 
-    private RequestData reqData = new RequestData();
+    private ContentValues[] mRes = null;
+    private ContentValues mColumns = null;
+
+    private DownloadDataTask mDownloadDataTask = new DownloadDataTask(new DownloadDataTask.AsyncResponse() {
+
+        @Override
+        public void processFinish(Object output) {                //get One Value
+            mRes = (ContentValues[]) output;
+
+            int waggleId;
+            double waggleLat, waggleLon;
+            String waggleDate;
+            for (int i = 0; i < mRes.length; i++) {
+                waggleId = mRes[i].getAsInteger("waggle_id");
+                waggleLon = mRes[i].getAsDouble("longtitude");
+                waggleLat = mRes[i].getAsDouble("latitude");
+                waggleDate = mRes[i].getAsString("date_created");
+                WaggleLocationInfo waggleLocationInfo = new WaggleLocationInfo(waggleId, waggleLat, waggleLon, waggleDate);
+                waggleLocationInfoList.add(waggleLocationInfo);
+            }
+        }
+    });
 
     @Nullable
     @Override
@@ -47,19 +67,12 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
 
         waggleLocationInfoList = new ArrayList<WaggleLocationInfo>();
 
-        // URL 설정.
-        _target_url=getString(R.string.target_addr);
-
         addNewWaggleLocation();
 
         if (fragment == null) {
             fragment = getFragmentManager().findFragmentById(R.id.map);
             fragmentTransaction = getFragmentManager().beginTransaction();
         }
-
-        // AsyncTask를 통해 HttpURLConnection 수행, waggle 데이터 불러와서 waggleLocationInfoList에 저장
-        //waggleListLocationTask = new WaggleListLocationTask(_target_url, null);
-        //waggleListLocationTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 
         return v;
     }
@@ -111,25 +124,25 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
     }
 
     private void addNewWaggleLocation() {
-        ContentValues[] resHttpReq;
 
         //_req[0] for POST Query and the others are column names.
         //Refer to WaggleEnv
-        String[] _req={"WaggleLoc","waggle_id","longtitude","latitude","date_created"};
+        ContentValues option = new ContentValues();
+        ContentValues req = new ContentValues();
 
-        resHttpReq = reqData.jsonAsContentValues(_target_url, _req);
+        option.put("url",getString(R.string.target_addr));
+        option.put("ReturnType",1);
 
-        int waggleId;
-        double waggleLat, waggleLon;
-        String waggleDate;
-        for (int i = 0; i < resHttpReq.length; i++) {
-            waggleId = resHttpReq[i].getAsInteger("waggle_id");
-            waggleLon = resHttpReq[i].getAsDouble("longtitude");
-            waggleLat = resHttpReq[i].getAsDouble("latitude");
-            waggleDate = resHttpReq[i].getAsString("date_created");
-            WaggleLocationInfo waggleLocationInfo = new WaggleLocationInfo(waggleId, waggleLat, waggleLon, waggleDate);
-            waggleLocationInfoList.add(waggleLocationInfo);
-        }
+        req.put("req","WaggleLoc");
+
+        mColumns = new ContentValues();
+        mColumns.put("0","waggle_id");
+        mColumns.put("1","longtitude");
+        mColumns.put("2","latitude");
+        mColumns.put("3","date_created");
+
+        mDownloadDataTask.execute(option,req,mColumns);
+
         Toast.makeText(getContext(), "Loaded", Toast.LENGTH_LONG).show();
     }
 
