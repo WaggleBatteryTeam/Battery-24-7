@@ -112,7 +112,7 @@
                 $today = date("Ymd");
 
                 // 'updated_time' ~ between this sunday and last sunday
-                $sql_csv_thisweek = "SELECT * FROM BatteryStatus_log WHERE updated_time between date_add(now(), interval -2 day) and date_add(now(), interval -1 day) INTO OUTFILE '/var/lib/mysql-files/" . $today . ".csv' FIELDS ENCLOSED BY '^' TERMINATED BY ';' ESCAPED BY '^' LINES TERMINATED BY '\r\n'";
+                $sql_csv_thisweek = "SELECT * FROM BatteryStatus_log WHERE updated_time between date_add(now(), interval -2 day) and date_add(now(), interval -1 day) INTO OUTFILE '/var/lib/mysql-files/" . $today . ".csv' FIELDS ENCLOSED BY '^' TERMINATED BY ';' ESCAPED BY '^' LINES TERMINATED BY '\\r\\n'";
 
                 $sql_csv_thisweek_outfile = mysqli_query($conn, $sql_csv_thisweek); // filename = today's date
 
@@ -135,7 +135,7 @@
                 }
 */
                 $is_csv_out = 1; // reset flag
-            } elseif ($today != 0 and $is_csv_out === 1) {
+            } elseif ($ret_day != 0 and $is_csv_out == 1) {
                 $is_csv_out = 0; //reset flag
             }
 
@@ -144,7 +144,7 @@
 
 
             if($is_csv_out === 0 or $is_csv_out === 1){
-                $sql_csv_out_rewrite = "update CSV_OUT set is_csv_out " . $is_csv_out .  " where  is_csv_out is not null";
+                $sql_csv_out_rewrite = "update CSV_OUT set is_csv_out =" . $is_csv_out .  " where  is_csv_out is not null";
                 $csv_out_rewrite = mysqli_query($conn, $sql_csv_out_rewrite); // success out csv file
 
                 if (!$csv_out_rewrite) {
@@ -154,8 +154,6 @@
                     print "!";
                 }
             }
-
-
 
 
 
