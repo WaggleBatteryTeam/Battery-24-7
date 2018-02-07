@@ -123,8 +123,8 @@
                 } else {
                         print "!";
                 }
-
-/*                              $sql_delete_thisweek = "DELETE FROM BatteryStatus_log WHERE updated_time > date_add(now(), interval -1 week)";
+            
+				$sql_delete_thisweek = "DELETE FROM BatteryStatus_log WHERE updated_time between date_add(now(), interval -2 day) and date_add(now(), interval -1 day)";
                 $sql_delete_thisweek_out = mysqli_query($conn, $sql_delete_thisweek);
 
                 if (!$sql_delete_thisweek_out) {
@@ -133,17 +133,14 @@
                 } else {
                         print "!";
                 }
-*/
+
                 $is_csv_out = 1; // reset flag
-            } elseif ($ret_day != 0 and $is_csv_out == 1) {
+            } elseif ($ret_day != 3 and $is_csv_out == 1) {
                 $is_csv_out = 0; //reset flag
             }
 
 
-
-
-
-            if($is_csv_out === 0 or $is_csv_out === 1){
+            if($is_csv_out == 0 or $is_csv_out == 1){
                 $sql_csv_out_rewrite = "update CSV_OUT set is_csv_out =" . $is_csv_out .  " where  is_csv_out is not null";
                 $csv_out_rewrite = mysqli_query($conn, $sql_csv_out_rewrite); // success out csv file
 
@@ -154,8 +151,6 @@
                     print "!";
                 }
             }
-
-
 
 
 
