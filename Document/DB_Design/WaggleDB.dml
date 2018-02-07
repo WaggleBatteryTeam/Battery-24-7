@@ -1,20 +1,56 @@
 
-
 # Select the newest data from WaggleEnv table
-select waggle_id, max(created_time), temperature, humidity, voltage, current
- from WaggleEnv group by waggle_id;
+	SELECT waggle_id, MAX(created_time), temperature, humidity, voltage, current
+	FROM WaggleEnv 
+	GROUP BY waggle_id;
 
- select WaggleEnv.waggle_id, max(WaggleEnv.created_time) 
- from WaggleEnv group by WaggleEnv.waggle_id;
+	SELECT WaggleEnv.waggle_id, MAX(WaggleEnv.created_time) 
+	FROM WaggleEnv 
+	GROUP BY WaggleEnv.waggle_id;
 
-
-# Insert neweest data from WaggleEnv into Monitor(When the same waggle_id is not in the table)
-  INSERT INTO Monitor(waggle_id, battery, charging, heater, fan, update_time, notice) 
-  SELECT WaggleEnv.waggle_id, 92.2, 'ON', 'ON', 'ON', MAX(WaggleEnv.created_time), 'INSERT' 
-  FROM WaggleEnv group by WaggleEnv.waggle_id;
+# Insert newest data from WaggleEnv into Monitor(When the same waggle_id is not in the table)
+	INSERT INTO Monitor(waggle_id, battery, charging, heater, fan, update_time, notice) 
+	SELECT WaggleEnv.waggle_id, 92.2, 'ON', 'ON', 'ON', MAX(WaggleEnv.created_time), 'INSERT' 
+	FROM WaggleEnv 
+	GROUP BY WaggleEnv.waggle_id;
 
 # Update Monitor
-UPDATE Monitor a
-SET a.update_time = (select max(b.created_time) 
-from WaggleEnv b where a.waggle_id=b.waggle_id)
-a.notice='UPDATE';
+	UPDATE Monitor a
+	SET a.update_time = (SELECT MAX(b.created_time) 
+	FROM WaggleEnv b 
+	WHERE a.waggle_id=b.waggle_id)
+	a.notice='UPDATE';
+
+
+
+## Update DML because tables are changed ##
+## Modified by Hyom 2018-02-07 ##
+
+# extract CSV file
+# file name = today's date (YYYYMMDD)
+# When write this sql into php file, please replace '\'' to '\\''
+SELECT * 
+FROM BatteryStatus_log
+WHERE updated_time BETWEEN date_add(now(), interval -1 day) AND date_add(now(), interval -8 day) 
+INTO OUTFILE '/var/lib/mysql-files/20180207.csv'
+FIELDS ENCLOSED BY '^' 
+TERMINATED BY ';' 
+ESCAPED BY '^' 
+LINES TERMINATED BY '\r\n'  ; 
+
+
+# Delete Data when that data extracted to CSV file
+DELETE FROM BatteryStatus_log 
+WHERE updated_time BETWEEN date_add(now(), interval -1 day) AND date_add(now(), interval -8 day) ;
+
+
+
+# Restore CSV file from local file to database
+# Please write the file name manually
+# When write this sql into php file, please replace '\'' to '\\''
+LOAD DATA LOCAL INFILE '/var/lib/mysql-files/20180207.csv' 
+INTO TABLE BatteryStatus_log 
+FIELDS ENCLOSED BY '^' 
+TERMINATED BY ';' 
+ESCAPED BY '^' 
+LINES TERMINATED BY '\r\n'  ;
