@@ -25,7 +25,7 @@
                 android:layout_marginRight="20dp"
                 android:layout_weight="1"
                 android:paddingRight="0dp"
-                android:src="@drawable/waggle" />
+                 />
 
             <!-- Text layout for Basic Information -->
             <LinearLayout

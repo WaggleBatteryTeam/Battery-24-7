@@ -2,9 +2,11 @@ package waggle.wagglebattery;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DrawableUtils;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -37,11 +39,16 @@ public class StatusActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
 
+        Integer[] imgid={R.drawable.waggle1,R.drawable.waggle2,R.drawable.waggle3};
+
+
         _target_url = getString(R.string.target_addr);
 
         //Get Waggle_id Value from parent Activity.
         Intent intent = getIntent();
         waggle_id = intent.getExtras().getInt("waggleId");
+        ImageView imageView = (ImageView)findViewById(R.id.iv_waggle);
+        imageView.setImageResource(imgid[waggle_id-1]);
         Log.i("kss", "Variable from former screen : "+Integer.toString(waggle_id));
 
         _req[1] = Integer.toString(waggle_id);
@@ -52,6 +59,9 @@ public class StatusActivity extends AppCompatActivity {
 
         // TextView for update information.
         tvWaggleId = (TextView) findViewById(R.id.tv_waggle_id);
+
+
+
         tvCharging = (TextView) findViewById(R.id.tv_charging);
         tvHeater = (TextView) findViewById(R.id.tv_heater);
         tvFan = (TextView) findViewById(R.id.tv_fan);

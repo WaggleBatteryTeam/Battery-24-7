@@ -3,6 +3,7 @@ package waggle.wagglebattery;
 import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -29,6 +30,8 @@ public class WaggleListLayout  extends Fragment {
     private String _target_url;
     private RequestData reqData = new RequestData();
 
+    Integer[] imgid={R.drawable.waggle1,R.drawable.waggle2,R.drawable.waggle3};
+
     @Nullable
     @Override
     public View onCreateView(
@@ -46,7 +49,7 @@ public class WaggleListLayout  extends Fragment {
         listview = (ListView) v.findViewById(R.id.listview1);
 
         // Adapter 생성
-        adapter = new WaggleListViewAdapter(getContext(), waggleLocationInfoList);
+        adapter = new WaggleListViewAdapter(getContext(), waggleLocationInfoList,imgid);
 
         // 리스트와 어댑터 연결
         listview.setAdapter(adapter);
@@ -63,6 +66,7 @@ public class WaggleListLayout  extends Fragment {
                 Intent intentMain = new Intent(v.getContext(), StatusActivity.class);
                 intentMain.putExtra("waggleId",
                         waggleLocationInfoList.get(position).getWaggleId());  // 여기서 Waggle name이 primary key라고 간주했음
+
                 startActivity(intentMain);
             }
         });
