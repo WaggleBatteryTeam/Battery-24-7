@@ -6,7 +6,7 @@
 		<?php
 			include_once "function_notification.php";
 			include_once "function_dbconnection.php";
-			include_once "function_csv.php"
+			include_once "function_csv.php";
 
 			$waggle_conn = db_connection('waggle');
 
@@ -20,8 +20,6 @@
 			$fan = $_POST['fan'];
 			$updated_time = $_POST['updated_time'];
 			$notice = 'updated';
-
-			echo $waggle_id .", " . $temperature. ", " . $humidity . ", " . $updated_time;
 
 			// Check how many $remain_battery is to alarm waring to manager
 			// under remain_battery 20%
