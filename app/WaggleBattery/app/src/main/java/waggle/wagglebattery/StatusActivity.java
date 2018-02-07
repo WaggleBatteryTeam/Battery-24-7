@@ -29,11 +29,13 @@ public class StatusActivity extends AppCompatActivity {
     private TextView tvUpdateInfo;
     private ContentValues mColumns = null, mRequest = null, mOption = null, mRes = new ContentValues();
     private RecyclerView.Adapter adapter = null;
+    static int temp=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
+
 
         _target_url = getString(R.string.target_addr);
 
@@ -63,6 +65,9 @@ public class StatusActivity extends AppCompatActivity {
         mColumns.put("1","heater");
         mColumns.put("2","fan");
         mColumns.put("3","updated_time");
+        mColumns.put("4","remain_battery");
+        mColumns.put("5","temperature");
+        mColumns.put("6","humidity");
 
         new DownloadDataTask(new DownloadDataTask.AsyncResponse() {
 
@@ -76,26 +81,29 @@ public class StatusActivity extends AppCompatActivity {
                 tvHeater.setText(res.getAsString("heater"));
                 tvFan.setText(res.getAsString("fan"));
                 // 최종 update한 시간
-                tvUpdateInfo.setText("Updated : " + mRes.getAsString("updated_time"));
+                tvUpdateInfo.setText("Updated : " + res.getAsString("updated_time"));
 
+                mRes = new ContentValues();
                 mRes.put("remain_battery",res.getAsString("remain_battery"));
                 mRes.put("temperature",res.getAsString("temperature"));
                 mRes.put("humidity",res.getAsString("humidity"));
+                mRes.put("updated_time",res.getAsString("updated_time"));
+
+
+                //RecyclerView Setting
+                RecyclerView recyclerView= (RecyclerView) findViewById(R.id.rcview);
+                recyclerView.setHasFixedSize(true);
+
+                LinearLayoutManager lim = new LinearLayoutManager(getApplicationContext());
+                lim.setOrientation(LinearLayoutManager.VERTICAL);
+                recyclerView.setLayoutManager(lim);
+
+                adapter = new WaggleStatusAdapter(getApplicationContext(),mWaggleId,mRes);
+                recyclerView.setAdapter(adapter);
+
             }
         }).execute(mOption,mRequest,mColumns);
         //WaggleInfo LinearLayout Setting
-
-
-        //RecyclerView Setting
-        RecyclerView recyclerView= (RecyclerView) findViewById(R.id.rcview);
-        recyclerView.setHasFixedSize(true);
-
-        LinearLayoutManager lim = new LinearLayoutManager(this);
-        lim.setOrientation(LinearLayoutManager.VERTICAL);
-        recyclerView.setLayoutManager(lim);
-
-        adapter = new WaggleStatusAdapter(getApplicationContext(),mWaggleId,mRes);
-        recyclerView.setAdapter(adapter);
 
 
         ImageView bt_refresh = findViewById(R.id.bt_refresh);
@@ -105,15 +113,23 @@ public class StatusActivity extends AppCompatActivity {
                 new DownloadDataTask(new DownloadDataTask.AsyncResponse() {
                     @Override
                     public void processFinish(Object output) {
-                        mRes = (ContentValues) output;
+                        ContentValues res = (ContentValues) output;
 
                         // waggle 기본 정보 띄우기
                         tvWaggleId.setText(String.valueOf(mWaggleId));
-                        tvCharging.setText(mRes.getAsString("charging"));
-                        tvHeater.setText(mRes.getAsString("heater"));
-                        tvFan.setText(mRes.getAsString("fan"));
+                        tvCharging.setText(res.getAsString("charging"));
+                        tvHeater.setText(res.getAsString("heater"));
+                        tvFan.setText(res.getAsString("fan"));
                         // 최종 update한 시간
-                        tvUpdateInfo.setText("Updated : " + mRes.getAsString("updated_time"));
+                        tvUpdateInfo.setText("Updated : " + res.getAsString("updated_time"));
+
+                        mRes = new ContentValues();
+                        mRes.put("remain_battery",res.getAsString("remain_battery"));
+                        mRes.put("temperature",res.getAsString("temperature"));
+                        mRes.put("humidity",res.getAsString("humidity"));
+                        mRes.put("updated_time",res.getAsString("updated_time"));
+
+                        adapter.notifyDataSetChanged();
                     }
                 }).execute(mOption,mRequest,mColumns);
             }
