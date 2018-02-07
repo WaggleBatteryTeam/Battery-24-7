@@ -1,10 +1,6 @@
 package waggle.waggle.wagglebattery.adapter;
 
 import android.content.Context;
-import android.graphics.Matrix;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.FitWindowsFrameLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,8 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import waggle.wagglebattery.R;
-import waggle.wagglebattery.WaggleInfo;
-import waggle.wagglebattery.WaggleLocationInfo;
+import waggle.data.WaggleLocationInfo;
 
 /**
  * Created by nable on 2018-01-16.

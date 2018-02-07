@@ -3,8 +3,6 @@ package waggle.wagglebattery;
 import android.app.Fragment;
 import android.content.ContentValues;
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,9 +15,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
+import waggle.data.WaggleLocationInfo;
 import waggle.waggle.wagglebattery.adapter.WaggleListViewAdapter;
 import waggle.utility.DownloadDataTask;
 

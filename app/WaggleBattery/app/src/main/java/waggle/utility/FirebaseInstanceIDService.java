@@ -1,4 +1,4 @@
-package waggle.wagglebattery;
+package waggle.utility;
 
 /**
  * Created by SeungSoo on 2018-02-01.

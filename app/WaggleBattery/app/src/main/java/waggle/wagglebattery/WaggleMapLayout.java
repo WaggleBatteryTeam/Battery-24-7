@@ -22,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import waggle.data.WaggleLocationInfo;
 import waggle.utility.DownloadDataTask;
 
 /**

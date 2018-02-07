@@ -1,4 +1,4 @@
-package waggle.wagglebattery;
+package waggle.utility;
 
 /**
  * Created by SeungSoo on 2018-02-01.
@@ -15,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.google.firebase.messaging.RemoteMessage;
 
+import waggle.wagglebattery.MainActivity;
 import waggle.wagglebattery.R;
 
 
