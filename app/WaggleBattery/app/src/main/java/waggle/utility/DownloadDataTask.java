@@ -34,35 +34,38 @@ import waggle.wagglebattery.BuildConfig;
  * Modified by parksanguk on 1/19/18.
  */
 
-public class DownloadDataTask extends AsyncTask<ContentValues, Void, DownloadDataTaskResult<Object>>{
-    private static final short  CONTENTVALUE = 0;
-    private static final short  CONTENTVALUEARR = 1;
-    private static final short  ENTRYLIST = 2;
+public class DownloadDataTask
+        extends AsyncTask<ContentValues, Void, DownloadDataTaskResult<Object>>{
 
-    private static final String TAG = DownloadDataTask.class.getSimpleName();
-    private static URL          sURL;
-    private static int          sReturnType;
-    private String              mResultStr;
+    private static final short      CONTENTVALUE = 0;
+    private static final short      CONTENTVALUEARR = 1;
+    private static final short      ENTRYLIST = 2;
 
+    private static final String     TAG = DownloadDataTask.class.getSimpleName();
+    private static URL              sURL;
+    private static int              sReturnType;
+    private String                  mResultStr;
 
+    // Interface to throw the response to caller.
     public interface AsyncResponse {
-        void processFinish(Object output);
+        void processFinish(Object output);              // This function override from caller.
     }
 
-    public AsyncResponse delegate = null;
+    public AsyncResponse            delegate = null;
 
+    // Constructor
     public DownloadDataTask(AsyncResponse delegate){
         this.delegate = delegate;
     }
 
     @Override
-    protected void onPreExecute() {}
+    protected void onPreExecute() {}                    // Do sth before backgroundtask.
 
     @Override
     protected DownloadDataTaskResult<Object> doInBackground(ContentValues... params) {
 
         // TODO: Error handling
-        // params must be two.
+        // The number of params must be two or three.
         if (params.length < 2) return null;
 
         // Assigned the target URL
@@ -72,16 +75,17 @@ public class DownloadDataTask extends AsyncTask<ContentValues, Void, DownloadDat
             return new DownloadDataTaskResult<Object>(e);
         }
         sReturnType = params[0].getAsShort("ReturnType");
-        ContentValues columns = null;
+
+        ContentValues               columns = null;
         if (params.length == 3) columns = params[2];
 
         /**
          * Using http Request to server to download data.
          */
 
-        HttpURLConnection       httpURLConnection = null;           // HttpURLConnection 참조 변수.
-        StringBuffer            sbParams = new StringBuffer();      // URL 뒤에 붙여서 보낼 파라미터.
-        ContentValues           postRequest = params[1];
+        HttpURLConnection           httpURLConnection = null;           // HttpURLConnection 참조 변수.
+        StringBuffer                sbParams = new StringBuffer();      // URL 뒤에 붙여서 보낼 파라미터.
+        ContentValues               postRequest = params[1];
 
 
         // If there is no data to send, keep sbParams be empty.
@@ -160,7 +164,7 @@ public class DownloadDataTask extends AsyncTask<ContentValues, Void, DownloadDat
 
             mResultStr = stringBuilder.toString().trim();
 
-            if (BuildConfig.DEBUG) Log.e(TAG,mResultStr);
+            //if (BuildConfig.DEBUG) Log.e(TAG,mResultStr);
 
             if (BuildConfig.DEBUG) Log.d(TAG, "HTTP Request accomplished succesfully");
             if (httpURLConnection != null)

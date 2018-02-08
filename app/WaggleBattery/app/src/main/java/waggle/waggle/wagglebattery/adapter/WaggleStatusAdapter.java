@@ -5,7 +5,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +21,6 @@ import com.github.mikephil.charting.data.LineDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
-import waggle.wagglebattery.BuildConfig;
 import waggle.wagglebattery.ChartMarkerView;
 import waggle.wagglebattery.R;
 import waggle.utility.DownloadDataTask;
@@ -32,14 +30,14 @@ import waggle.utility.DownloadDataTask;
  */
 
 public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapter.ViewHolder> {
-    private Context context;
+    private Context                 mContext;
 
-    private ArrayList<KeyValueSet> dataSet;
-    private int waggleId;
-    final private String[] colName = {"remain_battery", "temperature", "humidity"};      //Colname of Monitor.
-    final private String[] title = {"Battery", "Temperature", "Humidity"};      //Name for cardview that is shown in Android application View.
+    private ArrayList<KeyValueSet>  mDataSet;
+    private int                     mWaggleId;
+    final private String[]          mColname = {"remain_battery", "temperature", "humidity"};      //Colname of Monitor.
+    final private String[]          mTitle = {"Battery", "Temperature", "Humidity"};      //Name for cardview that is shown in Android application View.
     final private String[] col_waggleenv = {"waggle_id", "updated_time", "remain_battery", "temperature", "humidity"};
-    private List<Entry> mRes = null;
+    private List<Entry>             mRes = null;
 
     private static class KeyValueSet {
         String key;
@@ -80,21 +78,21 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
     }
 
     public WaggleStatusAdapter(Context context, int waggleId, ContentValues status) {
-        dataSet = new ArrayList<KeyValueSet>();
+        mDataSet = new ArrayList<KeyValueSet>();
 
-        this.context = context;
-        this.waggleId = waggleId;
+        this.mContext = context;
+        this.mWaggleId = waggleId;
 
-        for (int i = 0; i < colName.length; i++) {
-            String key = title[i];
-            String value = status.getAsString(colName[i]);
+        for (int i = 0; i < mColname.length; i++) {
+            String key = mTitle[i];
+            String value = status.getAsString(mColname[i]);
 
             // Round the value
             //double val = Double.parseDouble(value);
             //value = String.format("%.2f",value);
 
             KeyValueSet keyValueData = new KeyValueSet(key, value);
-            dataSet.add(keyValueData);
+            mDataSet.add(keyValueData);
         }
     }
 
@@ -136,19 +134,19 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        holder.tvTitle.setText(dataSet.get(position).getKey());
-        holder.tvValue.setText(dataSet.get(position).getValue());
+        holder.tvTitle.setText(mDataSet.get(position).getKey());
+        holder.tvValue.setText(mDataSet.get(position).getValue());
 
         //Result must be returned with only interested column data.
         ContentValues option = new ContentValues();
         ContentValues req = new ContentValues();
         ContentValues columns = new ContentValues();
 
-        option.put("url",context.getString(R.string.target_addr));
+        option.put("url", mContext.getString(R.string.target_addr));
         option.put("ReturnType",2);
 
         req.put("req","WaggleIdHistory");
-        req.put("id",Integer.toString(waggleId));
+        req.put("id",Integer.toString(mWaggleId));
 
         columns.put("0",col_waggleenv[position+2]);
 
@@ -180,7 +178,7 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
                 holder.dataHistoryChart.animateY(2000, Easing.EasingOption.EaseInCubic);
 
 
-                ChartMarkerView chartMarkerView = new ChartMarkerView(context, R.layout.markerview);
+                ChartMarkerView chartMarkerView = new ChartMarkerView(mContext, R.layout.markerview);
                 holder.dataHistoryChart.setMarker(chartMarkerView);
                 holder.dataHistoryChart.invalidate();
 
@@ -192,6 +190,6 @@ public class WaggleStatusAdapter extends RecyclerView.Adapter<WaggleStatusAdapte
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return dataSet.size();
+        return mDataSet.size();
     }
 }

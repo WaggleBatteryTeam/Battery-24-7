@@ -32,7 +32,7 @@
 
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -41,7 +41,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StatusActivity"
+            android:name=".activity.StatusActivity"
             android:screenOrientation="portrait"></activity>
 
         <service android:name="waggle.utility.FirebaseMessagingService">

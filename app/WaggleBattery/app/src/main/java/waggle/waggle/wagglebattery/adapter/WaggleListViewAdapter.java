@@ -20,37 +20,39 @@ import waggle.data.WaggleLocationInfo;
 public class WaggleListViewAdapter extends BaseAdapter {
     // Adapter에 추가된 데이터를 저장하기 위한 ArrayList
 
-    private Context context;
-    private ArrayList<WaggleLocationInfo> waggleLocationInfoList;
-    private Integer[] imgid;
+    private Context                         mContext;
+    private ArrayList<WaggleLocationInfo>   mWaggleLocationInfoList;
+    private Integer[]                       mImgId;
 
-    // ListViewAdapter의 생성자
-    public WaggleListViewAdapter() {
+    // Constructor
+    public WaggleListViewAdapter() {}
 
-    }
-
-    public WaggleListViewAdapter(Context context, ArrayList<WaggleLocationInfo> waggleLocationInfoList, Integer[] imgid) {
-        this.context = context;
-        this.waggleLocationInfoList = waggleLocationInfoList;
-        this.imgid=imgid;
+    public WaggleListViewAdapter(Context context,
+                                 ArrayList<WaggleLocationInfo> waggleLocationInfoList,
+                                 Integer[] imgid) {
+        this.mContext = context;
+        this.mWaggleLocationInfoList = waggleLocationInfoList;
+        this.mImgId =imgid;
     }
 
     // Adapter에 사용되는 데이터의 개수를 리턴. : 필수 구현
     @Override
     public int getCount() {
-        return waggleLocationInfoList.size();
+        return mWaggleLocationInfoList.size();
     }
 
     // position에 위치한 데이터를 화면에 출력하는데 사용될 View를 리턴. : 필수 구현
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        context = parent.getContext();
+        mContext = parent.getContext();
 
-        //View v = View.inflate(context, R.layout.waggle_listview_item, null);
+        //View v = View.inflate(mContext, R.layout.waggle_listview_item, null);
         // "listview_item" Layout을 inflate하여 convertView 참조 획득.
         if (convertView == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.waggle_listview_item, parent, false);
+            LayoutInflater inflater =
+                    (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView =
+                    inflater.inflate(R.layout.waggle_listview_item, parent, false);
         }
 
         /*
@@ -64,12 +66,11 @@ public class WaggleListViewAdapter extends BaseAdapter {
         TextView wLonTextView = (TextView) convertView.findViewById(R.id.waggleLon);
 
         // Data Set(listViewItemList)에서 position에 위치한 데이터 참조 획득
-        WaggleLocationInfo waggleLocationInfo = waggleLocationInfoList.get(position);
+        WaggleLocationInfo waggleLocationInfo = mWaggleLocationInfoList.get(position);
 
         // 아이템 내 각 위젯에 데이터 반영
-        //wImageView.setImageDrawable(ContextCompat.getDrawable(context, R.drawable.testimage));
 
-        wImageView.setImageResource(imgid[position]);
+        wImageView.setImageResource(mImgId[position]);
         wIdTextView.setText(waggleLocationInfo.getWaggleId()+"");
         wLatTextView.setText(waggleLocationInfo.getWaggleLat()+"");
         wLonTextView.setText(waggleLocationInfo.getWaggleLon()+"");
@@ -85,6 +86,6 @@ public class WaggleListViewAdapter extends BaseAdapter {
     // 지정한 위치(position)에 있는 데이터 리턴 : 필수 구현
     @Override
     public Object getItem(int position) {
-        return waggleLocationInfoList.get(position);
+        return mWaggleLocationInfoList.get(position);
     }
 }

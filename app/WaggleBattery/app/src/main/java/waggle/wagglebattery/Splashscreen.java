@@ -14,6 +14,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import waggle.wagglebattery.activity.MainActivity;
+
 
 public class Splashscreen extends Activity {
     public void onAttachedToWindow() {
