@@ -124,11 +124,12 @@ public class WaggleListLayout  extends Fragment {
         new DownloadDataTask(new DownloadDataTask.AsyncResponse() {
             @Override
             public void processFinish(Object output) {                //get One Value
-                ContentValues[] res = (ContentValues[]) output;
+                ContentValues[]     res = (ContentValues[]) output;
 
-                int waggleId;
-                double waggleLat, waggleLon;
-                String waggleDate;
+                int                 waggleId;
+                double              waggleLat, waggleLon;
+                String              waggleDate;
+
                 for (int i = 0; i < res.length; i++) {
                     waggleId = res[i].getAsInteger("waggle_id");
                     waggleLon = res[i].getAsDouble("longtitude");
@@ -139,7 +140,7 @@ public class WaggleListLayout  extends Fragment {
                 }
                 mAdapter.notifyDataSetChanged();
             }
-        }).execute(option,req,mColumns);
+        }).execute(option,req, mColumns);
 
     }
 }
