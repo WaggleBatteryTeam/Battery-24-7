@@ -1,4 +1,4 @@
-package waggle.wagglebattery;
+package waggle.data;
 
 /**
  * Created by SeungSoo on 2018-01-19.
@@ -6,15 +6,15 @@ package waggle.wagglebattery;
 
 public class WaggleLocationInfo {
     private int waggleId;
-    private double waggleLat;
-    private double waggleLon;
+    private double waggleLat, waggleLon;
     private String waggleDate;
 
-    public WaggleLocationInfo(int waggleId, double waggleLat, double waggleLon, String waggleDate) {
-        this.waggleId = waggleId;
-        this.waggleLat = waggleLat;
-        this.waggleLon = waggleLon;
-        this.waggleDate = waggleDate;
+    public WaggleLocationInfo(int waggleId, double waggleLat, double waggleLon,
+                              String waggleDate) {
+        this.waggleId = waggleId;                           // Waggle Id
+        this.waggleLat = waggleLat;                         // Waggle position : Latitude
+        this.waggleLon = waggleLon;                         // Waggle position : Longitude
+        this.waggleDate = waggleDate;                       // GPS Update date
     }
 
     public int getWaggleId() {

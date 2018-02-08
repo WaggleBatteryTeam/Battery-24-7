@@ -1,4 +1,4 @@
-package waggle.wagglebattery;
+package waggle.wagglebattery.activity;
 
 import android.app.FragmentManager;
 import android.os.Bundle;
@@ -15,15 +15,25 @@ import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 
 import waggle.utility.BackPressCloseHandler;
+import waggle.wagglebattery.R;
+import waggle.wagglebattery.layout.WaggleListLayout;
+import waggle.wagglebattery.layout.WaggleMapLayout;
 
+/**
+ * This class is main class for android application.
+ * This activity is started at first. Main activity has a navigation bar.
+ * TODO: Main view have to show the warning that is about low battery.
+ */
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-    private BackPressCloseHandler backPressCloseHandler;
+    private static final String     TAG = MainActivity.class.getSimpleName();
 
+    private BackPressCloseHandler   mBackPressCloseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -32,21 +42,13 @@ public class MainActivity extends AppCompatActivity
         FirebaseMessaging.getInstance().subscribeToTopic("news");
         FirebaseInstanceId.getInstance().getToken();
 
-        backPressCloseHandler = new BackPressCloseHandler(this);
-
-        /* floating 버튼
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-               }
-        });*/
+        // BackPressCloseHandler makes back button to be used to close application when clicks twice.
+        mBackPressCloseHandler = new BackPressCloseHandler(this);
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+                this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -54,15 +56,21 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
     }
 
+    /**
+     * This function is operated when the user press the back button.
+     * onBackPressed function call the BackPressCloseHandler Class function to make the application
+     *      be closed when the button is closed twice.
+     */
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            backPressCloseHandler.onBackPressed();
+            mBackPressCloseHandler.onBackPressed();
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -99,16 +107,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_wagglemap_layout) {
             manager.beginTransaction().replace(R.id.content_main, new WaggleMapLayout()).commit();
         }
-        // TODO : 네이비게이션 바에 메뉴를 더 추가하고 싶을 경우 여기에 추가
-        /*else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }*/
+        // 네비게이션 바에 메뉴를 더 추가하고 싶을 경우 여기에 추가
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

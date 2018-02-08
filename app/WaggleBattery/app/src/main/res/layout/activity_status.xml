@@ -1,189 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_layout_status"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_marginTop="10dp"
-            android:orientation="horizontal"
-            android:weightSum="4">
-
-            <ImageView
-                android:id="@+id/iv_waggle"
-                android:layout_width="89dp"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="4dp"
-                android:layout_marginRight="20dp"
-                android:layout_weight="1"
-                android:paddingRight="0dp"
-                 />
-
-            <!-- Text layout for Basic Information -->
-            <LinearLayout
-                android:layout_width="169dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="3"
-                android:orientation="vertical">
-
-                <!-- waggle id -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <!-- Title -->
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="ID"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <!-- Value -->
-                    <TextView
-                        android:id="@+id/tv_waggle_id"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="ID"
-                        android:textSize="18dp"
-                        android:textStyle="normal" />
-
-                </LinearLayout>
-
-                <!-- waggle charging -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <!-- Title -->
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Charging"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <!-- Value -->
-                    <TextView
-                        android:id="@+id/tv_charging"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="ON/OFF"
-                        android:textSize="18dp"
-                        android:textStyle="normal" />
-
-                </LinearLayout>
-
-                <!-- waggle heater -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/border"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <!-- Title -->
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Heater"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <!-- Value -->
-                    <TextView
-                        android:id="@+id/tv_heater"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="ON/OFF"
-                        android:textSize="18dp"
-                        android:textStyle="normal" />
-
-                </LinearLayout>
-
-                <!-- waggle fan -->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/border"
-                    android:orientation="horizontal"
-                    android:weightSum="2">
-
-                    <!-- Title -->
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Fan"
-                        android:textSize="18dp"
-                        android:textStyle="bold" />
-
-                    <!-- Value -->
-                    <TextView
-                        android:id="@+id/tv_fan"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="ON/OFF"
-                        android:textSize="18dp"
-                        android:textStyle="normal" />
-
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="bottom|right">
-
-            <ImageView
-                android:layout_height="wrap_content"
-                android:layout_width="wrap_content"
-                android:id="@+id/bt_refresh"
-                android:layout_marginRight="4dp"
-                android:src="@drawable/ic_refresh_black_24dp"/>
-
-            <TextView
-                android:id="@+id/tv_update_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="textEnd"
-                android:textSize="18dp"
-                android:text="updated_time"
-                android:textStyle="italic"/>
-        </LinearLayout>
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rcview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical">
+            android:orientation="vertical">
 
-        </android.support.v7.widget.RecyclerView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="4dp"
+                android:layout_marginRight="4dp"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal"
+                android:weightSum="4">
 
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/iv_waggle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="1.5"
+                    android:paddingRight="0dp" />
+
+                <!-- Text layout for Basic Information -->
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2.5"
+                    android:orientation="vertical">
+
+                    <!-- waggle id -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <!-- Title -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="ID"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <!-- Value -->
+                        <TextView
+                            android:id="@+id/tv_waggle_id"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="ID"
+                            android:textSize="18dp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+
+                    <!-- waggle charging -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <!-- Title -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Charging"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <!-- Value -->
+                        <TextView
+                            android:id="@+id/tv_charging"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="ON/OFF"
+                            android:textSize="18dp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+
+                    <!-- waggle heater -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/border"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <!-- Title -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Heater"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <!-- Value -->
+                        <TextView
+                            android:id="@+id/tv_heater"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="ON/OFF"
+                            android:textSize="18dp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+
+                    <!-- waggle fan -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border"
+                        android:orientation="horizontal"
+                        android:weightSum="2">
+
+                        <!-- Title -->
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Fan"
+                            android:textSize="18dp"
+                            android:textStyle="bold" />
+
+                        <!-- Value -->
+                        <TextView
+                            android:id="@+id/tv_fan"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="ON/OFF"
+                            android:textSize="18dp"
+                            android:textStyle="normal" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="bottom|right"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tv_update_info"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="updated_time"
+                    android:textAlignment="textEnd"
+                    android:textSize="18dp"
+                    android:textStyle="italic" />
+            </LinearLayout>
+
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rcview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical">
+
+            </android.support.v7.widget.RecyclerView>
+
+        </LinearLayout>
+    </android.support.v4.widget.SwipeRefreshLayout>
+
 </android.support.constraint.ConstraintLayout>

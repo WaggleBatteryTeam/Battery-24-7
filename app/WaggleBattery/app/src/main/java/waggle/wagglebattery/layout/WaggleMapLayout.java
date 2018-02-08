@@ -1,4 +1,4 @@
-package waggle.wagglebattery;
+package waggle.wagglebattery.layout;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
@@ -22,7 +22,10 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 
+import waggle.data.WaggleLocationInfo;
 import waggle.utility.DownloadDataTask;
+import waggle.wagglebattery.R;
+import waggle.wagglebattery.activity.StatusActivity;
 
 /**
  * Created by nable on 2018-01-16.

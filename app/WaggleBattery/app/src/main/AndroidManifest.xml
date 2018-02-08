@@ -32,7 +32,7 @@
 
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/title_activity_main"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -41,16 +41,16 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".StatusActivity"
+            android:name=".activity.StatusActivity"
             android:screenOrientation="portrait"></activity>
 
-        <service android:name=".FirebaseMessagingService">
+        <service android:name="waggle.utility.FirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
-        <service android:name=".FirebaseInstanceIDService">
+        <service android:name="waggle.utility.FirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
