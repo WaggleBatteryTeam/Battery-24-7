@@ -21,12 +21,12 @@
 			$updated_time = $_POST['updated_time'];
 			$notice = 'updated';
 
-			// Check how many $remain_battery is to alarm waring to manager
+			// Check how many $remain_battery is to alarm warning to manager
 			// under remain_battery 20%
 			if($remain_battery < 20.0) {
 				// alarm
     			//데이터베이스에 접속해서 토큰들을 가져와서 FCM에 발신요청
-    			
+
     			$fcm_conn = db_connection('fcm');
 
     			$sql_alarm = "Select Token From users";
@@ -37,23 +37,16 @@
             			while ($row = mysqli_fetch_assoc($result)) {
                     			$tokens[] = $row["Token"];
            		 		}
-    			}	
+    			}
 
     			mysqli_close($fcm_conn);
 
-        		$myMessage = $_POST['message']; //폼에서 입력한 메세지를 받음
-    			if ($myMessage == ""){
-            			$myMessage = "새글이 등록되었습니다.";
-    			}
-
-   				// $message = array("message" => $myMessage);
     			$message_status = send_notification($tokens, $waggle_id, $remain_battery);
     			echo $message_status;
 
-				// put "YES" value to BatteryStatus notice colum
+				// TODO put "YES" value to BatteryStatus notice colum
 			}
 
-		
 			$sql_is_csv_out = "select is_csv_out from CSV_OUT";
 			$get_is_csv_out = mysqli_query($waggle_conn, $sql_is_csv_out); // 0 is 'not yet', 1 is 'of course'!
 
@@ -64,7 +57,7 @@
 
             $csv_out_row = mysqli_fetch_array($get_is_csv_out, MYSQLI_ASSOC);
             $is_csv_out = $csv_out_row["is_csv_out"];
-			
+
 			$ret_day = date('w'); // 0 is sunday, 1 is monday...
             if($is_csv_out == 0 and $ret_day == 0){ // if today is sunday and no cvs file
             	$is_csv_out = get_csv_file();  //reset flag
@@ -72,6 +65,8 @@
                 $is_csv_out = 0; //reset flag
             }
 
+						// TODO 조건문의 조건 다시 한번 점검할 필요가 있음, 왜냐하면 아래 구문은 항상 조건이 참임.
+						// 방법 1 : 이전 $is_csv_out값을 저장하는 변수를 하나 만들어 현재값과 비교해서 바뀌면 실행되게 하자
             if($is_csv_out == 0 or $is_csv_out == 1){
                 $sql_csv_out_rewrite = "update CSV_OUT set is_csv_out =" . $is_csv_out .  " where  is_csv_out is not null";
                 $csv_out_rewrite = mysqli_query($waggle_conn, $sql_csv_out_rewrite); // success out csv file
@@ -86,7 +81,7 @@
             	echo "CSV Db ERROR";
             }
 
-			
+
 
 			// insert into DB table BatteryStatus_log
 			$sql = "INSERT INTO BatteryStatus_log (waggle_id, remain_battery, voltage, charging, temperature, humidity, heater ,fan, updated_time, notice) VALUES ('".$waggle_id."','".$remain_battery."','".$voltage."','".$charging."','".$temperature."','".$humidity."','".$heater."','".$fan."','".$updated_time."','".$notice."')";
@@ -104,7 +99,7 @@
 			//$sql = "SELECT * FROM BatteryStatus";
 			$result = mysqli_query($waggle_conn, $sel_sql);
 			$row_cnt = mysqli_num_rows($result);
-		
+
 			if($row_cnt>0)
 			{
 				// update DB table BatteryStatus
@@ -119,7 +114,7 @@
 				. "', notice='" . $notice
 				. "' WHERE waggle_id='" . $waggle_id
 				. "'";
-					
+
 				$retval1 = mysqli_query($waggle_conn, $sql1);
 
 				if (!$retval1) {

@@ -44,11 +44,14 @@ def send_log() :
         time.sleep(10)
 
 def run():
+    # Run a thread to send server values 
     _thread.start_new_thread(send_log,())
+
     global URL, cur_temperature, bvolt, ccurr, cnt, heater,fan, PARAMS
     port = serial.Serial("/dev/ttyUSB0", baudrate=9600, timeout=None)
     is_fan_on=False
     is_heater_on=False
+
     #f = False
     #h = False
     while(1):
@@ -65,12 +68,15 @@ def run():
         remain_battery = check_remain(bvolt)
         charging="OFF"
 
+        # Parameters to be sent
         PARAMS = {'waggle_id':waggle_id, 'remain_battery':remain_battery,
         'voltage':bvolt, 'charging':charging,
         'temperature' : t, 'humidity':h, 'heater':heater,
         'fan':fan, 'updated_time':wtime}
 
         print(wtime, data)
+
+        # Decide whether we should turn on/off fan or Heater
         if not is_fan_on:
             if t >22.0:
                 print ("turn on the Fan")
