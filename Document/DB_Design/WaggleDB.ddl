@@ -72,3 +72,11 @@ create table BatteryStatus_log(
 	FOREIGN KEY (waggle_id) REFERENCES WaggleStack(waggle_id),
 	#PRIMARY KEY (waggle_id)
 );
+
+# Add CSV_OUT table
+# Must have just ONE TUPLE for is_csv_out
+# Created by Hyom 2018-02-07
+create table CSV_OUT(
+	is_csv_out BOOLEAN
+);
+
