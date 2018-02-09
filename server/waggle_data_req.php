@@ -27,18 +27,11 @@
 		elseif($req === "WaggleIdHistory"){
 			$query = "SELECT * FROM BatteryStatus_log WHERE waggle_id = " . $waggle_id;
 		}
-		elseif($req === "ColumnName"){
-			$table_name = $_POST['id'];
-			$query = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = 'waggle' AND TABLE_NAME = '" . $table_name . "'";
-		}
 
 	}
 	elseif($count_param == 1){
 		$req = $_POST['req'];
 		
-		if($req === "WaggleInfo"){ // Query for WaggleList
-			$query = "SELECT * FROM WaggleEnv";
-		}
 		elseif($req === "WaggleLoc"){ // Query for WaggleLoc on Google Map
 			$query = "SELECT * FROM WaggleStack";
 		}
