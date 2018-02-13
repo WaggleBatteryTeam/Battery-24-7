@@ -97,9 +97,9 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
         // 모든 waggle 위치를 지도에 나타내기
         for (int i = 0; i < waggleLocationInfoList.size(); i++) {
             MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(new LatLng(waggleLocationInfoList.get(i).getWaggleLat(), waggleLocationInfoList.get(i).getWaggleLon()));
-            markerOptions.title(waggleLocationInfoList.get(i).getWaggleId() + "");
-            markerOptions.snippet(waggleLocationInfoList.get(i).getWaggleDate());
+            markerOptions.position(new LatLng(waggleLocationInfoList.get(i).getmWaggleLat(), waggleLocationInfoList.get(i).getmWaggleLon()));
+            markerOptions.title(waggleLocationInfoList.get(i).getmWaggleId() + "");
+            markerOptions.snippet(waggleLocationInfoList.get(i).getmWaggleDate());
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.blue_map_marker));
             googleMap.addMarker(markerOptions);
         }
@@ -108,7 +108,7 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
         if (waggleLocationInfoList.isEmpty())
             Toast.makeText(getContext(), "There isn't any waggle", Toast.LENGTH_LONG).show();
         else {
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(waggleLocationInfoList.get(0).getWaggleLat(), waggleLocationInfoList.get(0).getWaggleLon())));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(waggleLocationInfoList.get(0).getmWaggleLat(), waggleLocationInfoList.get(0).getmWaggleLon())));
             googleMap.animateCamera(CameraUpdateFactory.zoomTo(10));
         }
 
@@ -119,7 +119,7 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
                 // marker.getId()를 했을때 MarkerOptions에 추가된 순서대로 ID가 매겨져 있음(인덱스 0부터)
                 String chosenWaggleId = marker.getId().replace("m", "");
                 Intent intentMain = new Intent(v.getContext(), StatusActivity.class);
-                intentMain.putExtra("waggleId", chosenWaggleId);  // 여기서 Waggle name이 primary key라고 간주했음
+                intentMain.putExtra("waggleId", Integer.parseInt(chosenWaggleId+1));  // 여기서 Waggle name이 primary key라고 간주했음
                 startActivity(intentMain);
                 return false;
             }

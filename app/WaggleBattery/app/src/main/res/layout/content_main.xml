@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/content_main"
@@ -9,4 +9,6 @@
     tools:context="waggle.wagglebattery.activity.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-</android.support.constraint.ConstraintLayout>
+
+
+</RelativeLayout>
