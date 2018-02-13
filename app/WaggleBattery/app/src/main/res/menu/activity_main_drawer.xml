@@ -5,6 +5,10 @@
 
     <group android:checkableBehavior="single">
         <item
+            android:id="@+id/nav_wagglehome_layout"
+            android:icon="@drawable/home"
+            android:title="Home" />
+        <item
             android:id="@+id/nav_wagglelist_layout"
             android:icon="@drawable/list"
             android:title="Waggle List" />

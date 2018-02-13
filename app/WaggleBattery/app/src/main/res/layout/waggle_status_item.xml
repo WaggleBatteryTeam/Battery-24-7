@@ -48,6 +48,40 @@
 
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/layout_buttons"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
+            android:gravity="center">
+
+            <Button
+                android:id="@+id/button_1day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:text="1day"/>
+
+
+            <Button
+                android:id="@+id/button_1week"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:text="1week"/>
+
+
+            <Button
+                android:id="@+id/button_1month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1month"/>
+
+        </LinearLayout>
+
         <TextView
             android:id="@+id/tv_desc"
             android:layout_width="match_parent"
@@ -63,7 +97,9 @@
             android:layout_marginRight="5dp"
             android:layout_marginLeft="5dp"
             android:layout_height="250dp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:layout_marginBottom="10dp"
+            />
     </LinearLayout>
 
 </android.support.v7.widget.CardView>

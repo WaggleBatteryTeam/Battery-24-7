@@ -24,16 +24,15 @@
 
                 <ImageView
                     android:id="@+id/iv_waggle"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="4dp"
-                    android:layout_marginRight="20dp"
-                    android:layout_weight="1.5"
-                    android:paddingRight="0dp" />
+                    android:layout_marginLeft="6dp"
+                    android:layout_marginRight="6dp"
+                    android:layout_weight="1.5" />
 
                 <!-- Text layout for Basic Information -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2.5"
                     android:orientation="vertical">

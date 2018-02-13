@@ -14,11 +14,15 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import waggle.data.WaggleLocationInfo;
-import waggle.waggle.wagglebattery.adapter.WaggleListViewAdapter;
 import waggle.utility.DownloadDataTask;
+import waggle.waggle.wagglebattery.adapter.WaggleEmergencyListViewAdapter;
+import waggle.waggle.wagglebattery.adapter.WaggleListViewAdapter;
 import waggle.wagglebattery.R;
+import waggle.wagglebattery.activity.MainActivity;
 import waggle.wagglebattery.activity.StatusActivity;
 
 /**
@@ -29,15 +33,13 @@ import waggle.wagglebattery.activity.StatusActivity;
  * This class is executed for showing Waggle List.
  * This activity is started when the user clicked wagglelist on Navigation Bar.
  */
-public class WaggleListLayout extends Fragment {
-    private static final String TAG = StatusActivity.class.getSimpleName();
+public class WaggleHomeLayout extends Fragment {
 
+    // 리스트뷰
     private View mView;
     private ArrayList<WaggleLocationInfo> mWaggleLocationInfo;
-    private WaggleListViewAdapter mAdapter;
-
+    private WaggleEmergencyListViewAdapter mAdapter;
     private ContentValues mColumns = new ContentValues();
-
 
     private Integer[] mImgId = {R.drawable.waggle1, R.drawable.waggle2, R.drawable.waggle3};
 
@@ -45,24 +47,25 @@ public class WaggleListLayout extends Fragment {
     @Override
     public View onCreateView(
             LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        mView = inflater.inflate(R.layout.wagglelist_layout, container, false);
+        mView = inflater.inflate(R.layout.wagglehome_layout, container, false);
 
         // 서버에 데이터 요청을 보내야 하는 부분
         mWaggleLocationInfo = new ArrayList<WaggleLocationInfo>();
 
-        // 리스트뷰 참조
-        ListView listview;
-        listview = (ListView) mView.findViewById(R.id.listview1);
+        // 리스트뷰
+        ListView listView = (ListView) mView.findViewById(R.id.lv_emergency);
 
         // Adapter 생성
-        mAdapter = new WaggleListViewAdapter(getContext(), mWaggleLocationInfo, mImgId);
+        mAdapter = new WaggleEmergencyListViewAdapter(getContext(), mWaggleLocationInfo, mImgId);
 
         // 리스트와 어댑터 연결
-        listview.setAdapter(mAdapter);
+        listView.setAdapter(mAdapter);
+
+        addEmergencyWaggleInfo();
 
         // 이벤트
         // 위에서 생성한 listview에 클릭 이벤트 핸들러 정의.
-        listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView parent, View v, int position, long id) {
                 // get item
@@ -86,7 +89,7 @@ public class WaggleListLayout extends Fragment {
 
                 mWaggleLocationInfo.clear();
 
-                addNewWaggleInfo();
+                addEmergencyWaggleInfo();
                 // Alert refreshing.
                 Toast.makeText(getContext(), "Refresh", Toast.LENGTH_LONG).show();
 
@@ -99,25 +102,24 @@ public class WaggleListLayout extends Fragment {
                 android.R.color.holo_red_light
         );
 
-        addNewWaggleInfo();
-
         return mView;
     }
 
-    private void addNewWaggleInfo() {
+    private void addEmergencyWaggleInfo() {
 
         ContentValues option = new ContentValues(), req = new ContentValues();
 
         option.put("url", getString(R.string.target_addr));
         option.put("ReturnType", 1);
 
-        req.put("req", "WaggleLoc");
+        req.put("req", "WaggleEme");
 
         mColumns = new ContentValues();
         mColumns.put("0", "waggle_id");
-        mColumns.put("1", "longtitude");
-        mColumns.put("2", "latitude");
-        mColumns.put("3", "date_created");
+        mColumns.put("1", "remain_battery");
+        mColumns.put("2", "charging");
+        mColumns.put("3", "longtitude");
+        mColumns.put("4", "latitude");
 
         new DownloadDataTask(new DownloadDataTask.AsyncResponse() {
             @Override
@@ -125,20 +127,34 @@ public class WaggleListLayout extends Fragment {
                 ContentValues[] res = (ContentValues[]) output;
 
                 int waggleId;
-                double waggleLat, waggleLon;
-                String waggleDate;
+                double waggleLat, waggleLon, waggleRemain;
+                boolean batteryCharging;
 
-                for (int i = 0; i < res.length; i++) {
-                    waggleId = res[i].getAsInteger("waggle_id");
-                    waggleLon = res[i].getAsDouble("longtitude");
-                    waggleLat = res[i].getAsDouble("latitude");
-                    waggleDate = res[i].getAsString("date_created");
-                    WaggleLocationInfo waggleLocationInfo = new WaggleLocationInfo(waggleId, waggleLat, waggleLon, waggleDate);
-                    mWaggleLocationInfo.add(waggleLocationInfo);
+                if (res.length > 0) {
+                    for (int i = 0; i < res.length; i++) {
+                        waggleId = res[i].getAsInteger("waggle_id");
+                        waggleRemain = res[i].getAsDouble("remain_battery");
+                        batteryCharging = res[i].getAsBoolean("charging");
+                        waggleLon = res[i].getAsDouble("longtitude");
+                        waggleLat = res[i].getAsDouble("latitude");
+                        WaggleLocationInfo waggleLocationInfo = new WaggleLocationInfo(waggleId, waggleRemain, batteryCharging, waggleLat, waggleLon);
+                        mWaggleLocationInfo.add(waggleLocationInfo);
+                    }
+
+                    Comparator<WaggleLocationInfo> comparator = new Comparator<WaggleLocationInfo>() {
+                        public int compare(WaggleLocationInfo emp1, WaggleLocationInfo emp2) {
+                            return ((int)emp1.getmBatteryRemain() - (int)emp2.getmBatteryRemain());
+                        }
+                    };
+                    Collections.sort(mWaggleLocationInfo, comparator);
+                    //Collections.sort(mWaggleLocationInfo, new BatteryRemainComparator());
+                    mAdapter.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "There is no data", Toast.LENGTH_SHORT).show();
                 }
-                mAdapter.notifyDataSetChanged();
             }
         }).execute(option, req, mColumns);
-
     }
+
+
 }
