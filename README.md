@@ -9,13 +9,13 @@ This project is proposed the battery to be suvived in the extreme weather. Espec
 * [app](./app) for android
 
 ## Collaborators
-* [LamFSangUk](github.com/LamFSangUk) - **SangUk Park** \<psu9808@gmail.com\> Android/Web Server 
-* [NableKim](github.com/NableKim) - **SeungSoo Kim** \<nablekim94@gmail.com\> Android     
-* [Ryunhwan](github.com/Ryunhwan) - **RyunHwan Kwon** \<krh322@gmail.com\> Control System/Battery Box Circuit Design
-* [gommuluk](github.com/gommuluk) - **HyoMin Nam** \<skagbghk@gmail.com\> Database/Web Server/Data Backup 
-* [eunsuh](github.com/eunsuh) - **EunSuh Lee** \<eunsuh1231@gmail.com\> Control System/Paper
-* [jun-hu](github.com/jun-hu) - **JunHu Kang** \<steve.jh.kang@gmail.com\>
+* [LamFSangUk](https://www.github.com/LamFSangUk) - **SangUk Park** \<psu9808@gmail.com\> Android/Web Server 
+* [NableKim](https://www.github.com/NableKim) - **SeungSoo Kim** \<nablekim94@gmail.com\> Android/Web Server     
+* [Ryunhwan](https://www.github.com/Ryunhwan) - **RyunHwan Kwon** \<krh322@gmail.com\> Control System/Battery Box Circuit Design
+* [gommuluk](https://www.github.com/gommuluk) - **HyoMin Nam** \<skagbghk@gmail.com\> Database/Web Server/Data Backup 
+* [eunsuh](https://www.github.com/eunsuh) - **EunSuh Lee** \<eunsuh1231@gmail.com\> Control System/Paper
+* [gudrjs012](https://www.github.com/gudrjs012) - **HyeongGun Lee** \<gudrjs012@gmail.com\> Database/Python Director/Paper
+* [jun-hu](https://www.github.com/jun-hu) - **JunHu Kang** \<steve.jh.kang@gmail.com\> Sensor System/Paper
 * []() - **YoungJi Lee** \<yjgk21c@naver.com\>
-* [gudrjs012]() - **HyeongGun Lee** \<gudrjs012@gmail.com\>
 * [WonKeun Cho(dasoll@naver.com)]()
 * [WuMel Lee(milkcaramel66@gmail.com)]()
