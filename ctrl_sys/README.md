@@ -16,7 +16,7 @@ https://gist.github.com/dschep/24aa61672a2092246eaca2824400d37f
   - Adafruit_DHT
   
   - INA219
-  https://www.rototron.info/raspberry-pi-ina219-tutorial/
+  https://pypi.python.org/pypi/pi-ina219/1.1.0
   - RPi_GPIO
   - requests
   - urllib
