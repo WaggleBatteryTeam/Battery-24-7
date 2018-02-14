@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "441403609812",
+    "firebase_url": "https://wagglebattery.firebaseio.com",
+    "project_id": "wagglebattery",
+    "storage_bucket": "wagglebattery.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:441403609812:android:990ed9e0d88b28d1",
+        "android_client_info": {
+          "package_name": "waggle.wagglebattery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "441403609812-5r2scoeq1kk0i0k72rvsu5n1m13o8bc3.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADDcSTKcIjKF2XbgH6gy4dPP2Dr3rK9_0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
