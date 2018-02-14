@@ -4,13 +4,22 @@ This page includes files for battery control system.
 
 ## Hardware Spec
 * Raspberry Pi 3 model B
+* 4 channel relay module
 * Sensors
   - DHT 22
+  - INA 219
 
 ## Software Spec
 * Python 3.6
+https://gist.github.com/dschep/24aa61672a2092246eaca2824400d37f
 * library
-  - 
+  - Adafruit_DHT
+  
+  - INA219
+  https://www.rototron.info/raspberry-pi-ina219-tutorial/
+  - RPi_GPIO
+  - requests
+  - urllib
 
 ### Contents
 
