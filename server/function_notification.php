@@ -1,16 +1,17 @@
 
 <?php
+
 	function send_notification ($tokens, $waggle_id, $remain_battery)
     {
 		$url = 'https://fcm.googleapis.com/fcm/send';
 		$fields = array(
 			'registration_ids' => $tokens,
-			'notification' => array('title' => 'Alert!', 'body' => $waggle_id.' has only '.$remain_battery.'%!!')
-			//'data' => array('message' => $message)
+			'notification' => array('title' => 'Alert!', 'body' => $waggle_id.' has only '.$remain_battery.'%!!'),
+			'data' => array('waggleId' => $waggle_id, 'remainBattery' => $remain_battery)
 		);
 
 		$headers = array(
-        		'Authorization:key =' . GOOGLE_API_KEY,
+        		'Authorization:key=AAAAZsW0ktQ:APA91bGJexREXtZxuXR1vCxbPu63OUOsLeVZmB0WjviBIxwHbSiMgZKtyADfSKBfoP5Zrbot0AWSOQjWgaQ5fYUk5dvKQXkIZdV2lobsT0NSHlHpOC20gSPDuGOgr2zjwptMHRCImjlq',
         		'Content-Type: application/json'
         	);
 
@@ -31,3 +32,4 @@
 	}
 
 ?>
+

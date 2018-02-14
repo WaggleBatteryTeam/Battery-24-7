@@ -4,14 +4,18 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import waggle.waggle.wagglebattery.adapter.WaggleStatusAdapter;
 import waggle.utility.DownloadDataTask;
@@ -43,6 +47,12 @@ public class StatusActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_status);
+
+        // < button
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        //actionBar.setHomeButtonEnabled(true);
 
         Integer[] imgid = {R.drawable.waggle1,
                 R.drawable.waggle2, R.drawable.waggle3};
@@ -161,6 +171,17 @@ public class StatusActivity extends AppCompatActivity {
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light
         );
+
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
 
     }
 }

@@ -4,8 +4,8 @@
 	</head>
 	<body>
 		<?php
-			include_once "function_notification.php";
 			include_once "function_dbconnection.php";
+			include_once "function_notification.php";
 			include_once "function_csv.php";
 
 			$waggle_conn = db_connection('waggle');
@@ -32,7 +32,7 @@
     			$fcm_conn = db_connection('fcm');
 
 				// Bring token from 5 hours ago
-    			$sql_alarm = "SELECT Token FROM users WHERE updated_time < DATE_ADD(now(), INTERVAL -5 hour);"
+    			$sql_alarm = "SELECT * FROM users WHERE updated_time < DATE_ADD(now(), INTERVAL -5 hour)";
     			$result = mysqli_query($fcm_conn ,$sql_alarm);
     			$tokens = array();
 
@@ -52,7 +52,7 @@
 				echo $message_status;
 
 				// updated updated_time with current time
-    			$sql_update = "UPDATE users SET updated_time=now() WHERE updated_time < DATE_ADD(now(), INTERVAL -5 hour);"
+    			$sql_update = "UPDATE users SET updated_time=now() WHERE updated_time < DATE_ADD(now(), INTERVAL -5 hour)";
                 $update_result= mysqli_query($fcm_conn, $sql_update);
 
                 if (!$update_result) {
