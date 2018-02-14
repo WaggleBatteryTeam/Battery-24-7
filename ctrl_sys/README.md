@@ -8,6 +8,9 @@ This page includes files for battery control system.
 * Sensors
   - DHT 22
   - INA 219
+* Heating system(Docreate 5V-12V ZVS driver board Low Voltage Induction Heating CoilPower Supply Module + heating Coil)
+* Fan(Gdstime Ultrathin 60mm x 60mm x 10mm 12V Brushless Computer Case Cooling Replacement fan)
+* Inverter(Foval 150W Power Inverter DC 12V to 110V AC Converter with 3.1A Dual USB Car Charger)
 
 ## Software Spec
 * Python 3.6
