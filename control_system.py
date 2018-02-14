@@ -30,7 +30,7 @@ GPIO.output(18,True)
 sensor = Adafruit_DHT.DHT22
 
 waggle_id = 3
-URL = "http://18.219.74.113/test/waggle_receive_1.php"
+URL = "http://18.219.74.113/test/waggle_receive_function_with_csv.php"
 cur_temperature=0.00 #current temperature
 bvolt=0.00 #battery voltage
 ccurr=0.00 #current from generator controller
