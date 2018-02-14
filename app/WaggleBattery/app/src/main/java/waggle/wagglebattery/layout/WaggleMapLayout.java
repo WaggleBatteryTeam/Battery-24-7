@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -119,7 +120,7 @@ public class WaggleMapLayout extends Fragment implements OnMapReadyCallback {
                 // marker.getId()를 했을때 MarkerOptions에 추가된 순서대로 ID가 매겨져 있음(인덱스 0부터)
                 String chosenWaggleId = marker.getId().replace("m", "");
                 Intent intentMain = new Intent(v.getContext(), StatusActivity.class);
-                intentMain.putExtra("waggleId", Integer.parseInt(chosenWaggleId+1));  // 여기서 Waggle name이 primary key라고 간주했음
+                intentMain.putExtra("waggleId", Integer.parseInt(chosenWaggleId)+1);  // 여기서 Waggle name이 primary key라고 간주했음
                 startActivity(intentMain);
                 return false;
             }
