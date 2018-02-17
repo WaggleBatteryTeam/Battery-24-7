@@ -31,7 +31,7 @@ https://gist.github.com/dschep/24aa61672a2092246eaca2824400d37f
 The file is executed on Raspberry Pi.
 
 ### 
-The below code should be appened on `~/.profile`.
+The below code should be appened on `nano ~/.profile` or `vi ~/.profile`.
 ```sh
 tmux new-session -d -s control
 tmux send-keys -t control:0 "python3.6 ~/Battery-24-7/control_system.py" C-m
