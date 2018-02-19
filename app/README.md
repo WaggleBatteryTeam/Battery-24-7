@@ -2,6 +2,7 @@ Android Application
 ===================
 
 We developed the android application to monitor the status of battery boxes. The application supports to show the list of operating battery boxes and the position where the battery boxes are placed using Google Map. Moreover, the application alerts the low battery status to administartor to manage. We used the data charts to describe situation of each battery box. It makes easier to control the battery boxes.
+**Server will be closed. So if you want to see data in the web or run Android application, you should build another server.**
 
 
 <img src="./App_Image/app_list.png" width="250px" height="auto"></img>
