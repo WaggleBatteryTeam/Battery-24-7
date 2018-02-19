@@ -18,7 +18,7 @@ This project is proposed the battery to be suvived in the extreme weather. Espec
 * [gommuluk](https://www.github.com/gommuluk) - **HyoMin Nam** \<skagbghk@gmail.com\> Database/Web Server/Data Backup/Paper
 * [eunsuh](https://www.github.com/eunsuh) - **EunSuh Lee** \<eunsuh1231@gmail.com\> Control System/Paper
 * [gudrjs012](https://www.github.com/gudrjs012) - **HyeongGun Lee** \<gudrjs012@gmail.com\> Database/Python Director/Paper
-* [jun-hu](https://www.github.com/jun-hu) - **JunHu Kang** \<steve.jh.kang@gmail.com\> Sensor System/Paper
+* [jun-hu](https://www.github.com/jun-hu) - **JunHu Kang** \<steve.jh.kang@gmail.com\> Control System/Paper
 * []() - **YoungJi Lee** \<yjgk21c@naver.com\>
 * []() - **WonKeun Cho** \<dasoll@naver.com\>
 * []() - **WuMel Lee** \<milkcaramel66@gmail.com\>
