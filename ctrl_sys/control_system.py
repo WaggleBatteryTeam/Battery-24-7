@@ -54,7 +54,7 @@ def run():
         is_heater_on=False
 
         now = time.localtime()
-        wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm$
+        wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
         h,t = Adafruit_DHT.read_retry(sensor,22) # check temp & humid
         bvolt, ccurr = read_ina219()
         data = 'Temp = {0:0.1f} Humid = {1:0.1f} Volt = {2:0.1f}'.format(t,h,bvolt)
@@ -67,7 +67,7 @@ def run():
         while True:
                 time.sleep(3)
                 now = time.localtime()
-                wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour$
+                wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm_min, now.tm_sec)
                 h,t = Adafruit_DHT.read_retry(sensor,22) # check temp & humid
                 bvolt, ccurr = read_ina219()
                 data = 'Temp = {0:0.1f} Humid = {1:0.1f} Volt = {2:0.1f}'.format(t,h,bvolt)
