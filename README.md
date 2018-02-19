@@ -19,6 +19,6 @@ This project is proposed the battery to be suvived in the extreme weather. Espec
 * [eunsuh](https://www.github.com/eunsuh) - **EunSuh Lee** \<eunsuh1231@gmail.com\> Control System/Paper
 * [gudrjs012](https://www.github.com/gudrjs012) - **HyeongGun Lee** \<gudrjs012@gmail.com\> Database/Python Director/Paper
 * [jun-hu](https://www.github.com/jun-hu) - **JunHu Kang** \<steve.jh.kang@gmail.com\> Control System/Paper
-* [markerss2]() - **YoungJi Lee** \<yjgk21c@naver.com\> Battery Box/Paper
-* [wonkeuncho]() - **WonKeun Cho** \<dasoll@naver.com\> Presentation/Battery Box/Paper
-* [EumelLee]() - **Wumel Lee** \<milkcaramel66@gmail.com\> Battery Box/Paper
+* [markerss2](https://www.github.com/markerss2) - **YoungJi Lee** \<yjgk21c@naver.com\> Battery Box/Paper
+* [wonkeuncho](https://www.github.com/wonkeuncho) - **WonKeun Cho** \<dasoll@naver.com\> Presentation/Battery Box/Paper
+* [EumelLee](https://www.github.com/EumelLee) - **Wumel Lee** \<milkcaramel66@gmail.com\> Battery Box/Paper
