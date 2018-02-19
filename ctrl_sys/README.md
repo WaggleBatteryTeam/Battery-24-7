@@ -2,33 +2,34 @@
 
 This page includes files for battery control system. 
 
+## Contents
+
+* control_system.py
+The file is executed on Raspberry Pi.
+
 ## Hardware Spec
 * Raspberry Pi 3 model B
 * 4 channel relay module
 * Sensors
   - DHT 22
   - INA 219
-* Heating system(Docreate 5V-12V ZVS driver board Low Voltage Induction Heating CoilPower Supply Module + heating Coil)
-* Fan(Gdstime Ultrathin 60mm x 60mm x 10mm 12V Brushless Computer Case Cooling Replacement fan)
-* Inverter(Foval 150W Power Inverter DC 12V to 110V AC Converter with 3.1A Dual USB Car Charger)
+* Heating System
+	- Docreate 5V-12V ZVS driver board Low Voltage Induction Heating CoilPower Supply Module + heating Coil
+* Fan
+	- Gdstime Ultrathin 60mm x 60mm x 10mm 12V Brushless Computer Case Cooling Replacement fan
+* Inverter
+	- Foval 150W Power Inverter DC 12V to 110V AC Converter with 3.1A Dual USB Car Charger
 
 ## Software Spec
 * Python 3.6
-https://gist.github.com/dschep/24aa61672a2092246eaca2824400d37f
+	- [How to install Python 3.6 on Raspbian](https://gist.github.com/dschep/24aa61672a2092246eaca2824400d37f)
 * library
-  - Adafruit_DHT
-  
   - INA219
-  https://pypi.python.org/pypi/pi-ina219/1.1.0
+  	* [How to install INA219 lib](https://pypi.python.org/pypi/pi-ina219/1.1.0)
+  - Adafruit_DHT 
   - RPi_GPIO
   - requests
   - urllib
-
-### Contents
-
-* control_system.py
-
-The file is executed on Raspberry Pi.
 
 ### 
 The below code should be appened on `nano ~/.profile` or `vi ~/.profile`.

@@ -8,14 +8,17 @@ This project is proposed the battery to be suvived in the extreme weather. Espec
 * [server](./server)
 * [app](./app) for android
 
+## Hardware Design
+![SmallBox](./Document/Img/small_box.png)
+
 ## Collaborators
 * [LamFSangUk](https://www.github.com/LamFSangUk) - **SangUk Park** \<psu9808@gmail.com\> Android/Web Server 
 * [NableKim](https://www.github.com/NableKim) - **SeungSoo Kim** \<nablekim94@gmail.com\> Android/Web Server     
 * [Ryunhwan](https://www.github.com/Ryunhwan) - **RyunHwan Kwon** \<krh322@gmail.com\> Control System/Battery Box Circuit Design
-* [gommuluk](https://www.github.com/gommuluk) - **HyoMin Nam** \<skagbghk@gmail.com\> Database/Web Server/Data Backup 
+* [gommuluk](https://www.github.com/gommuluk) - **HyoMin Nam** \<skagbghk@gmail.com\> Database/Web Server/Data Backup/Paper
 * [eunsuh](https://www.github.com/eunsuh) - **EunSuh Lee** \<eunsuh1231@gmail.com\> Control System/Paper
 * [gudrjs012](https://www.github.com/gudrjs012) - **HyeongGun Lee** \<gudrjs012@gmail.com\> Database/Python Director/Paper
 * [jun-hu](https://www.github.com/jun-hu) - **JunHu Kang** \<steve.jh.kang@gmail.com\> Sensor System/Paper
 * []() - **YoungJi Lee** \<yjgk21c@naver.com\>
-* [WonKeun Cho(dasoll@naver.com)]()
-* [WuMel Lee(milkcaramel66@gmail.com)]()
+* []() - **WonKeun Cho** \<dasoll@naver.com\>
+* []() - **WuMel Lee** \<milkcaramel66@gmail.com\>
