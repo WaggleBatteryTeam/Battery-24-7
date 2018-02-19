@@ -22,13 +22,13 @@ The file is executed on Raspberry Pi.
 	- Foval 150W Power Inverter DC 12V to 110V AC Converter with 3.1A Dual USB Car Charger
 
 ## Software Spec
-* Python 3.6 - [How to install Python 3.6 on Raspbian](https://gist.github.com/dschep/24aa61672a2092246eaca2824400d37f)
+* [Python 3.6](https://gist.github.com/dschep/24aa61672a2092246eaca2824400d37f)
 * Python modules
-  - INA219 - [How to install INA219 lib](https://pypi.python.org/pypi/pi-ina219/1.1.0)
-  - Adafruit_DHT https://learn.adafruit.com/dht-humidity-sensing-on-raspberry-pi-with-gdocs-logging/software-install-updated
-  - RPi_GPIO https://learn.adafruit.com/playing-sounds-and-using-buttons-with-raspberry-pi/install-python-module-rpi-dot-gpio?gclid=Cj0KCQiAiKrUBRD6ARIsADS2OLnOuLc3FpbCGW6sa73oVR8v83-yj8Q2jvgfYV1tIxeVswp4KauqfA8aAvjrEALw_wcB
-  - requests https://docs.python.org/3/installing/index.html
-  - urllib https://docs.python.org/3/library/urllib.html#module-urllib
+  - [INA219](https://pypi.python.org/pypi/pi-ina219/1.1.0)
+  - [Adafruit_DHT](https://learn.adafruit.com/dht-humidity-sensing-on-raspberry-pi-with-gdocs-logging/software-install-updated)
+  - [RPi_GPIO](https://learn.adafruit.com/playing-sounds-and-using-buttons-with-raspberry-pi/install-python-module-rpi-dot-gpio?gclid=Cj0KCQiAiKrUBRD6ARIsADS2OLnOuLc3FpbCGW6sa73oVR8v83-yj8Q2jvgfYV1tIxeVswp4KauqfA8aAvjrEALw_wcB)
+  - [requests](https://docs.python.org/3/installing/index.html)
+  - [urllib](https://docs.python.org/3/library/urllib.html#module-urllib)
 
 ### 
 The below code should be appened on `~/.profile`.
