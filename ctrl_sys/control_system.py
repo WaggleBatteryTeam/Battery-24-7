@@ -29,17 +29,19 @@ GPIO.output(18,True)
 
 sensor = Adafruit_DHT.DHT22
 
-waggle_id = 3
+waggle_id = "7" #waggle id. It will be different by waggles
 URL = "http://18.219.74.113/test/waggle_receive_function_with_csv.php"
 cur_temperature=0.00 #current temperature
 bvolt=0.00 #battery voltage
-ccurr=0.00 #current from generator controller
+ccurr=0.00 #current from generator to controller
 fan="OFF"
 heater="OFF"
 charging="OFF"
 
 PARAMS = {}
 
+#sub thread - send the data every 1min
+#if you want, you can change second on time.sleep()
 def send_log() :
         while True :
                 global PARAMS
@@ -47,23 +49,28 @@ def send_log() :
                 time.sleep(60)
 
 def run():
-        # Run a thread to send server values
-        _thread.start_new_thread(send_log,())
-
         global waggle_id, URL, bvolt, ccurr, cnt, heater,fan, PARAMS
         is_fan_on=False
         is_heater_on=False
 
+        now = time.localtime()
+        wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour, now.tm$
+        h,t = Adafruit_DHT.read_retry(sensor,22) # check temp & humid
+        bvolt, ccurr = read_ina219()
+        data = 'Temp = {0:0.1f} Humid = {1:0.1f} Volt = {2:0.1f}'.format(t,h,bvolt)
+        remain_battery = check_remain(bvolt)
+        check_charging_status(ccurr)
+        #run sub thread
+        _thread.start_new_thread(send_log,())
+
+        #main thread - If break events on the system, send data to server
         while True:
+                time.sleep(3)
                 now = time.localtime()
-                wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday,
-                now.tm_hour, now.tm_min, now.tm_sec)
+                wtime = "%04d-%02d-%02d %02d:%02d:%02d" % (now.tm_year, now.tm_mon, now.tm_mday, now.tm_hour$
                 h,t = Adafruit_DHT.read_retry(sensor,22) # check temp & humid
-
                 bvolt, ccurr = read_ina219()
-
                 data = 'Temp = {0:0.1f} Humid = {1:0.1f} Volt = {2:0.1f}'.format(t,h,bvolt)
-
                 remain_battery = check_remain(bvolt)
                 check_charging_status(ccurr)
 
@@ -73,8 +80,6 @@ def run():
                 'temperature' : t, 'humidity':h, 'heater':heater,
                 'fan':fan, 'updated_time':wtime}
 
-                print(wtime, data)
-                print(ccurr)
                 notice(bvolt, t, h)
 
                 # Decide whether we should turn on/off fan or Heater
