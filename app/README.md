@@ -2,11 +2,10 @@
 
 We developed the android application to monitor the status of battery boxes. The application supports to show the list of operating battery boxes and the position where the battery boxes are placed using Google Map. Moreover, the application alerts the low battery status to administartor to manage. We used the data charts to describe situation of each battery box. It makes easier to control the battery boxes.
 
-<div width="800px" margin="0 auto">
-<img src="./App_Image/app_list.png" width="250px" height="auto"></img>
-<img src="./App_Image/app_map.png" width="250px" height="auto"></img>
-<img src="./App_Image/app_details.png" width="250px" height="auto"></img>
-</div>
+<img src="./App_Image/app_list.png" width="250px" height="auto"></img> {: .text-center}
+<img src="./App_Image/app_map.png" width="250px" height="auto"></img> {: .text-center}
+<img src="./App_Image/app_details.png" width="250px" height="auto"></img> {: .text-center}
+
 
 ## Contents
 	* [src](./WaggleBattery/app/src/main/java/waggle)
