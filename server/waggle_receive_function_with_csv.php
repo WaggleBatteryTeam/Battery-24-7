@@ -25,14 +25,14 @@
 
 			// Check how many $remain_battery is to alarm waring to manager
 			// under remain_battery 20%
-			if($remain_battery < 20.0) {
+			if((double)$remain_battery < 20.0 && ($waggle_id != null)) {
 				// alarm
     			//데이터베이스에 접속해서 토큰들을 가져와서 FCM에 발신요청
     			
     			$fcm_conn = db_connection('fcm');
 
 				// Bring token from 5 hours ago
-    			$sql_alarm = "SELECT * FROM users WHERE updated_time < DATE_ADD(now(), INTERVAL -5 hour)";
+    			$sql_alarm = "SELECT * FROM users WHERE updated_time < DATE_ADD(now(), INTERVAL -1 hour)";
     			$result = mysqli_query($fcm_conn ,$sql_alarm);
     			$tokens = array();
 
@@ -52,7 +52,7 @@
 				echo $message_status;
 
 				// updated updated_time with current time
-    			$sql_update = "UPDATE users SET updated_time=now() WHERE updated_time < DATE_ADD(now(), INTERVAL -5 hour)";
+    			$sql_update = "UPDATE users SET updated_time=now() WHERE updated_time < DATE_ADD(now(), INTERVAL -1 hour)";
                 $update_result= mysqli_query($fcm_conn, $sql_update);
 
                 if (!$update_result) {
@@ -79,7 +79,7 @@
 			
 			$ret_day = date('w'); // 0 is sunday, 1 is monday...
             if($is_csv_out == 0 and $ret_day == 0){ // if today is sunday and no cvs file
-            	$is_csv_out = get_csv_file();  //reset flag
+            	$is_csv_out = get_csv_file($waggle_conn);  //reset flag
             } elseif ($ret_day != 0 and $is_csv_out == 1) {
                 $is_csv_out = 0; //reset flag
             }
