@@ -11,9 +11,6 @@ This project is proposed the battery to be suvived in the extreme weather. Espec
 ## Hardware Design
 ![SmallBox](./Document/Img/small_box.png)
 
-## Control System
-The control system code is written by Python3. 
-
 
 ## Collaborators
 * [LamFSangUk](https://www.github.com/LamFSangUk) - **SangUk Park** \<psu9808@gmail.com\> Android/Web Server 
