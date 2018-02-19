@@ -1,7 +1,10 @@
 # Server
 
 Web server is made for Saving data that sensors in control system detect in database and Using that data in the Android application. Web server is based on AWS EC2  infrastructure  and  implemented  using  LAMP(Apache,MySQL,PHP in Linux) stack.
-<span style="color:blue">some *This is Blue italic.* text</span>
+```diff
++ this text is highlighted in green
+- this text is highlighted in red
+```
 
 ## Server Specification
 
