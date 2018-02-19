@@ -5,9 +5,9 @@ We developed the android application to monitor the status of battery boxes. The
 **Server will be closed. So if you want to see data in the web or run Android application, you should build another server.**
 
 
-<img src="./App_Image/app_list.png" width="250px" height="auto"></img>
-<img src="./App_Image/app_map.png" width="250px" height="auto"></img>
-<img src="./App_Image/app_details.png" width="250px" height="auto"></img>
+<img src="./App_Image/app_list.png" width="280px" height="auto"></img>
+<img src="./App_Image/app_map.png" width="280px" height="auto"></img>
+<img src="./App_Image/app_details.png" width="280px" height="auto"></img>
 <br/>
 
 Contents
