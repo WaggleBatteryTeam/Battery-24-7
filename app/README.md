@@ -19,3 +19,4 @@ Contents
 
 Download
 --------
+* [Google Play Store](https://play.google.com/store/apps/details?id=waggle.wagglebattery)
