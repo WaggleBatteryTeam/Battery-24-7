@@ -20,6 +20,8 @@ The file is executed on Raspberry Pi.
 	- Gdstime Ultrathin 60mm x 60mm x 10mm 12V Brushless Computer Case Cooling Replacement fan
 * Inverter
 	- Foval 150W Power Inverter DC 12V to 110V AC Converter with 3.1A Dual USB Car Charger
+* Battery
+	- DURA12-8F 12V 8Ah
 
 ## Software Spec
 * [Python 3.6](https://gist.github.com/dschep/24aa61672a2092246eaca2824400d37f)
