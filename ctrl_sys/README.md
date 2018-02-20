@@ -1,6 +1,6 @@
 # Control System
 
-The control system supports to manage the status of battery boxes. The first goal of this system is maintaing the temperature inside battery boxes. To keep up the certain temperature, the control system decides to turn on/off heater or fan to make it heat up or cool down. The control system determines that based on the data from the temperature sensor.
+The control system supports to manage the status of battery boxes. The first goal of this system is maintaining the temperature inside battery boxes. To keep up the certain temperature, the control system decides to turn on/off heater or fan to make it heat up or cool down. The control system determines that based on the data from the temperature sensor.
 
 ## Contents
 
@@ -32,13 +32,16 @@ The file is executed on Raspberry Pi.
   - [requests](https://docs.python.org/3/installing/index.html)
   - [urllib](https://docs.python.org/3/library/urllib.html#module-urllib)
 
-### 
+###
+If you want to operating this code automatically, here is a solution.
 The below code should be appened on `~/.profile`.
 You can access `~/.profile` with `nano ~/.profile` or `vi ~/.profile`.
 ```sh
 tmux new-session -d -s control
 tmux send-keys -t control:0 "python3.6 ~/Battery-24-7/control_system.py" C-m
 ```
+After that, Raspberry pi can operating the code automatically after its reboot.
+
 
 ## Quick Guide for tmux
 **Install**
