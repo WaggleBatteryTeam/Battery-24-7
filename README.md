@@ -10,6 +10,7 @@ This project is proposed the battery to be suvived in the extreme weather. Espec
 
 ## Hardware Design
 ![SmallBox](./Document/Img/small_box.png)
+![CircuitDesign](./Document/Img/circuit_diagram.png)
 
 
 ## Collaborators
